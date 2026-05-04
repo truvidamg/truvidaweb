@@ -1,0 +1,3225 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Truvida Medical Group - Primary Care Physicians in Miami</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,200;0,300;0,400;0,500;0,600;0,700;1,300;1,400&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+    <script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+    <script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+    
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            overflow-x: hidden;
+            cursor: none;
+        }
+        
+        a, button, [role="button"] { cursor: none; }
+        
+        html { scroll-behavior: smooth; }
+        
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-30px) rotate(5deg); }
+        }
+        
+        @keyframes pulse {
+            0%, 100% { opacity: 0.4; transform: scale(1); }
+            50% { opacity: 0.8; transform: scale(1.05); }
+        }
+        
+        @keyframes scroll {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-50%); }
+        }
+        
+        @keyframes shimmer {
+            0% { background-position: -200% center; }
+            100% { background-position: 200% center; }
+        }
+        
+        @keyframes bookingFade {
+            0% { opacity: 0; transform: translateY(16px); }
+            100% { opacity: 1; transform: translateY(0); }
+        }
+        
+        .booking-modal,
+        .booking-modal * {
+            cursor: auto !important;
+        }
+        .booking-modal input,
+        .booking-modal textarea,
+        .booking-modal select {
+            cursor: text !important;
+        }
+        .booking-modal input[type="date"],
+        .booking-modal input[type="radio"],
+        .booking-modal input[type="checkbox"],
+        .booking-modal select {
+            cursor: pointer !important;
+        }
+        .booking-modal button,
+        .booking-modal a,
+        .booking-modal label {
+            cursor: pointer !important;
+        }
+        .booking-modal input::placeholder,
+        .booking-modal textarea::placeholder {
+            color: rgba(10,10,12,0.28);
+        }
+        .booking-modal input:focus,
+        .booking-modal textarea:focus,
+        .booking-modal select:focus {
+            border-bottom-color: #3057ab !important;
+        }
+        
+        .text-reveal-line {
+            display: block;
+            overflow: hidden;
+        }
+        
+        .text-reveal-inner {
+            display: inline-block;
+            transform: translateY(110%);
+            transition: transform 1.2s cubic-bezier(0.25, 1, 0.5, 1);
+        }
+        
+        .text-reveal.loaded .text-reveal-inner {
+            transform: translateY(0);
+        }
+        
+        .gradient-text {
+            background: linear-gradient(90deg, currentColor 0%, currentColor 40%, rgba(255,255,255,0.3) 50%, currentColor 60%, currentColor 100%);
+            background-size: 200% auto;
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: shimmer 4s linear infinite;
+        }
+        
+        /* ============ MOBILE OPTIMIZATIONS ============ */
+        @media (hover: none) and (pointer: coarse) {
+            /* Hide custom cursor entirely on touch devices */
+            body { cursor: auto !important; }
+            a, button, [role="button"] { cursor: pointer !important; }
+            /* The custom cursor div is fixed-positioned with high z-index — hide it */
+            body > div[style*="z-index: 99999"],
+            body > div[style*="zIndex: 99999"] { display: none !important; }
+        }
+        
+        /* Persistent mobile bottom bar */
+        .mobile-bottom-bar { display: none; }
+        @media (max-width: 820px) {
+            .mobile-bottom-bar {
+                display: flex;
+                position: fixed;
+                bottom: 0;
+                left: 0;
+                right: 0;
+                z-index: 999;
+                background: rgba(250, 250, 249, 0.96);
+                backdrop-filter: blur(16px) saturate(180%);
+                -webkit-backdrop-filter: blur(16px) saturate(180%);
+                border-top: 1px solid rgba(10,10,12,0.08);
+                padding: 12px 16px calc(12px + env(safe-area-inset-bottom));
+                gap: 10px;
+            }
+            .mobile-bottom-bar a, .mobile-bottom-bar button {
+                flex: 1;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                gap: 8px;
+                padding: 14px 16px;
+                font-size: 13px;
+                font-weight: 600;
+                letter-spacing: 0.5px;
+                border-radius: 100px;
+                text-decoration: none;
+                font-family: 'Plus Jakarta Sans', sans-serif;
+                border: none;
+                cursor: pointer;
+            }
+            .mobile-bottom-bar .mb-call {
+                background: transparent;
+                color: #0A0A0C;
+                border: 1px solid rgba(10,10,12,0.2);
+            }
+            .mobile-bottom-bar .mb-book {
+                background: #0A0A0C;
+                color: #FAFAF9;
+            }
+            /* Add bottom padding to the body so content isn't hidden behind the bar */
+            body { padding-bottom: 80px; }
+        }
+        
+        @media (max-width: 820px) {
+            /* Hide desktop nav links — replaced by hamburger */
+            .nav-desktop-links { display: none !important; }
+            .nav-mobile-toggle { display: flex !important; }
+            
+            /* Compress nav padding */
+            nav {
+                padding: 16px 20px !important;
+            }
+            nav.scrolled {
+                padding: 12px 20px !important;
+            }
+        }
+        @media (min-width: 821px) {
+            .nav-mobile-toggle { display: none !important; }
+        }
+        
+        /* General section padding clamp on mobile */
+        @media (max-width: 820px) {
+            section {
+                padding-left: 24px !important;
+                padding-right: 24px !important;
+            }
+            /* Override large vertical paddings */
+            section[data-section] { padding-top: 80px !important; padding-bottom: 80px !important; }
+        }
+        
+        /* Touch-friendly tap targets */
+        @media (max-width: 820px) {
+            button, a {
+                min-height: 44px;
+            }
+            input, textarea, select {
+                font-size: 16px !important; /* Prevents iOS zoom on focus */
+            }
+        }
+        
+        /* Booking modal mobile */
+        @media (max-width: 820px) {
+            .booking-modal h2 {
+                font-size: clamp(32px, 9vw, 44px) !important;
+                letter-spacing: -1.5px !important;
+            }
+            .booking-modal .book-step-grid {
+                grid-template-columns: 1fr !important;
+                column-gap: 0 !important;
+            }
+            .booking-modal .book-footer-nav {
+                padding: 16px !important;
+            }
+            .booking-modal .book-footer-nav button {
+                padding: 16px 24px !important;
+                font-size: 13px !important;
+            }
+        }
+        
+        /* Hero mobile */
+        @media (max-width: 820px) {
+            .hero-buttons {
+                flex-direction: column !important;
+                width: 100%;
+            }
+            .hero-buttons > a, .hero-buttons > button {
+                width: 100%;
+                justify-content: center;
+            }
+        }
+        
+        /* Mobile grid collapses — target inline grid-template-columns via attribute */
+        @media (max-width: 820px) {
+            /* All inline multi-col grids collapse to single column */
+            [style*="gridTemplateColumns"],
+            [style*="grid-template-columns"] {
+                grid-template-columns: 1fr !important;
+            }
+            /* Except: keep 2-col for tight auto-fit grids that are already compact */
+            
+            /* Compress large inline paddings */
+            [style*="padding: '160px"], [style*="padding:'160px"],
+            [style*="padding: '200px"], [style*="padding:'200px"],
+            [style*="padding: '120px"], [style*="padding:'120px"] {
+                padding-top: 80px !important;
+                padding-bottom: 80px !important;
+                padding-left: 24px !important;
+                padding-right: 24px !important;
+            }
+            [style*="padding: '80px 48px"], [style*="padding: '80px 48px'"] {
+                padding: 56px 24px !important;
+            }
+            [style*="padding: '120px 48px"] {
+                padding: 80px 24px !important;
+            }
+            [style*="padding: '40px 48px"] {
+                padding: 32px 24px !important;
+            }
+            /* Sticky philosophy needs special handling — reduce height */
+            #philosophy {
+                min-height: auto !important;
+            }
+        }
+        
+        /* Hide 'cursor: none' inline styles on mobile */
+        @media (max-width: 820px) {
+            [style*="cursor: none"], [style*="cursor:none"] {
+                cursor: pointer !important;
+            }
+        }
+        
+        /* Mobile menu overlay */
+        @media (max-width: 820px) {
+            .doctor-image {
+                height: 480px !important;
+                order: 1 !important;
+            }
+            /* Disable horizontal parallax on doctor content (keeps layout clean) */
+            #doctors [style*="translateX"] {
+                transform: none !important;
+                opacity: 1 !important;
+            }
+            /* Disable image parallax scale transforms on mobile — cause overflow */
+            .doctor-image > div[style*="scale"] {
+                transform: none !important;
+            }
+            /* Philosophy giant words — force smaller on mobile */
+            #philosophy h2 {
+                font-size: clamp(56px, 16vw, 90px) !important;
+                letter-spacing: -2px !important;
+                margin-bottom: 20px !important;
+            }
+            #philosophy p {
+                font-size: 16px !important;
+                padding: 0 8px;
+            }
+            /* Hero giant text */
+            section [style*="clamp(64px, 11vw, 180px)"] {
+                font-size: clamp(48px, 14vw, 96px) !important;
+                letter-spacing: -2px !important;
+            }
+            /* Stats — stack 2-col instead of 4 */
+            [style*="repeat(4, 1fr)"] {
+                grid-template-columns: repeat(2, 1fr) !important;
+                gap: 32px !important;
+            }
+            /* Marquee — smaller */
+            .marquee-text {
+                font-size: clamp(60px, 16vw, 100px) !important;
+            }
+            /* Testimonials padding */
+            [style*="padding: '40px 36px"] {
+                padding: 32px 24px !important;
+            }
+        }
+        .mobile-menu-overlay {
+            position: fixed;
+            inset: 0;
+            background: #FAFAF9;
+            z-index: 9998;
+            display: flex;
+            flex-direction: column;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.4s ease;
+        }
+        .mobile-menu-overlay.open {
+            opacity: 1;
+            pointer-events: auto;
+        }
+    </style>
+</head>
+<body>
+    <div id="root"></div>
+    
+    <script type="text/babel">
+        const { useState, useEffect, useRef, useMemo, useContext, createContext } = React;
+        
+        const TWEAK_DEFAULTS = /*EDITMODE-BEGIN*/{
+          "primaryColor": "#3057ab",
+          "secondaryColor": "#ededed",
+          "accentColor": "#2126b0"
+        }/*EDITMODE-END*/;
+        
+        // ===================== i18n =====================
+        const TRANSLATIONS = {
+            en: {
+                nav: { philosophy: 'Philosophy', physicians: 'Physicians', services: 'Services', wellness: 'Wellness', guides: 'Guides', location: 'Location', book: 'Book Now' },
+                hero: {
+                    badge: 'Accepting new patients',
+                    title1: 'Primary care,',
+                    title2: 'reimagined.',
+                    subtitle: 'Comprehensive healthcare in Miami, delivered with dedication by board-certified practitioners.',
+                    meet: 'Meet our physicians',
+                    scroll: 'Scroll'
+                },
+                marquee: ['Compassionate Care', 'Expert Physicians', 'Primary Care', 'Wellness', 'Diagnostics', 'Prevention', 'Comprehensive Care', 'Patient-First'],
+                stats: [
+                    { label: 'Years of combined experience' },
+                    { label: 'Comprehensive service areas' },
+                    { label: 'Insurance providers accepted' },
+                    { label: 'Patient-first approach' }
+                ],
+                philosophy: {
+                    label: 'Our Philosophy',
+                    items: [
+                        { word: 'Compassion', desc: 'Healthcare delivered with genuine empathy and understanding.' },
+                        { word: 'Expertise', desc: 'Board-certified practitioners with decades of combined experience.' },
+                        { word: 'Prevention', desc: 'Proactive care that empowers lifelong wellness and vitality.' },
+                        { word: 'Community', desc: 'A diverse, inclusive practice where every patient feels at home.' }
+                    ]
+                },
+                doctors: {
+                    label: '— The Physicians',
+                    title1: 'The faces behind',
+                    title2: 'your care.',
+                    years: 'years in practice',
+                    expertiseLabel: 'Areas of Expertise',
+                    schedule: 'Schedule a consultation',
+                    list: [
+                        {
+                            bio: 'Starting her career as a family practice doctor, Yahumara has cultivated deep expertise in ICU and hospice care over more than 16 years of practice.',
+                            expertise: ['Critical Care', 'Palliative Care', 'Pre & Post-Surgical', 'Wound Care', 'Infection Control']
+                        },
+                        {
+                            bio: 'A distinguished healthcare professional with experience spanning intensive care, home health, and primary care, focusing on patient education and wellbeing.',
+                            expertise: ['Internal Medicine', 'Intensive Care', 'Trauma Care', 'Home Health', 'Hospice Care']
+                        }
+                    ]
+                },
+                wellness: {
+                    label: '— Wellness & Weight Loss',
+                    title1: 'Beyond primary care,',
+                    title2: 'deeper wellness.',
+                    intro: 'Medically-supervised weight loss, IV infusions, and targeted injections — designed around your goals, grounded in your labs, and delivered by physicians who know your full medical picture. Each service has its own in-depth guide.',
+                    read: 'Read the guide',
+                    newTag: 'New',
+                    ctaTitle: 'Not sure where to start?',
+                    ctaDesc: 'Our providers will review your goals and labs to design a personalized protocol.',
+                    ctaBtn: 'Book a Consult',
+                    items: [
+                        { title: 'Semaglutide', tag: 'GLP-1 Therapy', desc: 'FDA-approved weekly injection for sustainable weight loss. 10–15% average body weight reduction with medical supervision.' },
+                        { title: 'Tirzepatide', tag: 'Dual Agonist', desc: 'Next-generation GLP-1 + GIP dual therapy. Up to 22% body weight reduction in clinical trials — our most potent option.' },
+                        { title: 'IV Vitamin Therapy', tag: 'Infusion', desc: 'Custom vitamin and mineral cocktails delivered intravenously. 100% bioavailability, effects within hours.' },
+                        { title: 'Lipo / MIC Injections', tag: 'Fat Metabolism', desc: 'MIC, B12, and L-Carnitine injections that mobilize fat, transport it to mitochondria, and protect liver function.' },
+                        { title: 'Amino Acid Injections', tag: 'Performance', desc: 'Targeted amino acids for muscle preservation, recovery, sleep, and libido — essential alongside GLP-1 protocols.' },
+                        { title: 'Vitamin Injections', tag: 'Deficiency Correction', desc: 'Single-nutrient injections for documented deficiencies. B12, D3, B-complex, glutathione, and more.' }
+                    ]
+                },
+                services: {
+                    label: '— Comprehensive Services',
+                    title1: 'Everything you need,',
+                    title2: 'in one place.',
+                    list: [
+                        { title: 'Primary Care', desc: 'Continuous comprehensive healthcare as the cornerstone of your wellbeing.' },
+                        { title: 'Wellness Check-Ups', desc: 'Preventive health assessments and comprehensive screenings.' },
+                        { title: 'Advanced Laboratory', desc: 'Precision diagnostic testing with rapid, accurate results.' },
+                        { title: 'Electrocardiography', desc: 'Comprehensive cardiac health monitoring and heart rhythm analysis.' },
+                        { title: 'Pap Smear Screenings', desc: "Essential women's health services in a comfortable environment." },
+                        { title: 'Medical Consultations', desc: 'Personalized one-on-one guidance from experienced practitioners.' },
+                        { title: 'Follow-Up Care', desc: 'Continuous monitoring and support throughout your health journey.' }
+                    ]
+                },
+                insurance: {
+                    label: '— Insurance Partners',
+                    title: 'Accepting',
+                    titleItalic: 'most major',
+                    titleEnd: 'insurance plans'
+                },
+                testimonials: {
+                    label: '— Patient Voices',
+                    list: [
+                        { name: 'Kevin Cueva', text: "Amazing staff and the Doctors are amazing. They were really professional and the patient care exceed any expectation. I finally found a medical office that I can go and feel like I'm taken care." },
+                        { name: 'Karline Mompoint', text: 'Professionalism from the beginning of your visit to the end. The staff and Doctors are amazing! I would definitely recommend to see this medical team!' },
+                        { name: 'Maggie Rodriguez', text: 'Loving caring staff with amazing skill doctors. I HIGHLY recommend this Medical Group for your medical needs.' }
+                    ]
+                },
+                location: {
+                    label: '— Visit Us',
+                    title1: 'In the heart of',
+                    title2: 'Miami.',
+                    desc: 'Conveniently located to serve the greater Miami community with easy access and comfortable facilities.',
+                    addressLabel: 'Address',
+                    hoursLabel: 'Hours',
+                    hours1: 'Monday – Friday, 9AM – 6PM',
+                    hours2: 'Saturday & Sunday, Closed',
+                    contactLabel: 'Contact'
+                },
+                cta: {
+                    label: '— Ready to begin?',
+                    title1: 'Your health',
+                    title2: 'deserves more.',
+                    desc: 'Schedule your appointment today and experience primary care reimagined for you and your family.',
+                    call: 'Call (786) 883-0339',
+                    message: 'Send a message'
+                },
+                footer: { rights: '© 2026 Truvida Medical Group' },
+                booking: {
+                    open: 'Book Now',
+                    close: 'Close',
+                    eyebrow: 'Book an appointment',
+                    title1: "Let's",
+                    title2: 'begin.',
+                    subtitle: 'A few quick details so our team can prepare for your visit. You can expect a call back within one business day to confirm.',
+                    stepOf: 'Step',
+                    of: 'of',
+                    back: 'Back',
+                    next: 'Continue',
+                    submit: 'Confirm request',
+                    required: 'Required',
+                    optional: 'Optional',
+                    errors: {
+                        name: 'Please enter your full name.',
+                        phone: 'Please enter a valid phone number.',
+                        email: 'Please enter a valid email address.',
+                        reason: 'Please select a reason for your visit.'
+                    },
+                    steps: [
+                        {
+                            eyebrow: '01 / About you',
+                            title: 'Who are we meeting?',
+                            fields: {
+                                name: 'Full name',
+                                phone: 'Phone number',
+                                email: 'Email',
+                                dob: 'Date of birth',
+                                patientType: 'Are you a new or existing patient?',
+                                patientNew: 'New patient',
+                                patientExisting: 'Existing patient',
+                                language: 'Preferred language',
+                                langEn: 'English',
+                                langEs: 'Español'
+                            }
+                        },
+                        {
+                            eyebrow: '02 / Your visit',
+                            title: 'What brings you in?',
+                            fields: {
+                                reason: 'Reason for visit',
+                                reasonNew: 'New patient visit',
+                                reasonFollow: 'Follow-up appointment',
+                                reasonWellness: 'Wellness service',
+                                reasonOther: 'Something else',
+                                service: 'Which service are you interested in?',
+                                servicePlaceholder: 'Select a service…',
+                                date: 'Preferred appointment date',
+                                window: 'Preferred time window',
+                                morning: 'Morning',
+                                afternoon: 'Afternoon',
+                                evening: 'Evening',
+                                flexible: 'Flexible'
+                            }
+                        },
+                        {
+                            eyebrow: '03 / Your provider',
+                            title: 'Is there a provider you prefer?',
+                            subtitle: 'Both of our providers are accepting new patients. You can also let us choose the best match for your schedule.',
+                            anyProvider: 'No preference — first available',
+                            anyProviderDesc: 'We will pair you with whichever provider has the earliest opening that matches your preferred window.',
+                            notes: 'Anything else we should know? (optional)',
+                            notesPlaceholder: 'Symptoms, medications, questions, accommodations…'
+                        },
+                        {
+                            eyebrow: '04 / Review',
+                            title: 'Everything look right?',
+                            subtitle: 'Confirm below and our care coordinator will reach out within one business day to finalize your appointment.',
+                            summary: {
+                                contact: 'Contact',
+                                visit: 'Visit',
+                                provider: 'Provider',
+                                notes: 'Notes',
+                                none: 'None',
+                                anyProvider: 'No preference'
+                            },
+                            consent: 'By submitting this request I consent to be contacted by Truvida Medical Group regarding my appointment.'
+                        }
+                    ],
+                    thankYou: {
+                        eyebrow: '— Request received',
+                        title1: 'Thank you,',
+                        title2: "we'll be in touch.",
+                        message: 'A care coordinator will call you within one business day to confirm your appointment and answer any questions.',
+                        nextSteps: 'What happens next',
+                        steps: [
+                            { num: '01', title: 'A call back', desc: 'Within one business day from (786) 883-0339.' },
+                            { num: '02', title: 'Insurance & intake', desc: "We'll verify your coverage and send a short intake form." },
+                            { num: '03', title: 'Your visit', desc: 'Arrive 10 minutes early with photo ID and insurance card.' }
+                        ],
+                        done: 'Return to homepage',
+                        callUs: 'Or call us now'
+                    }
+                }
+            },
+            es: {
+                nav: { philosophy: 'Filosofía', physicians: 'Médicos', services: 'Servicios', wellness: 'Bienestar', guides: 'Guías', location: 'Ubicación', book: 'Reservar' },
+                hero: {
+                    badge: 'Aceptamos nuevos pacientes',
+                    title1: 'Atención primaria,',
+                    title2: 'reimaginada.',
+                    subtitle: 'Atención médica integral en Miami, brindada con dedicación por profesionales certificados.',
+                    meet: 'Conozca a nuestros médicos',
+                    scroll: 'Desplazar'
+                },
+                marquee: ['Atención Compasiva', 'Médicos Expertos', 'Atención Primaria', 'Bienestar', 'Diagnóstico', 'Prevención', 'Atención Integral', 'El Paciente Primero'],
+                stats: [
+                    { label: 'Años de experiencia combinada' },
+                    { label: 'Áreas de servicio integrales' },
+                    { label: 'Aseguradoras aceptadas' },
+                    { label: 'Enfoque centrado en el paciente' }
+                ],
+                philosophy: {
+                    label: 'Nuestra Filosofía',
+                    items: [
+                        { word: 'Compasión', desc: 'Atención médica brindada con empatía y comprensión genuinas.' },
+                        { word: 'Experiencia', desc: 'Profesionales certificados con décadas de experiencia combinada.' },
+                        { word: 'Prevención', desc: 'Atención proactiva que impulsa el bienestar y la vitalidad de por vida.' },
+                        { word: 'Comunidad', desc: 'Una práctica diversa e inclusiva donde cada paciente se siente en casa.' }
+                    ]
+                },
+                doctors: {
+                    label: '— Los Médicos',
+                    title1: 'Los rostros detrás de',
+                    title2: 'su atención.',
+                    years: 'años de práctica',
+                    expertiseLabel: 'Áreas de Especialización',
+                    schedule: 'Agende una consulta',
+                    list: [
+                        {
+                            bio: 'Comenzando su carrera como médica de práctica familiar, Yahumara ha desarrollado una profunda experiencia en cuidados intensivos y cuidados paliativos durante más de 16 años.',
+                            expertise: ['Cuidados Críticos', 'Cuidados Paliativos', 'Pre y Post-Quirúrgico', 'Cuidado de Heridas', 'Control de Infecciones']
+                        },
+                        {
+                            bio: 'Un distinguido profesional de la salud con experiencia en cuidados intensivos, atención domiciliaria y atención primaria, enfocado en la educación y el bienestar del paciente.',
+                            expertise: ['Medicina Interna', 'Cuidados Intensivos', 'Atención de Trauma', 'Atención Domiciliaria', 'Cuidados Paliativos']
+                        }
+                    ]
+                },
+                wellness: {
+                    label: '— Bienestar y Pérdida de Peso',
+                    title1: 'Más allá de la atención primaria,',
+                    title2: 'bienestar profundo.',
+                    intro: 'Pérdida de peso supervisada médicamente, infusiones IV e inyecciones específicas — diseñadas según sus objetivos, basadas en sus análisis y administradas por médicos que conocen su historial médico completo. Cada servicio cuenta con su propia guía detallada.',
+                    read: 'Leer la guía',
+                    newTag: 'Nuevo',
+                    ctaTitle: '¿No sabe por dónde empezar?',
+                    ctaDesc: 'Nuestros proveedores revisarán sus objetivos y análisis para diseñar un protocolo personalizado.',
+                    ctaBtn: 'Agendar Consulta',
+                    items: [
+                        { title: 'Semaglutida', tag: 'Terapia GLP-1', desc: 'Inyección semanal aprobada por la FDA para pérdida de peso sostenible. Reducción promedio del 10–15% del peso corporal con supervisión médica.' },
+                        { title: 'Tirzepatida', tag: 'Doble Agonista', desc: 'Terapia dual GLP-1 + GIP de nueva generación. Hasta un 22% de reducción de peso corporal en ensayos clínicos — nuestra opción más potente.' },
+                        { title: 'Terapia IV de Vitaminas', tag: 'Infusión', desc: 'Cócteles personalizados de vitaminas y minerales administrados por vía intravenosa. 100% de biodisponibilidad, efectos en horas.' },
+                        { title: 'Inyecciones Lipo / MIC', tag: 'Metabolismo de Grasa', desc: 'Inyecciones de MIC, B12 y L-Carnitina que movilizan la grasa, la transportan a las mitocondrias y protegen la función hepática.' },
+                        { title: 'Inyecciones de Aminoácidos', tag: 'Rendimiento', desc: 'Aminoácidos específicos para preservación muscular, recuperación, sueño y libido — esenciales junto a los protocolos GLP-1.' },
+                        { title: 'Inyecciones de Vitaminas', tag: 'Corrección de Deficiencias', desc: 'Inyecciones de un solo nutriente para deficiencias documentadas. B12, D3, complejo B, glutatión y más.' }
+                    ]
+                },
+                services: {
+                    label: '— Servicios Integrales',
+                    title1: 'Todo lo que necesita,',
+                    title2: 'en un solo lugar.',
+                    list: [
+                        { title: 'Atención Primaria', desc: 'Atención médica integral continua como pilar de su bienestar.' },
+                        { title: 'Chequeos de Bienestar', desc: 'Evaluaciones preventivas de salud y exámenes integrales.' },
+                        { title: 'Laboratorio Avanzado', desc: 'Pruebas diagnósticas de precisión con resultados rápidos y precisos.' },
+                        { title: 'Electrocardiografía', desc: 'Monitoreo integral de la salud cardíaca y análisis del ritmo cardíaco.' },
+                        { title: 'Exámenes de Papanicolaou', desc: 'Servicios esenciales de salud femenina en un ambiente cómodo.' },
+                        { title: 'Consultas Médicas', desc: 'Orientación personalizada uno a uno con profesionales experimentados.' },
+                        { title: 'Atención de Seguimiento', desc: 'Monitoreo y apoyo continuos a lo largo de su camino de salud.' }
+                    ]
+                },
+                insurance: {
+                    label: '— Aseguradoras Aliadas',
+                    title: 'Aceptamos',
+                    titleItalic: 'la mayoría',
+                    titleEnd: 'de los planes de seguro'
+                },
+                testimonials: {
+                    label: '— Voces de Pacientes',
+                    list: [
+                        { name: 'Kevin Cueva', text: 'Personal increíble y los médicos son excepcionales. Fueron muy profesionales y el cuidado al paciente superó toda expectativa. Finalmente encontré un consultorio médico donde me siento bien atendido.' },
+                        { name: 'Karline Mompoint', text: 'Profesionalismo desde el inicio hasta el final de la visita. ¡El personal y los médicos son increíbles! Sin duda recomiendo este equipo médico.' },
+                        { name: 'Maggie Rodriguez', text: 'Personal cariñoso y atento con médicos de gran habilidad. Recomiendo MUCHÍSIMO este Grupo Médico para sus necesidades de salud.' }
+                    ]
+                },
+                location: {
+                    label: '— Visítenos',
+                    title1: 'En el corazón de',
+                    title2: 'Miami.',
+                    desc: 'Ubicados convenientemente para servir a la comunidad de Miami con fácil acceso e instalaciones cómodas.',
+                    addressLabel: 'Dirección',
+                    hoursLabel: 'Horario',
+                    hours1: 'Lunes – Viernes, 9AM – 6PM',
+                    hours2: 'Sábado y Domingo, Cerrado',
+                    contactLabel: 'Contacto'
+                },
+                cta: {
+                    label: '— ¿Listo para comenzar?',
+                    title1: 'Su salud',
+                    title2: 'merece más.',
+                    desc: 'Agende su cita hoy y experimente la atención primaria reimaginada para usted y su familia.',
+                    call: 'Llame al (786) 883-0339',
+                    message: 'Envíenos un mensaje'
+                },
+                footer: { rights: '© 2026 Truvida Medical Group' },
+                booking: {
+                    open: 'Reservar',
+                    close: 'Cerrar',
+                    eyebrow: 'Reserve una cita',
+                    title1: 'Comencemos,',
+                    title2: 'juntos.',
+                    subtitle: 'Unos pocos datos para que nuestro equipo se prepare para su visita. Le llamaremos en un día hábil para confirmar.',
+                    stepOf: 'Paso',
+                    of: 'de',
+                    back: 'Atrás',
+                    next: 'Continuar',
+                    submit: 'Enviar solicitud',
+                    required: 'Obligatorio',
+                    optional: 'Opcional',
+                    errors: {
+                        name: 'Por favor ingrese su nombre completo.',
+                        phone: 'Por favor ingrese un número de teléfono válido.',
+                        email: 'Por favor ingrese un correo electrónico válido.',
+                        reason: 'Por favor seleccione un motivo de visita.'
+                    },
+                    steps: [
+                        {
+                            eyebrow: '01 / Sobre usted',
+                            title: '¿A quién vamos a atender?',
+                            fields: {
+                                name: 'Nombre completo',
+                                phone: 'Número de teléfono',
+                                email: 'Correo electrónico',
+                                dob: 'Fecha de nacimiento',
+                                patientType: '¿Es usted paciente nuevo o existente?',
+                                patientNew: 'Paciente nuevo',
+                                patientExisting: 'Paciente existente',
+                                language: 'Idioma preferido',
+                                langEn: 'English',
+                                langEs: 'Español'
+                            }
+                        },
+                        {
+                            eyebrow: '02 / Su visita',
+                            title: '¿Qué le trae por aquí?',
+                            fields: {
+                                reason: 'Motivo de la visita',
+                                reasonNew: 'Primera consulta',
+                                reasonFollow: 'Cita de seguimiento',
+                                reasonWellness: 'Servicio de bienestar',
+                                reasonOther: 'Otro motivo',
+                                service: '¿Qué servicio le interesa?',
+                                servicePlaceholder: 'Seleccione un servicio…',
+                                date: 'Fecha preferida',
+                                window: 'Franja horaria preferida',
+                                morning: 'Mañana',
+                                afternoon: 'Tarde',
+                                evening: 'Noche',
+                                flexible: 'Flexible'
+                            }
+                        },
+                        {
+                            eyebrow: '03 / Su médico',
+                            title: '¿Prefiere a un médico en particular?',
+                            subtitle: 'Ambos médicos aceptan nuevos pacientes. También puede dejar que elijamos según su disponibilidad.',
+                            anyProvider: 'Sin preferencia — el primero disponible',
+                            anyProviderDesc: 'Le asignaremos al médico con la disponibilidad más temprana que coincida con su franja preferida.',
+                            notes: '¿Algo más que debamos saber? (opcional)',
+                            notesPlaceholder: 'Síntomas, medicamentos, preguntas, adaptaciones…'
+                        },
+                        {
+                            eyebrow: '04 / Revisión',
+                            title: '¿Todo en orden?',
+                            subtitle: 'Confirme abajo y un coordinador de atención le contactará en un día hábil para finalizar su cita.',
+                            summary: {
+                                contact: 'Contacto',
+                                visit: 'Visita',
+                                provider: 'Médico',
+                                notes: 'Notas',
+                                none: 'Ninguna',
+                                anyProvider: 'Sin preferencia'
+                            },
+                            consent: 'Al enviar esta solicitud doy mi consentimiento para ser contactado por Truvida Medical Group sobre mi cita.'
+                        }
+                    ],
+                    thankYou: {
+                        eyebrow: '— Solicitud recibida',
+                        title1: 'Gracias,',
+                        title2: 'le contactaremos pronto.',
+                        message: 'Un coordinador de atención le llamará en un día hábil para confirmar su cita y responder cualquier pregunta.',
+                        nextSteps: 'Qué sigue',
+                        steps: [
+                            { num: '01', title: 'Una llamada', desc: 'En un día hábil desde (786) 883-0339.' },
+                            { num: '02', title: 'Seguro y admisión', desc: 'Verificaremos su cobertura y enviaremos un breve formulario.' },
+                            { num: '03', title: 'Su visita', desc: 'Llegue 10 minutos antes con identificación y tarjeta de seguro.' }
+                        ],
+                        done: 'Volver al inicio',
+                        callUs: 'O llámenos ahora'
+                    }
+                }
+            }
+        };
+        
+        const LangContext = createContext({ lang: 'en', setLang: () => {}, t: TRANSLATIONS.en });
+        const useLang = () => useContext(LangContext);
+        
+        function LangProvider({ children }) {
+            const [lang, setLangState] = useState(() => {
+                try { return localStorage.getItem('truvida-lang') || 'en'; } catch (e) { return 'en'; }
+            });
+            useEffect(() => {
+                try { localStorage.setItem('truvida-lang', lang); } catch (e) {}
+                document.documentElement.lang = lang;
+            }, [lang]);
+            const setLang = (l) => setLangState(l);
+            const value = { lang, setLang, t: TRANSLATIONS[lang] };
+            return <LangContext.Provider value={value}>{children}</LangContext.Provider>;
+        }
+        
+        // Custom cursor component
+        function CustomCursor({ colors }) {
+            const [position, setPosition] = useState({ x: 0, y: 0 });
+            const [hoverType, setHoverType] = useState('default');
+            const [visible, setVisible] = useState(false);
+            
+            useEffect(() => {
+                const move = (e) => {
+                    setPosition({ x: e.clientX, y: e.clientY });
+                    
+                    const target = e.target;
+                    // Hide custom cursor inside forms/modals so native cursor is visible
+                    if (target.closest && target.closest('.booking-modal')) {
+                        setVisible(false);
+                        return;
+                    }
+                    setVisible(true);
+                    
+                    if (target.tagName === 'A' || target.tagName === 'BUTTON' || target.closest('a') || target.closest('button')) {
+                        setHoverType('link');
+                    } else if (target.closest('[data-cursor="view"]')) {
+                        setHoverType('view');
+                    } else {
+                        setHoverType('default');
+                    }
+                };
+                
+                const leave = () => setVisible(false);
+                
+                window.addEventListener('mousemove', move);
+                document.addEventListener('mouseleave', leave);
+                return () => {
+                    window.removeEventListener('mousemove', move);
+                    document.removeEventListener('mouseleave', leave);
+                };
+            }, []);
+            
+            const size = hoverType === 'link' ? 60 : hoverType === 'view' ? 100 : 16;
+            
+            return (
+                <>
+                    <div style={{
+                        position: 'fixed',
+                        left: position.x,
+                        top: position.y,
+                        width: size,
+                        height: size,
+                        borderRadius: '50%',
+                        background: hoverType === 'link' ? colors.primary : 'transparent',
+                        border: hoverType === 'default' ? `1.5px solid ${colors.primary}` : 'none',
+                        transform: 'translate(-50%, -50%)',
+                        pointerEvents: 'none',
+                        zIndex: 99999,
+                        mixBlendMode: hoverType === 'link' ? 'difference' : 'normal',
+                        transition: 'width 0.3s ease, height 0.3s ease, background 0.3s ease',
+                        opacity: visible ? 1 : 0,
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        color: '#FFF',
+                        fontSize: '11px',
+                        fontWeight: 600,
+                        letterSpacing: '1px',
+                        textTransform: 'uppercase'
+                    }}>
+                        {hoverType === 'view' && 'VIEW'}
+                    </div>
+                </>
+            );
+        }
+        
+        // Animated counter
+        function AnimatedCounter({ target, suffix = '', duration = 2000, isVisible }) {
+            const [count, setCount] = useState(0);
+            
+            useEffect(() => {
+                if (!isVisible) return;
+                
+                let start = 0;
+                const startTime = Date.now();
+                
+                const animate = () => {
+                    const elapsed = Date.now() - startTime;
+                    const progress = Math.min(elapsed / duration, 1);
+                    const eased = 1 - Math.pow(1 - progress, 3);
+                    setCount(Math.floor(eased * target));
+                    
+                    if (progress < 1) {
+                        requestAnimationFrame(animate);
+                    } else {
+                        setCount(target);
+                    }
+                };
+                
+                requestAnimationFrame(animate);
+            }, [isVisible, target, duration]);
+            
+            return <span>{count}{suffix}</span>;
+        }
+        
+        // Use intersection observer
+        function useInView(threshold = 0.2) {
+            const ref = useRef(null);
+            const [inView, setInView] = useState(false);
+            
+            useEffect(() => {
+                const observer = new IntersectionObserver(
+                    ([entry]) => {
+                        if (entry.isIntersecting) setInView(true);
+                    },
+                    { threshold }
+                );
+                if (ref.current) observer.observe(ref.current);
+                return () => observer.disconnect();
+            }, [threshold]);
+            
+            return [ref, inView];
+        }
+        
+        function TruvidaWebsite() {
+            const [tweaks, setTweaks] = useState(TWEAK_DEFAULTS);
+            const [editMode, setEditMode] = useState(false);
+            const [scrollY, setScrollY] = useState(0);
+            const [loaded, setLoaded] = useState(false);
+            const [bookingOpen, setBookingOpen] = useState(false);
+            const openBooking = () => setBookingOpen(true);
+            const closeBooking = () => setBookingOpen(false);
+            
+            const colors = {
+                primary: tweaks.primaryColor,
+                secondary: tweaks.secondaryColor,
+                accent: tweaks.accentColor,
+                bg: '#FAFAF9',
+                dark: '#0A0A0C',
+                surface: '#FFFFFF',
+                text: '#0A0A0C',
+                textLight: '#4A4A52',
+                textMuted: '#9B9BA3'
+            };
+            
+            useEffect(() => {
+                setTimeout(() => setLoaded(true), 100);
+                
+                const handleScroll = () => setScrollY(window.scrollY);
+                window.addEventListener('scroll', handleScroll, { passive: true });
+                return () => window.removeEventListener('scroll', handleScroll);
+            }, []);
+            
+            useEffect(() => {
+                const handleMessage = (e) => {
+                    if (e.data?.type === '__activate_edit_mode') setEditMode(true);
+                    else if (e.data?.type === '__deactivate_edit_mode') setEditMode(false);
+                };
+                window.addEventListener('message', handleMessage);
+                window.parent.postMessage({ type: '__edit_mode_available' }, '*');
+                return () => window.removeEventListener('message', handleMessage);
+            }, []);
+            
+            useEffect(() => {
+                if (bookingOpen) {
+                    document.body.style.overflow = 'hidden';
+                } else {
+                    document.body.style.overflow = '';
+                }
+                return () => { document.body.style.overflow = ''; };
+            }, [bookingOpen]);
+            
+            const updateTweak = (key, value) => {
+                const newTweaks = { ...tweaks, [key]: value };
+                setTweaks(newTweaks);
+                window.parent.postMessage({
+                    type: '__edit_mode_set_keys',
+                    edits: { [key]: value }
+                }, '*');
+            };
+            
+            return (
+                <div style={{ background: colors.bg, color: colors.text }}>
+                    <CustomCursor colors={colors} />
+                    <ScrollProgress colors={colors} scrollY={scrollY} />
+                    <Navigation colors={colors} scrollY={scrollY} onBook={openBooking} />
+                    <HeroSection colors={colors} scrollY={scrollY} loaded={loaded} onBook={openBooking} />
+                    <MarqueeSection colors={colors} />
+                    <StatsSection colors={colors} scrollY={scrollY} />
+                    <StickyPhilosophy colors={colors} scrollY={scrollY} />
+                    <DoctorsShowcase colors={colors} scrollY={scrollY} />
+                    <ServicesShowcase colors={colors} scrollY={scrollY} />
+                    <WellnessSection colors={colors} onBook={openBooking} />
+                    <InsuranceSection colors={colors} />
+                    <TestimonialsSection colors={colors} scrollY={scrollY} />
+                    <LocationSection colors={colors} scrollY={scrollY} />
+                    <CTASection colors={colors} scrollY={scrollY} onBook={openBooking} />
+                    <Footer colors={colors} />
+                    
+                    {bookingOpen && <BookingModal colors={colors} onClose={closeBooking} />}
+                    <MobileBottomBar onBook={openBooking} />
+                    {editMode && <TweaksPanel tweaks={tweaks} updateTweak={updateTweak} colors={colors} />}
+                </div>
+            );
+        }
+        
+        function ScrollProgress({ colors, scrollY }) {
+            const progress = Math.min(100, (scrollY / (document.documentElement.scrollHeight - window.innerHeight)) * 100);
+            return (
+                <div style={{
+                    position: 'fixed',
+                    top: 0,
+                    left: 0,
+                    height: '2px',
+                    width: `${progress}%`,
+                    background: `linear-gradient(90deg, ${colors.primary}, ${colors.accent})`,
+                    zIndex: 99998,
+                    transition: 'width 0.1s linear'
+                }} />
+            );
+        }
+        
+        function Navigation({ colors, scrollY, onBook }) {
+            const isScrolled = scrollY > 100;
+            const [menuOpen, setMenuOpen] = useState(false);
+            const { lang, setLang, t } = useLang();
+            
+            useEffect(() => {
+                if (menuOpen) document.body.style.overflow = 'hidden';
+                else document.body.style.overflow = '';
+                return () => { document.body.style.overflow = ''; };
+            }, [menuOpen]);
+            
+            return (
+                <nav className={isScrolled ? 'scrolled' : ''} style={{
+                    position: 'fixed',
+                    top: 0,
+                    left: 0,
+                    right: 0,
+                    zIndex: 1000,
+                    padding: isScrolled ? '16px 48px' : '32px 48px',
+                    background: isScrolled ? 'rgba(250, 250, 249, 0.85)' : 'transparent',
+                    backdropFilter: isScrolled ? 'blur(20px) saturate(180%)' : 'none',
+                    transition: 'all 0.6s cubic-bezier(0.4, 0, 0.2, 1)'
+                }}>
+                    <div style={{
+                        maxWidth: '1600px',
+                        margin: '0 auto',
+                        display: 'flex',
+                        justifyContent: 'space-between',
+                        alignItems: 'center'
+                    }}>
+                        <div style={{
+                            display: 'flex',
+                            alignItems: 'center',
+                            gap: '12px',
+                            fontSize: '24px',
+                            fontFamily: "'Fraunces', serif",
+                            fontWeight: 400,
+                            fontStyle: 'italic',
+                            color: colors.text,
+                            letterSpacing: '0px'
+                        }}>
+                            <img src="assets/logo-ink.png" alt="" style={{ width: '34px', height: '34px', display: 'block' }} />
+                            Truvida<span style={{ color: colors.primary }}>.</span>
+                        </div>
+                        <div className="nav-desktop-links" style={{ display: 'flex', gap: '40px', alignItems: 'center' }}>
+                            {[
+                                { label: t.nav.philosophy, href: '#philosophy' },
+                                { label: t.nav.physicians, href: '#doctors' },
+                                { label: t.nav.services, href: '#services' },
+                                { label: t.nav.wellness, href: '#wellness' },
+                                { label: t.nav.guides, href: 'guides/index.html' },
+                                { label: t.nav.location, href: '#location' }
+                            ].map(item => (
+                                <a key={item.label} href={item.href} style={{
+                                    color: colors.text,
+                                    textDecoration: 'none',
+                                    fontSize: '14px',
+                                    fontWeight: 500,
+                                    position: 'relative',
+                                    transition: 'color 0.3s ease'
+                                }}>{item.label}</a>
+                            ))}
+                            <LangToggle colors={colors} lang={lang} setLang={setLang} />
+                            <button onClick={onBook} style={{
+                                padding: '14px 32px',
+                                background: colors.text,
+                                color: colors.bg,
+                                border: 'none',
+                                fontFamily: 'inherit',
+                                cursor: 'none',
+                                fontSize: '13px',
+                                fontWeight: 500,
+                                letterSpacing: '0.5px',
+                                borderRadius: '100px',
+                                transition: 'all 0.4s ease'
+                            }}>{t.nav.book}</button>
+                        </div>
+                        
+                        {/* Mobile hamburger */}
+                        <button
+                            className="nav-mobile-toggle"
+                            onClick={() => setMenuOpen(true)}
+                            aria-label="Open menu"
+                            style={{
+                                display: 'none',
+                                alignItems: 'center',
+                                justifyContent: 'center',
+                                background: 'transparent',
+                                border: 'none',
+                                padding: '8px',
+                                width: '44px',
+                                height: '44px',
+                                cursor: 'pointer'
+                            }}>
+                            <div style={{ display: 'flex', flexDirection: 'column', gap: '5px', width: '22px' }}>
+                                <span style={{ height: '1.5px', background: colors.text, borderRadius: '1px' }} />
+                                <span style={{ height: '1.5px', background: colors.text, borderRadius: '1px' }} />
+                            </div>
+                        </button>
+                    </div>
+                    {menuOpen && (
+                        <MobileMenu
+                            colors={colors}
+                            t={t}
+                            lang={lang}
+                            setLang={setLang}
+                            onClose={() => setMenuOpen(false)}
+                            onBook={() => { setMenuOpen(false); onBook && onBook(); }}
+                        />
+                    )}
+                </nav>
+            );
+        }
+        
+        function MobileMenu({ colors, t, lang, setLang, onClose, onBook }) {
+            const [entered, setEntered] = useState(false);
+            useEffect(() => { requestAnimationFrame(() => setEntered(true)); }, []);
+            const handleClose = () => {
+                setEntered(false);
+                setTimeout(onClose, 350);
+            };
+            const links = [
+                { label: t.nav.philosophy, href: '#philosophy' },
+                { label: t.nav.physicians, href: '#doctors' },
+                { label: t.nav.services, href: '#services' },
+                { label: t.nav.wellness, href: '#wellness' },
+                { label: t.nav.guides, href: 'guides/index.html' },
+                { label: t.nav.location, href: '#location' }
+            ];
+            return (
+                <div className={`mobile-menu-overlay ${entered ? 'open' : ''}`} style={{
+                    background: colors.bg,
+                    padding: '24px'
+                }}>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '48px' }}>
+                        <span style={{ display: 'inline-flex', alignItems: 'center', gap: '10px', fontSize: '20px', fontFamily: "'Fraunces', serif", fontWeight: 400, fontStyle: 'italic', color: colors.text }}>
+                            <img src="assets/logo-ink.png" alt="" style={{ width: '28px', height: '28px' }} />
+                            Truvida<span style={{ color: colors.primary }}>.</span>
+                        </span>
+                        <button onClick={handleClose} aria-label="Close" style={{
+                            background: 'transparent', border: 'none', padding: '8px',
+                            width: '44px', height: '44px',
+                            display: 'flex', alignItems: 'center', justifyContent: 'center'
+                        }}>
+                            <span style={{ fontSize: '32px', fontWeight: 200, lineHeight: 1, color: colors.text }}>×</span>
+                        </button>
+                    </div>
+                    <nav style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: '4px', marginTop: '24px' }}>
+                        {links.map((item, i) => (
+                            <a key={item.label} href={item.href} onClick={handleClose} style={{
+                                fontFamily: "'Fraunces', serif",
+                                fontSize: 'clamp(36px, 9vw, 56px)',
+                                fontWeight: 300,
+                                letterSpacing: '-1.5px',
+                                color: colors.text,
+                                textDecoration: 'none',
+                                padding: '8px 0',
+                                opacity: entered ? 1 : 0,
+                                transform: entered ? 'translateY(0)' : 'translateY(20px)',
+                                transition: `opacity 0.5s ease ${0.1 + i * 0.05}s, transform 0.5s ease ${0.1 + i * 0.05}s`,
+                                lineHeight: 1.1
+                            }}>{item.label}</a>
+                        ))}
+                    </nav>
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: '16px', paddingBottom: '24px' }}>
+                        <div style={{ display: 'flex', justifyContent: 'center' }}>
+                            <LangToggle colors={colors} lang={lang} setLang={setLang} />
+                        </div>
+                        <button onClick={onBook} style={{
+                            background: colors.text, color: colors.bg,
+                            border: 'none', padding: '20px 32px',
+                            fontSize: '15px', fontWeight: 500, letterSpacing: '0.5px',
+                            borderRadius: '100px', fontFamily: 'inherit'
+                        }}>{t.nav.book}</button>
+                        <a href="tel:7868830339" style={{
+                            textAlign: 'center', padding: '16px',
+                            color: colors.textLight, textDecoration: 'none',
+                            fontSize: '14px', fontWeight: 500, letterSpacing: '0.5px'
+                        }}>(786) 883-0339</a>
+                    </div>
+                </div>
+            );
+        }
+        
+        function MobileBottomBar({ onBook }) {
+            const { t } = useLang();
+            return (
+                <div className="mobile-bottom-bar">
+                    <a href="tel:7868830339" className="mb-call">
+                        <span style={{ fontSize: '14px' }}>☎</span>
+                        (786) 883-0339
+                    </a>
+                    <button onClick={onBook} className="mb-book">
+                        {t.nav.book}
+                    </button>
+                </div>
+            );
+        }
+        
+        function LangToggle({ colors, lang, setLang }) {
+            const base = {
+                fontSize: '12px',
+                fontWeight: 600,
+                letterSpacing: '1.5px',
+                background: 'transparent',
+                border: 'none',
+                padding: '4px 2px',
+                fontFamily: 'inherit',
+                transition: 'color 0.3s ease, opacity 0.3s ease'
+            };
+            return (
+                <div style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '6px',
+                    padding: '6px 14px',
+                    border: `1px solid ${colors.text}20`,
+                    borderRadius: '100px'
+                }}>
+                    <button onClick={() => setLang('en')} style={{
+                        ...base,
+                        color: lang === 'en' ? colors.primary : colors.textMuted,
+                        opacity: lang === 'en' ? 1 : 0.7
+                    }}>EN</button>
+                    <span style={{ color: colors.text + '30', fontSize: '12px' }}>/</span>
+                    <button onClick={() => setLang('es')} style={{
+                        ...base,
+                        color: lang === 'es' ? colors.primary : colors.textMuted,
+                        opacity: lang === 'es' ? 1 : 0.7
+                    }}>ES</button>
+                </div>
+            );
+        }
+        
+        function HeroSection({ colors, scrollY, loaded, onBook }) {
+            const parallax = scrollY * 0.4;
+            const opacity = Math.max(0, 1 - scrollY / 700);
+            const scale = 1 + scrollY * 0.0003;
+            const { t } = useLang();
+            
+            return (
+                <section style={{
+                    minHeight: '100vh',
+                    position: 'relative',
+                    overflow: 'hidden',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    background: colors.bg
+                }}>
+                    {/* Animated background */}
+                    <div style={{
+                        position: 'absolute',
+                        inset: 0,
+                        transform: `scale(${scale})`,
+                        transition: 'transform 0.1s linear'
+                    }}>
+                        <div style={{
+                            position: 'absolute',
+                            top: '15%',
+                            right: '8%',
+                            width: '500px',
+                            height: '500px',
+                            borderRadius: '50%',
+                            background: `radial-gradient(circle, ${colors.primary}35, transparent 70%)`,
+                            filter: 'blur(40px)',
+                            animation: 'float 8s ease-in-out infinite'
+                        }} />
+                        <div style={{
+                            position: 'absolute',
+                            bottom: '10%',
+                            left: '5%',
+                            width: '600px',
+                            height: '600px',
+                            borderRadius: '50%',
+                            background: `radial-gradient(circle, ${colors.accent}20, transparent 70%)`,
+                            filter: 'blur(50px)',
+                            animation: 'float 12s ease-in-out infinite reverse'
+                        }} />
+                        <div style={{
+                            position: 'absolute',
+                            top: '40%',
+                            left: '40%',
+                            width: '300px',
+                            height: '300px',
+                            borderRadius: '50%',
+                            background: `radial-gradient(circle, ${colors.primary}20, transparent 70%)`,
+                            filter: 'blur(30px)',
+                            animation: 'pulse 6s ease-in-out infinite'
+                        }} />
+                    </div>
+                    
+                    {/* Grid lines */}
+                    <div style={{
+                        position: 'absolute',
+                        inset: 0,
+                        backgroundImage: `linear-gradient(${colors.text}08 1px, transparent 1px), linear-gradient(90deg, ${colors.text}08 1px, transparent 1px)`,
+                        backgroundSize: '80px 80px',
+                        maskImage: 'radial-gradient(ellipse at center, black 30%, transparent 70%)',
+                        WebkitMaskImage: 'radial-gradient(ellipse at center, black 30%, transparent 70%)'
+                    }} />
+                    
+                    <div style={{
+                        position: 'relative',
+                        zIndex: 2,
+                        textAlign: 'center',
+                        maxWidth: '1400px',
+                        padding: '120px 48px 60px',
+                        transform: `translateY(${parallax * 0.5}px)`,
+                        opacity: opacity
+                    }}>
+                        {/* Badge */}
+                        <div className={`text-reveal ${loaded ? 'loaded' : ''}`} style={{ marginBottom: '48px' }}>
+                            <div className="text-reveal-line">
+                                <div className="text-reveal-inner" style={{
+                                    display: 'inline-flex',
+                                    alignItems: 'center',
+                                    gap: '12px',
+                                    padding: '10px 24px',
+                                    background: `${colors.surface}`,
+                                    border: `1px solid ${colors.primary}30`,
+                                    borderRadius: '100px',
+                                    fontSize: '13px',
+                                    fontWeight: 500,
+                                    color: colors.text,
+                                    letterSpacing: '0.5px'
+                                }}>
+                                    <span style={{
+                                        width: '8px',
+                                        height: '8px',
+                                        borderRadius: '50%',
+                                        background: '#22C55E',
+                                        boxShadow: '0 0 12px #22C55E'
+                                    }} />
+                                    {t.hero.badge}
+                                </div>
+                            </div>
+                        </div>
+                        
+                        {/* Hero title */}
+                        <div className={`text-reveal ${loaded ? 'loaded' : ''}`}>
+                            <h1 style={{
+                                fontFamily: "'Fraunces', serif",
+                                fontSize: 'clamp(64px, 11vw, 180px)',
+                                fontWeight: 300,
+                                lineHeight: 0.95,
+                                letterSpacing: '-4px',
+                                color: colors.text
+                            }}>
+                                <span className="text-reveal-line">
+                                    <span className="text-reveal-inner" style={{ transitionDelay: '0.1s' }}>{t.hero.title1}</span>
+                                </span>
+                                <span className="text-reveal-line">
+                                    <span className="text-reveal-inner" style={{ 
+                                        transitionDelay: '0.3s',
+                                        fontStyle: 'italic',
+                                        color: colors.primary,
+                                        fontWeight: 400
+                                    }}>{t.hero.title2}</span>
+                                </span>
+                            </h1>
+                        </div>
+                        
+                        <div className={`text-reveal ${loaded ? 'loaded' : ''}`} style={{ marginTop: '48px' }}>
+                            <div className="text-reveal-line">
+                                <p className="text-reveal-inner" style={{
+                                    transitionDelay: '0.6s',
+                                    fontSize: '22px',
+                                    lineHeight: 1.5,
+                                    color: colors.textLight,
+                                    maxWidth: '680px',
+                                    margin: '0 auto',
+                                    fontWeight: 300
+                                }}>
+                                    {t.hero.subtitle}
+                                </p>
+                            </div>
+                        </div>
+                        
+                        <div className={`text-reveal ${loaded ? 'loaded' : ''}`} style={{ marginTop: '64px' }}>
+                            <div className="text-reveal-line">
+                                <div className="text-reveal-inner hero-buttons" style={{ transitionDelay: '0.9s', display: 'flex', gap: '16px', justifyContent: 'center', flexWrap: 'wrap' }}>
+                                    <button onClick={onBook} style={{
+                                        padding: '20px 48px',
+                                        background: colors.text,
+                                        color: colors.bg,
+                                        border: 'none',
+                                        fontFamily: 'inherit',
+                                        cursor: 'none',
+                                        fontSize: '15px',
+                                        fontWeight: 500,
+                                        letterSpacing: '0.5px',
+                                        borderRadius: '100px',
+                                        transition: 'all 0.4s ease',
+                                        display: 'inline-flex',
+                                        alignItems: 'center',
+                                        gap: '12px'
+                                    }}>
+                                        {t.hero.meet}
+                                        <span style={{ fontSize: '18px' }}>↓</span>
+                                    </button>
+                                    <a href="tel:7868830339" style={{
+                                        padding: '20px 48px',
+                                        background: 'transparent',
+                                        color: colors.text,
+                                        textDecoration: 'none',
+                                        fontSize: '15px',
+                                        fontWeight: 500,
+                                        letterSpacing: '0.5px',
+                                        borderRadius: '100px',
+                                        border: `1.5px solid ${colors.text}30`,
+                                        transition: 'all 0.4s ease'
+                                    }}>
+                                        (786) 883-0339
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    {/* Scroll indicator */}
+                    <div style={{
+                        position: 'absolute',
+                        bottom: '32px',
+                        left: '50%',
+                        transform: 'translateX(-50%)',
+                        opacity: opacity,
+                        display: 'flex',
+                        flexDirection: 'column',
+                        alignItems: 'center',
+                        gap: '12px'
+                    }}>
+                        <span style={{
+                            fontSize: '11px',
+                            letterSpacing: '2px',
+                            textTransform: 'uppercase',
+                            color: colors.textMuted,
+                            fontWeight: 500
+                        }}>{t.hero.scroll}</span>
+                        <div style={{
+                            width: '1px',
+                            height: '60px',
+                            background: `linear-gradient(to bottom, ${colors.text}, transparent)`,
+                            animation: 'pulse 2s ease-in-out infinite'
+                        }} />
+                    </div>
+                </section>
+            );
+        }
+        
+        function MarqueeSection({ colors }) {
+            const { t } = useLang();
+            const words = t.marquee;
+            return (
+                <section style={{
+                    padding: '60px 0',
+                    background: colors.dark,
+                    overflow: 'hidden',
+                    borderTop: `1px solid ${colors.text}20`,
+                    borderBottom: `1px solid ${colors.text}20`
+                }}>
+                    <div style={{
+                        display: 'flex',
+                        animation: 'scroll 40s linear infinite',
+                        width: 'max-content',
+                        gap: '80px'
+                    }}>
+                        {[...words, ...words, ...words].map((word, idx) => (
+                            <div key={idx} style={{
+                                display: 'flex',
+                                alignItems: 'center',
+                                gap: '80px',
+                                fontFamily: "'Fraunces', serif",
+                                fontSize: '56px',
+                                fontWeight: 300,
+                                color: '#FFF',
+                                whiteSpace: 'nowrap',
+                                fontStyle: idx % 2 === 0 ? 'italic' : 'normal'
+                            }}>
+                                {word}
+                                <span style={{ color: colors.primary, fontSize: '32px' }}>✦</span>
+                            </div>
+                        ))}
+                    </div>
+                </section>
+            );
+        }
+        
+        function StatsSection({ colors, scrollY }) {
+            const [ref, inView] = useInView(0.3);
+            const { t } = useLang();
+            
+            const nums = [
+                { num: 16, suffix: '+' },
+                { num: 7, suffix: '' },
+                { num: 8, suffix: '+' },
+                { num: 100, suffix: '%' }
+            ];
+            const stats = nums.map((n, i) => ({ ...n, label: t.stats[i].label }));
+            
+            return (
+                <section ref={ref} style={{
+                    padding: '160px 48px',
+                    background: colors.bg
+                }}>
+                    <div style={{
+                        maxWidth: '1400px',
+                        margin: '0 auto',
+                        display: 'grid',
+                        gridTemplateColumns: 'repeat(4, 1fr)',
+                        gap: '48px'
+                    }}>
+                        {stats.map((stat, idx) => (
+                            <div key={idx} style={{
+                                borderLeft: `1px solid ${colors.text}15`,
+                                paddingLeft: '32px',
+                                transform: inView ? 'translateY(0)' : 'translateY(40px)',
+                                opacity: inView ? 1 : 0,
+                                transition: `all 0.8s cubic-bezier(0.4, 0, 0.2, 1) ${idx * 0.1}s`
+                            }}>
+                                <div style={{
+                                    fontFamily: "'Fraunces', serif",
+                                    fontSize: 'clamp(56px, 7vw, 96px)',
+                                    fontWeight: 300,
+                                    lineHeight: 1,
+                                    color: colors.text,
+                                    marginBottom: '16px',
+                                    letterSpacing: '-3px'
+                                }}>
+                                    <AnimatedCounter target={stat.num} suffix={stat.suffix} isVisible={inView} />
+                                </div>
+                                <p style={{
+                                    fontSize: '14px',
+                                    color: colors.textLight,
+                                    lineHeight: 1.5,
+                                    fontWeight: 400
+                                }}>{stat.label}</p>
+                            </div>
+                        ))}
+                    </div>
+                </section>
+            );
+        }
+        
+        function StickyPhilosophy({ colors, scrollY }) {
+            const ref = useRef(null);
+            const [progress, setProgress] = useState(0);
+            const { t } = useLang();
+            
+            useEffect(() => {
+                const update = () => {
+                    if (!ref.current) return;
+                    const rect = ref.current.getBoundingClientRect();
+                    const total = ref.current.offsetHeight - window.innerHeight;
+                    const scrolled = -rect.top;
+                    setProgress(Math.max(0, Math.min(1, scrolled / total)));
+                };
+                update();
+                window.addEventListener('scroll', update, { passive: true });
+                return () => window.removeEventListener('scroll', update);
+            }, []);
+            
+            const statements = t.philosophy.items;
+            
+            const activeIdx = Math.min(statements.length - 1, Math.floor(progress * statements.length));
+            
+            return (
+                <section id="philosophy" ref={ref} style={{
+                    height: `${statements.length * 100}vh`,
+                    background: colors.dark,
+                    position: 'relative'
+                }}>
+                    <div style={{
+                        position: 'sticky',
+                        top: 0,
+                        height: '100vh',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        overflow: 'hidden'
+                    }}>
+                        <div style={{
+                            position: 'absolute',
+                            top: '48px',
+                            left: '48px',
+                            fontSize: '12px',
+                            letterSpacing: '3px',
+                            textTransform: 'uppercase',
+                            color: '#FFF',
+                            opacity: 0.5,
+                            fontWeight: 600
+                        }}>
+                            {t.philosophy.label} — {String(activeIdx + 1).padStart(2, '0')} / {String(statements.length).padStart(2, '0')}
+                        </div>
+                        
+                        <div style={{
+                            position: 'absolute',
+                            top: '48px',
+                            right: '48px',
+                            display: 'flex',
+                            gap: '8px'
+                        }}>
+                            {statements.map((_, idx) => (
+                                <div key={idx} style={{
+                                    width: '32px',
+                                    height: '2px',
+                                    background: idx <= activeIdx ? colors.primary : 'rgba(255,255,255,0.2)',
+                                    transition: 'background 0.6s ease'
+                                }} />
+                            ))}
+                        </div>
+                        
+                        <div style={{ textAlign: 'center', maxWidth: '1200px', padding: '0 48px' }}>
+                            {statements.map((stmt, idx) => {
+                                const isActive = idx === activeIdx;
+                                return (
+                                    <div key={idx} style={{
+                                        position: 'absolute',
+                                        top: '50%',
+                                        left: '50%',
+                                        transform: `translate(-50%, -50%) ${isActive ? 'translateY(0) scale(1)' : 'translateY(40px) scale(0.95)'}`,
+                                        opacity: isActive ? 1 : 0,
+                                        transition: 'all 1s cubic-bezier(0.4, 0, 0.2, 1)',
+                                        width: '90%',
+                                        maxWidth: '1200px'
+                                    }}>
+                                        <h2 style={{
+                                            fontFamily: "'Fraunces', serif",
+                                            fontSize: 'clamp(80px, 14vw, 220px)',
+                                            fontWeight: 300,
+                                            lineHeight: 0.9,
+                                            color: '#FFF',
+                                            letterSpacing: '-5px',
+                                            marginBottom: '32px',
+                                            fontStyle: idx % 2 === 0 ? 'italic' : 'normal'
+                                        }}>
+                                            {stmt.word}<span style={{ color: colors.primary }}>.</span>
+                                        </h2>
+                                        <p style={{
+                                            fontSize: '22px',
+                                            lineHeight: 1.6,
+                                            color: 'rgba(255,255,255,0.7)',
+                                            maxWidth: '600px',
+                                            margin: '0 auto',
+                                            fontWeight: 300
+                                        }}>{stmt.desc}</p>
+                                    </div>
+                                );
+                            })}
+                        </div>
+                    </div>
+                </section>
+            );
+        }
+        
+        function DoctorsShowcase({ colors, scrollY }) {
+            const { t } = useLang();
+            const doctors = [
+                {
+                    name: 'Yahumara Gonzalez',
+                    surname: 'Funes Lopez',
+                    title: 'ARNP, FNP-C',
+                    years: '16+',
+                    image: 'assets/dr-yahumara.png',
+                    bio: t.doctors.list[0].bio,
+                    expertise: t.doctors.list[0].expertise
+                },
+                {
+                    name: 'Noel Medina',
+                    surname: 'Rojo',
+                    title: 'ARNP, FNP-C',
+                    years: '10+',
+                    image: 'assets/dr-noel.png',
+                    bio: t.doctors.list[1].bio,
+                    expertise: t.doctors.list[1].expertise
+                }
+            ];
+            
+            return (
+                <section id="doctors" style={{ background: colors.bg, padding: '120px 0' }}>
+                    <div style={{
+                        maxWidth: '1400px',
+                        margin: '0 auto',
+                        padding: '0 48px',
+                        marginBottom: '80px'
+                    }}>
+                        <div style={{
+                            display: 'flex',
+                            justifyContent: 'space-between',
+                            alignItems: 'flex-end',
+                            gap: '48px'
+                        }}>
+                            <div>
+                                <p style={{
+                                    fontSize: '12px',
+                                    letterSpacing: '3px',
+                                    textTransform: 'uppercase',
+                                    color: colors.textMuted,
+                                    fontWeight: 600,
+                                    marginBottom: '24px'
+                                }}>{t.doctors.label}</p>
+                                <h2 style={{
+                                    fontFamily: "'Fraunces', serif",
+                                    fontSize: 'clamp(48px, 7vw, 112px)',
+                                    fontWeight: 300,
+                                    lineHeight: 1,
+                                    color: colors.text,
+                                    letterSpacing: '-3px'
+                                }}>
+                                    {t.doctors.title1}
+                                    <br />
+                                    <span style={{ fontStyle: 'italic', color: colors.primary }}>{t.doctors.title2}</span>
+                                </h2>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    {doctors.map((doctor, idx) => (
+                        <DoctorShowcase key={idx} doctor={doctor} colors={colors} scrollY={scrollY} index={idx} />
+                    ))}
+                </section>
+            );
+        }
+        
+        function DoctorShowcase({ doctor, colors, scrollY, index }) {
+            const ref = useRef(null);
+            const [progress, setProgress] = useState(0);
+            const { t } = useLang();
+            
+            useEffect(() => {
+                const update = () => {
+                    if (!ref.current) return;
+                    const rect = ref.current.getBoundingClientRect();
+                    const p = 1 - (rect.top / window.innerHeight);
+                    setProgress(Math.max(0, Math.min(1, p)));
+                };
+                update();
+                window.addEventListener('scroll', update, { passive: true });
+                return () => window.removeEventListener('scroll', update);
+            }, []);
+            
+            const isLeft = index % 2 === 0;
+            const imageScale = 1.2 - progress * 0.2;
+            const imageParallax = (1 - progress) * 80;
+            const contentTranslate = (1 - progress) * (isLeft ? 80 : -80);
+            
+            return (
+                <div ref={ref} style={{
+                    padding: '80px 48px',
+                    position: 'relative'
+                }}>
+                    <div style={{
+                        maxWidth: '1600px',
+                        margin: '0 auto',
+                        display: 'grid',
+                        gridTemplateColumns: '1fr 1fr',
+                        gap: '80px',
+                        alignItems: 'center'
+                    }}>
+                        {/* Image */}
+                        <div className="doctor-image" style={{
+                            order: isLeft ? 1 : 2,
+                            height: '780px',
+                            position: 'relative',
+                            borderRadius: '0',
+                            overflow: 'hidden'
+                        }} data-cursor="view">
+                            <div style={{
+                                position: 'absolute',
+                                inset: 0,
+                                transform: `scale(${imageScale}) translateY(${imageParallax * 0.2}px)`,
+                                transition: 'transform 0.1s linear'
+                            }}>
+                                <img 
+                                    src={doctor.image}
+                                    alt={doctor.name}
+                                    style={{
+                                        width: '100%',
+                                        height: '100%',
+                                        objectFit: 'cover',
+                                        filter: 'grayscale(20%)'
+                                    }}
+                                />
+                            </div>
+                            
+                            {/* Floating badge */}
+                            <div style={{
+                                position: 'absolute',
+                                bottom: '32px',
+                                left: '32px',
+                                padding: '20px 32px',
+                                background: 'rgba(10, 10, 12, 0.85)',
+                                backdropFilter: 'blur(20px)',
+                                color: '#FFF',
+                                borderRadius: '100px',
+                                fontSize: '14px',
+                                fontWeight: 500,
+                                letterSpacing: '0.5px',
+                                display: 'flex',
+                                alignItems: 'center',
+                                gap: '12px'
+                            }}>
+                                <span style={{
+                                    width: '8px',
+                                    height: '8px',
+                                    borderRadius: '50%',
+                                    background: '#22C55E'
+                                }} />
+                                {doctor.years} {t.doctors.years}
+                            </div>
+                            
+                            {/* Big number */}
+                            <div style={{
+                                position: 'absolute',
+                                top: '32px',
+                                right: '32px',
+                                fontFamily: "'Fraunces', serif",
+                                fontSize: '120px',
+                                fontWeight: 300,
+                                color: '#FFF',
+                                opacity: 0.3,
+                                letterSpacing: '-5px',
+                                lineHeight: 1
+                            }}>0{index + 1}</div>
+                        </div>
+                        
+                        {/* Content */}
+                        <div style={{
+                            order: isLeft ? 2 : 1,
+                            transform: `translateX(${contentTranslate}px)`,
+                            opacity: progress,
+                            transition: 'all 0.8s cubic-bezier(0.4, 0, 0.2, 1)'
+                        }}>
+                            <p style={{
+                                fontSize: '12px',
+                                letterSpacing: '3px',
+                                textTransform: 'uppercase',
+                                color: colors.primary,
+                                fontWeight: 600,
+                                marginBottom: '24px'
+                            }}>— Dr. {doctor.name.split(' ')[0]}</p>
+                            
+                            <h3 style={{
+                                fontFamily: "'Fraunces', serif",
+                                fontSize: 'clamp(48px, 6vw, 96px)',
+                                fontWeight: 300,
+                                lineHeight: 0.95,
+                                color: colors.text,
+                                marginBottom: '16px',
+                                letterSpacing: '-3px'
+                            }}>
+                                {doctor.name}
+                                <br />
+                                <span style={{ fontStyle: 'italic' }}>{doctor.surname}</span>
+                            </h3>
+                            
+                            <p style={{
+                                fontSize: '16px',
+                                color: colors.textMuted,
+                                marginBottom: '40px',
+                                letterSpacing: '1px',
+                                fontWeight: 500
+                            }}>{doctor.title}</p>
+                            
+                            <p style={{
+                                fontSize: '19px',
+                                lineHeight: 1.7,
+                                color: colors.textLight,
+                                marginBottom: '48px',
+                                fontWeight: 300
+                            }}>{doctor.bio}</p>
+                            
+                            <div style={{ marginBottom: '48px' }}>
+                                <p style={{
+                                    fontSize: '12px',
+                                    textTransform: 'uppercase',
+                                    letterSpacing: '2px',
+                                    color: colors.textMuted,
+                                    fontWeight: 600,
+                                    marginBottom: '16px'
+                                }}>{t.doctors.expertiseLabel}</p>
+                                <div style={{
+                                    display: 'flex',
+                                    flexWrap: 'wrap',
+                                    gap: '8px'
+                                }}>
+                                    {doctor.expertise.map((item, i) => (
+                                        <span key={i} style={{
+                                            padding: '10px 20px',
+                                            background: 'transparent',
+                                            border: `1px solid ${colors.text}20`,
+                                            borderRadius: '100px',
+                                            fontSize: '13px',
+                                            color: colors.text,
+                                            fontWeight: 500,
+                                            transition: 'all 0.3s ease'
+                                        }}>{item}</span>
+                                    ))}
+                                </div>
+                            </div>
+                            
+                            <a href="#contact" style={{
+                                display: 'inline-flex',
+                                alignItems: 'center',
+                                gap: '16px',
+                                fontSize: '15px',
+                                color: colors.text,
+                                textDecoration: 'none',
+                                fontWeight: 500,
+                                letterSpacing: '0.5px',
+                                paddingBottom: '4px',
+                                borderBottom: `1px solid ${colors.text}`
+                            }}>
+                                {t.doctors.schedule}
+                                <span style={{ fontSize: '18px' }}>→</span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            );
+        }
+        
+        function WellnessSection({ colors, onBook }) {
+            const [ref, inView] = useInView(0.15);
+            const [hovered, setHovered] = useState(null);
+            const { t } = useLang();
+            
+            const meta = [
+                { num: '01', href: 'guides/semaglutide.html', accent: colors.primary },
+                { num: '02', href: 'guides/tirzepatide.html', accent: colors.accent, isNew: true },
+                { num: '03', href: 'guides/iv-therapy.html', accent: colors.primary },
+                { num: '04', href: 'guides/lipo-injections.html', accent: colors.primary },
+                { num: '05', href: 'guides/amino-acids.html', accent: colors.primary },
+                { num: '06', href: 'guides/vitamin-injections.html', accent: colors.primary }
+            ];
+            const wellness = meta.map((m, i) => ({ ...m, ...t.wellness.items[i] }));
+            
+            return (
+                <section id="wellness" ref={ref} style={{
+                    background: colors.bg,
+                    padding: '160px 48px',
+                    position: 'relative',
+                    borderTop: `1px solid ${colors.text}10`
+                }}>
+                    <div style={{ maxWidth: '1400px', margin: '0 auto' }}>
+                        <div style={{ marginBottom: '80px', maxWidth: '900px' }}>
+                            <p style={{
+                                fontSize: '12px',
+                                letterSpacing: '3px',
+                                textTransform: 'uppercase',
+                                color: colors.textMuted,
+                                fontWeight: 600,
+                                marginBottom: '24px'
+                            }}>{t.wellness.label}</p>
+                            <h2 style={{
+                                fontFamily: "'Fraunces', serif",
+                                fontSize: 'clamp(48px, 7vw, 112px)',
+                                fontWeight: 300,
+                                lineHeight: 1,
+                                color: colors.text,
+                                letterSpacing: '-3px',
+                                marginBottom: '32px'
+                            }}>
+                                {t.wellness.title1}
+                                <br />
+                                <span style={{ fontStyle: 'italic', color: colors.primary }}>{t.wellness.title2}</span>
+                            </h2>
+                            <p style={{
+                                fontSize: '20px',
+                                lineHeight: 1.6,
+                                color: colors.textLight,
+                                fontWeight: 300,
+                                maxWidth: '700px'
+                            }}>
+                                {t.wellness.intro}
+                            </p>
+                        </div>
+                        
+                        <div style={{
+                            display: 'grid',
+                            gridTemplateColumns: 'repeat(auto-fit, minmax(380px, 1fr))',
+                            gap: '24px'
+                        }}>
+                            {wellness.map((w, idx) => (
+                                <a
+                                    key={idx}
+                                    href={w.href}
+                                    onMouseEnter={() => setHovered(idx)}
+                                    onMouseLeave={() => setHovered(null)}
+                                    style={{
+                                        display: 'block',
+                                        background: colors.surface,
+                                        padding: '40px 36px',
+                                        borderRadius: '4px',
+                                        textDecoration: 'none',
+                                        color: 'inherit',
+                                        border: `1px solid ${hovered === idx ? w.accent : colors.text + '15'}`,
+                                        transform: inView ? (hovered === idx ? 'translateY(-4px)' : 'translateY(0)') : 'translateY(40px)',
+                                        opacity: inView ? 1 : 0,
+                                        transition: 'all 0.5s cubic-bezier(0.4, 0, 0.2, 1)',
+                                        transitionDelay: inView ? `${idx * 0.06}s` : '0s',
+                                        boxShadow: hovered === idx ? `0 20px 40px ${w.accent}15` : '0 1px 2px rgba(0,0,0,0.02)',
+                                        position: 'relative',
+                                        overflow: 'hidden'
+                                    }}
+                                >
+                                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '32px' }}>
+                                        <div style={{
+                                            fontSize: '12px',
+                                            letterSpacing: '2px',
+                                            textTransform: 'uppercase',
+                                            color: colors.textMuted,
+                                            fontWeight: 600
+                                        }}>{w.num} · {w.tag}</div>
+                                        {w.isNew && (
+                                            <div style={{
+                                                fontSize: '10px',
+                                                letterSpacing: '1.5px',
+                                                textTransform: 'uppercase',
+                                                color: w.accent,
+                                                fontWeight: 700,
+                                                padding: '4px 10px',
+                                                border: `1px solid ${w.accent}`,
+                                                borderRadius: '2px'
+                                            }}>{t.wellness.newTag}</div>
+                                        )}
+                                    </div>
+                                    
+                                    <h3 style={{
+                                        fontFamily: "'Fraunces', serif",
+                                        fontSize: '36px',
+                                        fontWeight: 300,
+                                        letterSpacing: '-1px',
+                                        color: hovered === idx ? w.accent : colors.text,
+                                        fontStyle: hovered === idx ? 'italic' : 'normal',
+                                        marginBottom: '16px',
+                                        transition: 'all 0.4s ease'
+                                    }}>{w.title}</h3>
+                                    
+                                    <p style={{
+                                        fontSize: '15px',
+                                        lineHeight: 1.6,
+                                        color: colors.textLight,
+                                        fontWeight: 300,
+                                        marginBottom: '32px',
+                                        minHeight: '96px'
+                                    }}>{w.desc}</p>
+                                    
+                                    <div style={{
+                                        display: 'flex',
+                                        alignItems: 'center',
+                                        gap: '12px',
+                                        fontSize: '13px',
+                                        fontWeight: 500,
+                                        letterSpacing: '1px',
+                                        textTransform: 'uppercase',
+                                        color: hovered === idx ? w.accent : colors.text,
+                                        transition: 'color 0.4s ease'
+                                    }}>
+                                        <span>{t.wellness.read}</span>
+                                        <span style={{
+                                            display: 'inline-block',
+                                            transform: hovered === idx ? 'translateX(8px)' : 'translateX(0)',
+                                            transition: 'transform 0.4s ease'
+                                        }}>→</span>
+                                    </div>
+                                </a>
+                            ))}
+                        </div>
+                        
+                        <div style={{
+                            marginTop: '64px',
+                            padding: '40px 48px',
+                            background: colors.surface,
+                            borderLeft: `3px solid ${colors.primary}`,
+                            display: 'flex',
+                            justifyContent: 'space-between',
+                            alignItems: 'center',
+                            flexWrap: 'wrap',
+                            gap: '24px'
+                        }}>
+                            <div>
+                                <p style={{
+                                    fontFamily: "'Fraunces', serif",
+                                    fontSize: '24px',
+                                    fontWeight: 300,
+                                    fontStyle: 'italic',
+                                    color: colors.text,
+                                    marginBottom: '8px'
+                                }}>{t.wellness.ctaTitle}</p>
+                                <p style={{ fontSize: '15px', color: colors.textLight, fontWeight: 300 }}>
+                                    {t.wellness.ctaDesc}
+                                </p>
+                            </div>
+                            <button onClick={onBook} style={{
+                                background: colors.primary,
+                                color: '#fff',
+                                border: 'none',
+                                fontFamily: 'inherit',
+                                cursor: 'none',
+                                padding: '16px 32px',
+                                fontSize: '13px',
+                                fontWeight: 600,
+                                letterSpacing: '1.5px',
+                                textTransform: 'uppercase',
+                                borderRadius: '2px'
+                            }}>{t.wellness.ctaBtn}</button>
+                        </div>
+                    </div>
+                </section>
+            );
+        }
+        
+        function ServicesShowcase({ colors, scrollY }) {
+            const { t } = useLang();
+            const serviceDescs = t.services.list;
+            const services = serviceDescs.map((s, i) => ({
+                num: String(i + 1).padStart(2, '0'),
+                title: s.title,
+                desc: s.desc
+            }));
+            
+            const [hovered, setHovered] = useState(null);
+            
+            return (
+                <section id="services" style={{
+                    background: colors.surface,
+                    padding: '160px 48px',
+                    position: 'relative',
+                    overflow: 'hidden'
+                }}>
+                    <div style={{ maxWidth: '1400px', margin: '0 auto' }}>
+                        <div style={{ marginBottom: '80px' }}>
+                            <p style={{
+                                fontSize: '12px',
+                                letterSpacing: '3px',
+                                textTransform: 'uppercase',
+                                color: colors.textMuted,
+                                fontWeight: 600,
+                                marginBottom: '24px'
+                            }}>{t.services.label}</p>
+                            <h2 style={{
+                                fontFamily: "'Fraunces', serif",
+                                fontSize: 'clamp(48px, 7vw, 112px)',
+                                fontWeight: 300,
+                                lineHeight: 1,
+                                color: colors.text,
+                                letterSpacing: '-3px'
+                            }}>
+                                {t.services.title1}
+                                <br />
+                                <span style={{ fontStyle: 'italic', color: colors.primary }}>{t.services.title2}</span>
+                            </h2>
+                        </div>
+                        
+                        <div>
+                            {services.map((service, idx) => (
+                                <ServiceRow 
+                                    key={idx}
+                                    service={service}
+                                    colors={colors}
+                                    index={idx}
+                                    isHovered={hovered === idx}
+                                    onHover={() => setHovered(idx)}
+                                    onLeave={() => setHovered(null)}
+                                />
+                            ))}
+                        </div>
+                    </div>
+                </section>
+            );
+        }
+        
+        function ServiceRow({ service, colors, index, isHovered, onHover, onLeave }) {
+            const [ref, inView] = useInView(0.3);
+            
+            return (
+                <div
+                    ref={ref}
+                    onMouseEnter={onHover}
+                    onMouseLeave={onLeave}
+                    style={{
+                        display: 'grid',
+                        gridTemplateColumns: '100px 1fr 2fr 60px',
+                        gap: '40px',
+                        alignItems: 'center',
+                        padding: '48px 0',
+                        borderTop: `1px solid ${colors.text}15`,
+                        borderBottom: index === 6 ? `1px solid ${colors.text}15` : 'none',
+                        cursor: 'none',
+                        transition: 'all 0.5s ease',
+                        transform: inView ? 'translateY(0)' : 'translateY(40px)',
+                        opacity: inView ? 1 : 0,
+                        transitionDelay: `${index * 0.05}s`
+                    }}
+                >
+                    <div style={{
+                        fontSize: '14px',
+                        color: colors.textMuted,
+                        fontWeight: 500,
+                        letterSpacing: '1px',
+                        transform: isHovered ? 'translateX(16px)' : 'translateX(0)',
+                        transition: 'transform 0.4s ease'
+                    }}>{service.num}</div>
+                    
+                    <h3 style={{
+                        fontFamily: "'Fraunces', serif",
+                        fontSize: 'clamp(32px, 4vw, 48px)',
+                        fontWeight: 300,
+                        color: isHovered ? colors.primary : colors.text,
+                        letterSpacing: '-1px',
+                        fontStyle: isHovered ? 'italic' : 'normal',
+                        transition: 'all 0.4s ease'
+                    }}>{service.title}</h3>
+                    
+                    <p style={{
+                        fontSize: '16px',
+                        color: colors.textLight,
+                        lineHeight: 1.6,
+                        fontWeight: 300,
+                        maxWidth: '500px',
+                        opacity: isHovered ? 1 : 0.6,
+                        transition: 'opacity 0.4s ease'
+                    }}>{service.desc}</p>
+                    
+                    <div style={{
+                        fontSize: '24px',
+                        color: colors.text,
+                        textAlign: 'right',
+                        transform: isHovered ? 'translateX(8px) rotate(-45deg)' : 'translateX(0) rotate(0deg)',
+                        transition: 'transform 0.4s ease'
+                    }}>→</div>
+                </div>
+            );
+        }
+        
+        function InsuranceSection({ colors }) {
+            const { t } = useLang();
+            const insurances = [
+                { src: 'assets/insurance/oscar.png', name: 'Oscar' },
+                { src: 'assets/insurance/avmed.png', name: 'AvMed' },
+                { src: 'assets/insurance/unitedhealthcare.png', name: 'UnitedHealthcare' },
+                { src: 'assets/insurance/preferred-care-partners.png', name: 'Preferred Care Partners' },
+                { src: 'assets/insurance/preferred-care-network.png', name: 'Preferred Care Network' },
+                { src: 'assets/insurance/cigna.png', name: 'Cigna' },
+                { src: 'assets/insurance/aetna.png', name: 'Aetna' },
+                { src: 'assets/insurance/florida-blue.png', name: 'Florida Blue' }
+            ];
+            
+            return (
+                <section style={{
+                    padding: '120px 0',
+                    background: colors.bg,
+                    overflow: 'hidden'
+                }}>
+                    <div style={{ textAlign: 'center', marginBottom: '64px', padding: '0 48px' }}>
+                        <p style={{
+                            fontSize: '12px',
+                            letterSpacing: '3px',
+                            textTransform: 'uppercase',
+                            color: colors.textMuted,
+                            fontWeight: 600,
+                            marginBottom: '16px'
+                        }}>{t.insurance.label}</p>
+                        <h2 style={{
+                            fontFamily: "'Fraunces', serif",
+                            fontSize: 'clamp(36px, 5vw, 64px)',
+                            fontWeight: 300,
+                            color: colors.text,
+                            letterSpacing: '-1.5px'
+                        }}>
+                            {t.insurance.title} <span style={{ fontStyle: 'italic', color: colors.primary }}>{t.insurance.titleItalic}</span> {t.insurance.titleEnd}
+                        </h2>
+                    </div>
+                    
+                    <div style={{ position: 'relative', overflow: 'hidden' }}>
+                        <div style={{
+                            display: 'flex',
+                            animation: 'scroll 40s linear infinite',
+                            width: 'max-content',
+                            gap: '24px'
+                        }}>
+                            {[...insurances, ...insurances].map((logo, idx) => (
+                                <div key={idx} style={{
+                                    minWidth: '240px',
+                                    height: '120px',
+                                    display: 'flex',
+                                    alignItems: 'center',
+                                    justifyContent: 'center',
+                                    background: '#FFF',
+                                    borderRadius: '16px',
+                                    padding: '24px',
+                                    border: `1px solid ${colors.text}10`,
+                                    transition: 'all 0.3s ease'
+                                }}>
+                                    <img 
+                                        src={logo.src}
+                                        alt={logo.name}
+                                        style={{ maxWidth: '100%', maxHeight: '100%', objectFit: 'contain', filter: 'grayscale(1)', opacity: 0.7 }}
+                                    />
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+                </section>
+            );
+        }
+        
+        function TestimonialsSection({ colors, scrollY }) {
+            const { t } = useLang();
+            const testimonials = t.testimonials.list;
+            
+            const [active, setActive] = useState(0);
+            
+            useEffect(() => {
+                const interval = setInterval(() => {
+                    setActive((prev) => (prev + 1) % testimonials.length);
+                }, 6000);
+                return () => clearInterval(interval);
+            }, []);
+            
+            return (
+                <section style={{
+                    padding: '160px 48px',
+                    background: colors.dark,
+                    color: '#FFF',
+                    position: 'relative',
+                    overflow: 'hidden'
+                }}>
+                    <div style={{
+                        position: 'absolute',
+                        top: '-200px',
+                        right: '-200px',
+                        width: '600px',
+                        height: '600px',
+                        borderRadius: '50%',
+                        background: `radial-gradient(circle, ${colors.primary}30, transparent 70%)`,
+                        filter: 'blur(60px)'
+                    }} />
+                    
+                    <div style={{ maxWidth: '1200px', margin: '0 auto', position: 'relative' }}>
+                        <p style={{
+                            fontSize: '12px',
+                            letterSpacing: '3px',
+                            textTransform: 'uppercase',
+                            color: 'rgba(255,255,255,0.5)',
+                            fontWeight: 600,
+                            marginBottom: '48px',
+                            textAlign: 'center'
+                        }}>{t.testimonials.label}</p>
+                        
+                        <div style={{ minHeight: '400px', position: 'relative' }}>
+                            {testimonials.map((t, idx) => (
+                                <div key={idx} style={{
+                                    position: 'absolute',
+                                    inset: 0,
+                                    opacity: active === idx ? 1 : 0,
+                                    transform: active === idx ? 'translateY(0)' : 'translateY(30px)',
+                                    transition: 'all 0.8s cubic-bezier(0.4, 0, 0.2, 1)',
+                                    pointerEvents: active === idx ? 'auto' : 'none',
+                                    textAlign: 'center'
+                                }}>
+                                    <p style={{
+                                        fontFamily: "'Fraunces', serif",
+                                        fontSize: 'clamp(28px, 4vw, 56px)',
+                                        fontWeight: 300,
+                                        lineHeight: 1.3,
+                                        marginBottom: '48px',
+                                        fontStyle: 'italic',
+                                        letterSpacing: '-1px'
+                                    }}>
+                                        "{t.text}"
+                                    </p>
+                                    <p style={{
+                                        fontSize: '14px',
+                                        letterSpacing: '2px',
+                                        textTransform: 'uppercase',
+                                        color: colors.primary,
+                                        fontWeight: 600
+                                    }}>— {t.name}</p>
+                                </div>
+                            ))}
+                        </div>
+                        
+                        <div style={{ display: 'flex', gap: '12px', justifyContent: 'center', marginTop: '64px' }}>
+                            {testimonials.map((_, idx) => (
+                                <button key={idx} onClick={() => setActive(idx)} style={{
+                                    width: active === idx ? '48px' : '8px',
+                                    height: '8px',
+                                    borderRadius: '100px',
+                                    background: active === idx ? colors.primary : 'rgba(255,255,255,0.3)',
+                                    border: 'none',
+                                    transition: 'all 0.4s ease'
+                                }} />
+                            ))}
+                        </div>
+                    </div>
+                </section>
+            );
+        }
+        
+        function LocationSection({ colors, scrollY }) {
+            const [ref, inView] = useInView(0.2);
+            const { t } = useLang();
+            
+            return (
+                <section id="location" ref={ref} style={{
+                    padding: '160px 48px',
+                    background: colors.bg
+                }}>
+                    <div style={{ maxWidth: '1600px', margin: '0 auto' }}>
+                        <div style={{
+                            display: 'grid',
+                            gridTemplateColumns: '1fr 1fr',
+                            gap: '80px',
+                            alignItems: 'center',
+                            marginBottom: '80px'
+                        }}>
+                            <div style={{
+                                opacity: inView ? 1 : 0,
+                                transform: inView ? 'translateX(0)' : 'translateX(-40px)',
+                                transition: 'all 0.8s ease'
+                            }}>
+                                <p style={{
+                                    fontSize: '12px',
+                                    letterSpacing: '3px',
+                                    textTransform: 'uppercase',
+                                    color: colors.textMuted,
+                                    fontWeight: 600,
+                                    marginBottom: '24px'
+                                }}>{t.location.label}</p>
+                                <h2 style={{
+                                    fontFamily: "'Fraunces', serif",
+                                    fontSize: 'clamp(40px, 6vw, 96px)',
+                                    fontWeight: 300,
+                                    lineHeight: 1,
+                                    color: colors.text,
+                                    letterSpacing: '-3px',
+                                    marginBottom: '32px'
+                                }}>
+                                    {t.location.title1}
+                                    <br />
+                                    <span style={{ fontStyle: 'italic', color: colors.primary }}>{t.location.title2}</span>
+                                </h2>
+                                <p style={{
+                                    fontSize: '20px',
+                                    color: colors.textLight,
+                                    lineHeight: 1.6,
+                                    fontWeight: 300
+                                }}>
+                                    {t.location.desc}
+                                </p>
+                            </div>
+                            
+                            <div style={{
+                                opacity: inView ? 1 : 0,
+                                transform: inView ? 'translateX(0)' : 'translateX(40px)',
+                                transition: 'all 0.8s ease 0.2s'
+                            }}>
+                                <div style={{ marginBottom: '40px', paddingBottom: '32px', borderBottom: `1px solid ${colors.text}15` }}>
+                                    <p style={{ fontSize: '11px', letterSpacing: '2px', textTransform: 'uppercase', color: colors.textMuted, fontWeight: 600, marginBottom: '12px' }}>{t.location.addressLabel}</p>
+                                    <p style={{ fontSize: '20px', color: colors.text, fontWeight: 400, lineHeight: 1.5 }}>
+                                        9299 SW 152nd St #206<br />
+                                        Miami, FL 33157
+                                    </p>
+                                </div>
+                                <div style={{ marginBottom: '40px', paddingBottom: '32px', borderBottom: `1px solid ${colors.text}15` }}>
+                                    <p style={{ fontSize: '11px', letterSpacing: '2px', textTransform: 'uppercase', color: colors.textMuted, fontWeight: 600, marginBottom: '12px' }}>{t.location.hoursLabel}</p>
+                                    <p style={{ fontSize: '20px', color: colors.text, fontWeight: 400, lineHeight: 1.5 }}>
+                                        {t.location.hours1}<br />
+                                        <span style={{ color: colors.textMuted }}>{t.location.hours2}</span>
+                                    </p>
+                                </div>
+                                <div>
+                                    <p style={{ fontSize: '11px', letterSpacing: '2px', textTransform: 'uppercase', color: colors.textMuted, fontWeight: 600, marginBottom: '12px' }}>{t.location.contactLabel}</p>
+                                    <a href="tel:7868830339" style={{ fontSize: '28px', color: colors.primary, fontWeight: 400, textDecoration: 'none', display: 'block', marginBottom: '4px' }}>
+                                        (786) 883-0339
+                                    </a>
+                                    <a href="mailto:info@truvidamg.com" style={{ fontSize: '16px', color: colors.text, textDecoration: 'none', fontWeight: 400 }}>
+                                        info@truvidamg.com
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div style={{
+                            position: 'relative',
+                            borderRadius: '24px',
+                            overflow: 'hidden',
+                            height: '600px',
+                            opacity: inView ? 1 : 0,
+                            transform: inView ? 'translateY(0)' : 'translateY(60px)',
+                            transition: 'all 1s ease 0.4s',
+                            boxShadow: `0 40px 120px rgba(0, 0, 0, 0.2)`
+                        }}>
+                            <iframe 
+                                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3595.2892883446436!2d-80.35897!3d25.6398!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x88d9c0e0e0e0e0e1%3A0x0!2s9299%20SW%20152nd%20St%20%23206%2C%20Miami%2C%20FL%2033157!5e0!3m2!1sen!2sus!4v1234567890"
+                                width="100%"
+                                height="600"
+                                style={{ border: 0, filter: 'grayscale(20%)' }}
+                                loading="lazy"
+                            />
+                        </div>
+                    </div>
+                </section>
+            );
+        }
+        
+        function CTASection({ colors, onBook }) {
+            const [ref, inView] = useInView(0.3);
+            const { t } = useLang();
+            
+            return (
+                <section id="contact" ref={ref} style={{
+                    padding: '200px 48px',
+                    background: colors.dark,
+                    color: '#FFF',
+                    position: 'relative',
+                    overflow: 'hidden'
+                }}>
+                    <div style={{
+                        position: 'absolute',
+                        inset: 0,
+                        background: `radial-gradient(ellipse at center, ${colors.primary}15, transparent 60%)`
+                    }} />
+                    
+                    <div style={{
+                        maxWidth: '1000px',
+                        margin: '0 auto',
+                        textAlign: 'center',
+                        position: 'relative',
+                        opacity: inView ? 1 : 0,
+                        transform: inView ? 'translateY(0)' : 'translateY(60px)',
+                        transition: 'all 1s ease'
+                    }}>
+                        <p style={{
+                            fontSize: '12px',
+                            letterSpacing: '3px',
+                            textTransform: 'uppercase',
+                            color: 'rgba(255,255,255,0.5)',
+                            fontWeight: 600,
+                            marginBottom: '32px'
+                        }}>{t.cta.label}</p>
+                        <h2 style={{
+                            fontFamily: "'Fraunces', serif",
+                            fontSize: 'clamp(64px, 10vw, 160px)',
+                            fontWeight: 300,
+                            lineHeight: 0.95,
+                            letterSpacing: '-4px',
+                            marginBottom: '48px'
+                        }}>
+                            {t.cta.title1}
+                            <br />
+                            <span style={{ fontStyle: 'italic', color: colors.primary }}>{t.cta.title2}</span>
+                        </h2>
+                        <p style={{
+                            fontSize: '22px',
+                            color: 'rgba(255,255,255,0.7)',
+                            lineHeight: 1.6,
+                            marginBottom: '64px',
+                            fontWeight: 300
+                        }}>
+                            {t.cta.desc}
+                        </p>
+                        <div style={{ display: 'flex', gap: '16px', justifyContent: 'center', flexWrap: 'wrap' }}>
+                            <button onClick={onBook} style={{
+                                padding: '24px 64px',
+                                background: '#FFF',
+                                color: colors.dark,
+                                border: 'none',
+                                fontFamily: 'inherit',
+                                cursor: 'none',
+                                fontSize: '16px',
+                                fontWeight: 500,
+                                borderRadius: '100px',
+                                letterSpacing: '0.5px',
+                                display: 'inline-flex',
+                                alignItems: 'center',
+                                gap: '12px'
+                            }}>
+                                {t.cta.call}
+                                <span>→</span>
+                            </button>
+                            <a href="mailto:info@truvidamg.com" style={{
+                                padding: '24px 64px',
+                                background: 'transparent',
+                                color: '#FFF',
+                                textDecoration: 'none',
+                                fontSize: '16px',
+                                fontWeight: 500,
+                                borderRadius: '100px',
+                                letterSpacing: '0.5px',
+                                border: '1.5px solid rgba(255,255,255,0.3)'
+                            }}>
+                                {t.cta.message}
+                            </a>
+                        </div>
+                    </div>
+                </section>
+            );
+        }
+        
+        function Footer({ colors }) {
+            const { t } = useLang();
+            return (
+                <footer style={{
+                    padding: '80px 48px 40px',
+                    background: colors.dark,
+                    color: 'rgba(255,255,255,0.6)',
+                    borderTop: '1px solid rgba(255,255,255,0.1)'
+                }}>
+                    <div style={{
+                        maxWidth: '1600px',
+                        margin: '0 auto',
+                        display: 'flex',
+                        justifyContent: 'space-between',
+                        alignItems: 'center',
+                        flexWrap: 'wrap',
+                        gap: '32px'
+                    }}>
+                        <div style={{
+                            display: 'flex',
+                            alignItems: 'center',
+                            gap: '14px',
+                            fontFamily: "'Fraunces', serif",
+                            fontSize: '32px',
+                            fontWeight: 300,
+                            fontStyle: 'italic',
+                            color: '#FFF'
+                        }}>
+                            <img src="assets/logo-white.png" alt="" style={{ width: '44px', height: '44px', display: 'block' }} />
+                            Truvida<span style={{ color: colors.primary }}>.</span>
+                        </div>
+                        <div style={{ display: 'flex', gap: '32px', fontSize: '13px' }}>
+                            <a href="https://www.facebook.com/truvidamedicalgroup" style={{ color: 'inherit', textDecoration: 'none' }}>Facebook</a>
+                            <a href="https://www.instagram.com/truvidamiami" style={{ color: 'inherit', textDecoration: 'none' }}>Instagram</a>
+                        </div>
+                        <p style={{ fontSize: '13px' }}>{t.footer.rights}</p>
+                    </div>
+                </footer>
+            );
+        }
+        
+        function BookingModal({ colors, onClose }) {
+            const { t, lang } = useLang();
+            const b = t.booking;
+            const [step, setStep] = useState(0);
+            const [submitted, setSubmitted] = useState(false);
+            const [errors, setErrors] = useState({});
+            const [form, setForm] = useState({
+                name: '', phone: '', email: '', dob: '',
+                patientType: 'new',
+                formLang: lang === 'es' ? 'es' : 'en',
+                reason: '', service: '', date: '', window: '',
+                doctor: 'any',
+                notes: ''
+            });
+            const [entered, setEntered] = useState(false);
+            useEffect(() => { requestAnimationFrame(() => setEntered(true)); }, []);
+
+            const doctors = [
+                { id: 'yahumara', name: 'Yahumara Gonzalez', title: t.doctors.list[0].expertise[0] || 'ARNP, FNP-C', image: 'assets/dr-yahumara.png' },
+                { id: 'noel', name: 'Noel Medina', title: t.doctors.list[1].expertise[0] || 'ARNP, FNP-C', image: 'assets/dr-noel.png' }
+            ];
+            const services = t.services.list.map((s, i) => ({ id: 'service-' + i, label: s.title }));
+
+            const update = (key, value) => {
+                setForm(f => ({ ...f, [key]: value }));
+                if (errors[key]) setErrors(e => ({ ...e, [key]: null }));
+            };
+
+            const validateStep = (s) => {
+                const e = {};
+                if (s === 0) {
+                    if (!form.name.trim() || form.name.trim().length < 2) e.name = b.errors.name;
+                    const phoneDigits = form.phone.replace(/\D/g, '');
+                    if (phoneDigits.length < 10) e.phone = b.errors.phone;
+                    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email)) e.email = b.errors.email;
+                }
+                if (s === 1) {
+                    if (!form.reason) e.reason = b.errors.reason;
+                }
+                setErrors(e);
+                return Object.keys(e).length === 0;
+            };
+
+            const handleNext = () => {
+                if (validateStep(step)) {
+                    if (step < 3) setStep(step + 1);
+                    else setSubmitted(true);
+                }
+            };
+            const handleBack = () => {
+                if (step > 0) setStep(step - 1);
+                else onClose();
+            };
+
+            const handleClose = () => {
+                setEntered(false);
+                setTimeout(onClose, 350);
+            };
+
+            // Lock escape to close
+            useEffect(() => {
+                const onKey = (e) => { if (e.key === 'Escape') handleClose(); };
+                window.addEventListener('keydown', onKey);
+                return () => window.removeEventListener('keydown', onKey);
+            }, []);
+
+            const steps = b.steps;
+            const totalSteps = steps.length;
+
+            return (
+                <div className="booking-modal" style={{
+                    position: 'fixed', inset: 0, zIndex: 100000,
+                    background: colors.bg,
+                    overflow: 'auto',
+                    opacity: entered ? 1 : 0,
+                    transition: 'opacity 0.35s ease',
+                    fontFamily: "'Plus Jakarta Sans', sans-serif"
+                }}>
+                    {/* Top bar */}
+                    <div style={{
+                        position: 'sticky', top: 0, zIndex: 10,
+                        background: colors.bg,
+                        borderBottom: `1px solid ${colors.text}08`,
+                        padding: '24px clamp(24px, 5vw, 80px)',
+                        display: 'flex', alignItems: 'center', justifyContent: 'space-between'
+                    }}>
+                        <div style={{ display: 'flex', alignItems: 'baseline', gap: '20px' }}>
+                            <span style={{ display: 'inline-flex', alignItems: 'center', gap: '10px', fontFamily: "'Fraunces', serif", fontSize: '22px', fontWeight: 400, letterSpacing: '-0.5px', color: colors.text }}>
+                                <img src="assets/logo-ink.png" alt="" style={{ width: '28px', height: '28px', display: 'block' }} />
+                                Truvida<span style={{ color: colors.primary, fontStyle: 'italic' }}>.</span>
+                            </span>
+                            {!submitted && (
+                                <span style={{ fontSize: '12px', letterSpacing: '2px', textTransform: 'uppercase', color: colors.textMuted, fontWeight: 500 }}>
+                                    {b.stepOf} {step + 1} {b.of} {totalSteps}
+                                </span>
+                            )}
+                        </div>
+                        <button onClick={handleClose} aria-label={b.close} style={{
+                            background: 'transparent', border: 'none',
+                            fontFamily: 'inherit', cursor: 'none',
+                            fontSize: '12px', letterSpacing: '2px', textTransform: 'uppercase',
+                            color: colors.text, fontWeight: 500,
+                            display: 'flex', alignItems: 'center', gap: '10px', padding: '8px 4px'
+                        }}>
+                            <span style={{ fontSize: '22px', lineHeight: 1, fontWeight: 300 }}>×</span>
+                            {b.close}
+                        </button>
+                    </div>
+
+                    {/* Progress */}
+                    {!submitted && (
+                        <div style={{ padding: '0 clamp(24px, 5vw, 80px)', marginTop: '2px' }}>
+                            <div style={{ display: 'flex', gap: '6px', maxWidth: '1100px', margin: '0 auto' }}>
+                                {steps.map((_, i) => (
+                                    <div key={i} style={{
+                                        flex: 1, height: '2px',
+                                        background: i <= step ? colors.text : colors.text + '15',
+                                        transition: 'background 0.5s ease'
+                                    }} />
+                                ))}
+                            </div>
+                        </div>
+                    )}
+
+                    {/* Body */}
+                    <div style={{ padding: 'clamp(40px, 7vw, 96px) clamp(24px, 5vw, 80px) 140px', maxWidth: '1100px', margin: '0 auto' }}>
+                        {submitted ? (
+                            <ThankYou t={b.thankYou} colors={colors} onDone={handleClose} />
+                        ) : (
+                            <BookingStep
+                                step={step}
+                                stepData={steps[step]}
+                                b={b}
+                                form={form}
+                                update={update}
+                                errors={errors}
+                                colors={colors}
+                                doctors={doctors}
+                                services={services}
+                            />
+                        )}
+                    </div>
+
+                    {/* Footer nav */}
+                    {!submitted && (
+                        <div style={{
+                            position: 'fixed', bottom: 0, left: 0, right: 0,
+                            background: colors.bg,
+                            borderTop: `1px solid ${colors.text}08`,
+                            padding: '20px clamp(24px, 5vw, 80px)',
+                            display: 'flex', justifyContent: 'space-between', alignItems: 'center',
+                            zIndex: 10
+                        }}>
+                            <button onClick={handleBack} style={{
+                                background: 'transparent', border: 'none',
+                                fontFamily: 'inherit', cursor: 'none',
+                                fontSize: '13px', letterSpacing: '1px', textTransform: 'uppercase',
+                                color: colors.textLight, fontWeight: 500,
+                                padding: '16px 0', display: 'flex', alignItems: 'center', gap: '10px'
+                            }}>
+                                <span style={{ fontSize: '18px' }}>←</span> {b.back}
+                            </button>
+                            <button onClick={handleNext} style={{
+                                background: colors.text, color: colors.bg,
+                                border: 'none', fontFamily: 'inherit', cursor: 'none',
+                                fontSize: '14px', letterSpacing: '0.5px',
+                                fontWeight: 500, padding: '20px 44px',
+                                borderRadius: '100px',
+                                display: 'flex', alignItems: 'center', gap: '12px'
+                            }}>
+                                {step === totalSteps - 1 ? b.submit : b.next}
+                                <span style={{ fontSize: '16px' }}>→</span>
+                            </button>
+                        </div>
+                    )}
+                </div>
+            );
+        }
+
+        function BookingStep({ step, stepData, b, form, update, errors, colors, doctors, services }) {
+            return (
+                <div key={step} style={{
+                    animation: 'bookingFade 0.5s ease both'
+                }}>
+                    <p style={{
+                        fontSize: '12px', letterSpacing: '3px', textTransform: 'uppercase',
+                        color: colors.primary, fontWeight: 600, marginBottom: '28px'
+                    }}>{stepData.eyebrow}</p>
+                    <h2 style={{
+                        fontFamily: "'Fraunces', serif",
+                        fontSize: 'clamp(40px, 6vw, 72px)',
+                        fontWeight: 300, lineHeight: 1.05, letterSpacing: '-2px',
+                        color: colors.text, marginBottom: stepData.subtitle ? '20px' : '56px',
+                        maxWidth: '900px'
+                    }}>
+                        {stepData.title.split(' ').slice(0, -1).join(' ')}{' '}
+                        <span style={{ fontStyle: 'italic', color: colors.primary }}>
+                            {stepData.title.split(' ').slice(-1)[0]}
+                        </span>
+                    </h2>
+                    {stepData.subtitle && (
+                        <p style={{
+                            fontSize: '18px', lineHeight: 1.6, color: colors.textLight,
+                            maxWidth: '640px', marginBottom: '56px', fontWeight: 300
+                        }}>{stepData.subtitle}</p>
+                    )}
+
+                    {step === 0 && <StepAbout f={stepData.fields} form={form} update={update} errors={errors} colors={colors} b={b} />}
+                    {step === 1 && <StepVisit f={stepData.fields} form={form} update={update} errors={errors} colors={colors} b={b} services={services} />}
+                    {step === 2 && <StepProvider stepData={stepData} form={form} update={update} colors={colors} doctors={doctors} />}
+                    {step === 3 && <StepReview stepData={stepData} form={form} colors={colors} b={b} doctors={doctors} services={services} />}
+                </div>
+            );
+        }
+
+        // Shared field styles
+        const bookInputStyle = (colors, err) => ({
+            width: '100%',
+            background: 'transparent',
+            border: 'none',
+            borderBottom: `1px solid ${err ? '#C44' : colors.text + '25'}`,
+            padding: '14px 0',
+            fontSize: '18px',
+            fontFamily: 'inherit',
+            color: colors.text,
+            outline: 'none',
+            transition: 'border-color 0.3s ease'
+        });
+        const bookLabelStyle = (colors) => ({
+            display: 'block',
+            fontSize: '11px',
+            letterSpacing: '2px',
+            textTransform: 'uppercase',
+            color: colors.textMuted,
+            fontWeight: 600,
+            marginBottom: '8px'
+        });
+        const bookErrorStyle = { color: '#C44', fontSize: '12px', marginTop: '6px', letterSpacing: '0.3px' };
+
+        function BookField({ label, error, required, children, colors }) {
+            return (
+                <div style={{ marginBottom: '36px' }}>
+                    <label style={bookLabelStyle(colors)}>
+                        {label} {required && <span style={{ color: colors.primary, marginLeft: '4px' }}>*</span>}
+                    </label>
+                    {children}
+                    {error && <div style={bookErrorStyle}>{error}</div>}
+                </div>
+            );
+        }
+
+        function StepAbout({ f, form, update, errors, colors, b }) {
+            return (
+                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', columnGap: '48px' }}>
+                    <div>
+                        <BookField label={f.name} required error={errors.name} colors={colors}>
+                            <input type="text" value={form.name} onChange={e => update('name', e.target.value)}
+                                placeholder="Jane Doe" style={bookInputStyle(colors, errors.name)} />
+                        </BookField>
+                        <BookField label={f.phone} required error={errors.phone} colors={colors}>
+                            <input type="tel" value={form.phone} onChange={e => update('phone', e.target.value)}
+                                placeholder="(786) 555 0199" style={bookInputStyle(colors, errors.phone)} />
+                        </BookField>
+                        <BookField label={f.email} required error={errors.email} colors={colors}>
+                            <input type="email" value={form.email} onChange={e => update('email', e.target.value)}
+                                placeholder="you@example.com" style={bookInputStyle(colors, errors.email)} />
+                        </BookField>
+                    </div>
+                    <div>
+                        <BookField label={f.dob} colors={colors}>
+                            <input type="date" value={form.dob} onChange={e => update('dob', e.target.value)}
+                                style={bookInputStyle(colors)} />
+                        </BookField>
+                        <BookField label={f.patientType} required colors={colors}>
+                            <PillGroup value={form.patientType} onChange={v => update('patientType', v)} colors={colors}
+                                options={[{ v: 'new', label: f.patientNew }, { v: 'existing', label: f.patientExisting }]} />
+                        </BookField>
+                        <BookField label={f.language} colors={colors}>
+                            <PillGroup value={form.formLang} onChange={v => update('formLang', v)} colors={colors}
+                                options={[{ v: 'en', label: f.langEn }, { v: 'es', label: f.langEs }]} />
+                        </BookField>
+                    </div>
+                </div>
+            );
+        }
+
+        function StepVisit({ f, form, update, errors, colors, b, services }) {
+            const reasons = [
+                { v: 'new', label: f.reasonNew },
+                { v: 'follow', label: f.reasonFollow },
+                { v: 'wellness', label: f.reasonWellness },
+                { v: 'other', label: f.reasonOther }
+            ];
+            const windows = [
+                { v: 'morning', label: f.morning },
+                { v: 'afternoon', label: f.afternoon },
+                { v: 'evening', label: f.evening },
+                { v: 'flexible', label: f.flexible }
+            ];
+            return (
+                <div>
+                    <BookField label={f.reason} required error={errors.reason} colors={colors}>
+                        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '10px', marginTop: '4px' }}>
+                            {reasons.map(r => (
+                                <button key={r.v} type="button" onClick={() => update('reason', r.v)} style={{
+                                    padding: '20px 24px',
+                                    background: form.reason === r.v ? colors.text : 'transparent',
+                                    color: form.reason === r.v ? colors.bg : colors.text,
+                                    border: `1px solid ${form.reason === r.v ? colors.text : colors.text + '20'}`,
+                                    fontFamily: 'inherit', cursor: 'none',
+                                    fontSize: '15px', fontWeight: 400,
+                                    textAlign: 'left', borderRadius: '2px',
+                                    transition: 'all 0.3s ease'
+                                }}>{r.label}</button>
+                            ))}
+                        </div>
+                    </BookField>
+                    {form.reason === 'wellness' && (
+                        <BookField label={f.service} colors={colors}>
+                            <select value={form.service} onChange={e => update('service', e.target.value)}
+                                style={{ ...bookInputStyle(colors), cursor: 'none', appearance: 'none', backgroundImage: `linear-gradient(45deg, transparent 50%, ${colors.text} 50%), linear-gradient(135deg, ${colors.text} 50%, transparent 50%)`, backgroundPosition: `calc(100% - 16px) center, calc(100% - 10px) center`, backgroundSize: '6px 6px', backgroundRepeat: 'no-repeat' }}>
+                                <option value="">{f.servicePlaceholder}</option>
+                                {services.map(s => <option key={s.id} value={s.label}>{s.label}</option>)}
+                            </select>
+                        </BookField>
+                    )}
+                    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '48px', marginTop: '16px' }}>
+                        <BookField label={f.date} colors={colors}>
+                            <input type="date" value={form.date} onChange={e => update('date', e.target.value)}
+                                style={bookInputStyle(colors)} />
+                        </BookField>
+                        <BookField label={f.window} colors={colors}>
+                            <PillGroup value={form.window} onChange={v => update('window', v)} colors={colors} options={windows} />
+                        </BookField>
+                    </div>
+                </div>
+            );
+        }
+
+        function StepProvider({ stepData, form, update, colors, doctors }) {
+            return (
+                <div>
+                    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))', gap: '20px', marginBottom: '32px' }}>
+                        {doctors.map(doc => {
+                            const sel = form.doctor === doc.id;
+                            return (
+                                <button key={doc.id} type="button" onClick={() => update('doctor', doc.id)} style={{
+                                    background: sel ? colors.text : colors.surface,
+                                    color: sel ? colors.bg : colors.text,
+                                    border: `1px solid ${sel ? colors.text : colors.text + '15'}`,
+                                    padding: '0', textAlign: 'left',
+                                    fontFamily: 'inherit', cursor: 'none',
+                                    borderRadius: '4px', overflow: 'hidden',
+                                    transition: 'all 0.4s ease',
+                                    display: 'flex', flexDirection: 'column'
+                                }}>
+                                    <div style={{
+                                        width: '100%', aspectRatio: '4 / 5',
+                                        background: `url(${doc.image}) center/cover, ${colors.text}10`,
+                                        filter: sel ? 'none' : 'grayscale(30%)',
+                                        transition: 'filter 0.4s ease'
+                                    }} />
+                                    <div style={{ padding: '24px' }}>
+                                        <div style={{ fontFamily: "'Fraunces', serif", fontSize: '24px', fontWeight: 400, letterSpacing: '-0.5px', marginBottom: '6px' }}>
+                                            {doc.name}
+                                        </div>
+                                        <div style={{ fontSize: '12px', letterSpacing: '1.5px', textTransform: 'uppercase', opacity: 0.6, fontWeight: 500 }}>
+                                            {doc.title}
+                                        </div>
+                                    </div>
+                                </button>
+                            );
+                        })}
+                        {/* Any provider */}
+                        <button type="button" onClick={() => update('doctor', 'any')} style={{
+                            background: form.doctor === 'any' ? colors.text : colors.surface,
+                            color: form.doctor === 'any' ? colors.bg : colors.text,
+                            border: `1px solid ${form.doctor === 'any' ? colors.text : colors.text + '15'}`,
+                            padding: '32px 28px', textAlign: 'left',
+                            fontFamily: 'inherit', cursor: 'none',
+                            borderRadius: '4px',
+                            transition: 'all 0.4s ease',
+                            display: 'flex', flexDirection: 'column', justifyContent: 'center',
+                            minHeight: '260px'
+                        }}>
+                            <div style={{ fontSize: '36px', marginBottom: '20px', fontWeight: 200, fontFamily: "'Fraunces', serif", fontStyle: 'italic', opacity: 0.7 }}>
+                                ~
+                            </div>
+                            <div style={{ fontFamily: "'Fraunces', serif", fontSize: '22px', fontWeight: 400, letterSpacing: '-0.3px', marginBottom: '12px', lineHeight: 1.2 }}>
+                                {stepData.anyProvider}
+                            </div>
+                            <div style={{ fontSize: '13px', lineHeight: 1.6, opacity: 0.7, fontWeight: 300 }}>
+                                {stepData.anyProviderDesc}
+                            </div>
+                        </button>
+                    </div>
+                    <BookField label={stepData.notes} colors={colors}>
+                        <textarea value={form.notes} onChange={e => update('notes', e.target.value)}
+                            placeholder={stepData.notesPlaceholder} rows={4}
+                            style={{ ...bookInputStyle(colors), resize: 'vertical', lineHeight: 1.6, padding: '14px 0' }} />
+                    </BookField>
+                </div>
+            );
+        }
+
+        function StepReview({ stepData, form, colors, b, doctors, services }) {
+            const f0 = b.steps[0].fields;
+            const f1 = b.steps[1].fields;
+            const reasonLabels = { new: f1.reasonNew, follow: f1.reasonFollow, wellness: f1.reasonWellness, other: f1.reasonOther };
+            const windowLabels = { morning: f1.morning, afternoon: f1.afternoon, evening: f1.evening, flexible: f1.flexible };
+            const docName = form.doctor === 'any'
+                ? stepData.summary.anyProvider
+                : (doctors.find(d => d.id === form.doctor)?.name || stepData.summary.anyProvider);
+
+            const Row = ({ label, value }) => (
+                <div style={{ display: 'grid', gridTemplateColumns: '160px 1fr', gap: '24px', padding: '18px 0', borderBottom: `1px solid ${colors.text}10` }}>
+                    <div style={{ fontSize: '11px', letterSpacing: '2px', textTransform: 'uppercase', color: colors.textMuted, fontWeight: 600, paddingTop: '3px' }}>{label}</div>
+                    <div style={{ fontSize: '16px', color: colors.text, lineHeight: 1.5 }}>{value || <span style={{ color: colors.textMuted, fontStyle: 'italic' }}>{stepData.summary.none}</span>}</div>
+                </div>
+            );
+
+            return (
+                <div>
+                    <div style={{ marginBottom: '48px' }}>
+                        <Row label={stepData.summary.contact} value={
+                            <span>
+                                <strong style={{ fontWeight: 500 }}>{form.name}</strong><br />
+                                {form.phone} · {form.email}
+                                {form.dob && <><br />{f0.dob}: {form.dob}</>}
+                            </span>
+                        } />
+                        <Row label={stepData.summary.visit} value={
+                            <span>
+                                {reasonLabels[form.reason] || ''}
+                                {form.service && <><br />{form.service}</>}
+                                {(form.date || form.window) && <><br />{form.date}{form.date && form.window ? ' · ' : ''}{windowLabels[form.window] || ''}</>}
+                            </span>
+                        } />
+                        <Row label={stepData.summary.provider} value={docName} />
+                        {form.notes && <Row label={stepData.summary.notes} value={form.notes} />}
+                    </div>
+                    <p style={{ fontSize: '13px', lineHeight: 1.6, color: colors.textMuted, maxWidth: '640px', fontWeight: 300 }}>
+                        {stepData.consent}
+                    </p>
+                </div>
+            );
+        }
+
+        function PillGroup({ value, onChange, options, colors }) {
+            return (
+                <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px', marginTop: '4px' }}>
+                    {options.map(o => {
+                        const sel = value === o.v;
+                        return (
+                            <button key={o.v} type="button" onClick={() => onChange(o.v)} style={{
+                                padding: '12px 22px',
+                                background: sel ? colors.text : 'transparent',
+                                color: sel ? colors.bg : colors.text,
+                                border: `1px solid ${sel ? colors.text : colors.text + '20'}`,
+                                fontFamily: 'inherit', cursor: 'none',
+                                fontSize: '14px', fontWeight: 400,
+                                borderRadius: '100px',
+                                transition: 'all 0.25s ease'
+                            }}>{o.label}</button>
+                        );
+                    })}
+                </div>
+            );
+        }
+
+        function ThankYou({ t, colors, onDone }) {
+            return (
+                <div style={{ animation: 'bookingFade 0.6s ease both', maxWidth: '820px' }}>
+                    <p style={{ fontSize: '12px', letterSpacing: '3px', textTransform: 'uppercase', color: colors.primary, fontWeight: 600, marginBottom: '28px' }}>
+                        {t.eyebrow}
+                    </p>
+                    <h2 style={{
+                        fontFamily: "'Fraunces', serif",
+                        fontSize: 'clamp(48px, 7vw, 96px)',
+                        fontWeight: 300, lineHeight: 1.0, letterSpacing: '-3px',
+                        color: colors.text, marginBottom: '36px'
+                    }}>
+                        {t.title1}<br />
+                        <span style={{ fontStyle: 'italic', color: colors.primary }}>{t.title2}</span>
+                    </h2>
+                    <p style={{ fontSize: '20px', lineHeight: 1.6, color: colors.textLight, marginBottom: '80px', fontWeight: 300, maxWidth: '620px' }}>
+                        {t.message}
+                    </p>
+                    <p style={{ fontSize: '11px', letterSpacing: '2.5px', textTransform: 'uppercase', color: colors.textMuted, fontWeight: 600, marginBottom: '32px' }}>
+                        {t.nextSteps}
+                    </p>
+                    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: '24px', marginBottom: '80px' }}>
+                        {t.steps.map((s, i) => (
+                            <div key={i} style={{ paddingTop: '24px', borderTop: `1px solid ${colors.text}15` }}>
+                                <div style={{ fontFamily: "'Fraunces', serif", fontSize: '14px', fontStyle: 'italic', color: colors.primary, marginBottom: '16px', fontWeight: 400 }}>
+                                    {s.num}
+                                </div>
+                                <div style={{ fontFamily: "'Fraunces', serif", fontSize: '22px', fontWeight: 400, letterSpacing: '-0.5px', marginBottom: '10px', color: colors.text }}>
+                                    {s.title}
+                                </div>
+                                <div style={{ fontSize: '14px', lineHeight: 1.6, color: colors.textLight, fontWeight: 300 }}>
+                                    {s.desc}
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+                    <div style={{ display: 'flex', gap: '16px', flexWrap: 'wrap' }}>
+                        <button onClick={onDone} style={{
+                            background: colors.text, color: colors.bg,
+                            border: 'none', fontFamily: 'inherit', cursor: 'none',
+                            fontSize: '14px', letterSpacing: '0.5px', fontWeight: 500,
+                            padding: '20px 44px', borderRadius: '100px',
+                            display: 'flex', alignItems: 'center', gap: '12px'
+                        }}>
+                            {t.done} <span style={{ fontSize: '16px' }}>→</span>
+                        </button>
+                        <a href="tel:7868830339" style={{
+                            background: 'transparent', color: colors.text,
+                            border: `1px solid ${colors.text}25`,
+                            textDecoration: 'none',
+                            fontSize: '14px', letterSpacing: '0.5px', fontWeight: 500,
+                            padding: '20px 36px', borderRadius: '100px',
+                            display: 'inline-flex', alignItems: 'center', gap: '12px'
+                        }}>
+                            {t.callUs} · (786) 883-0339
+                        </a>
+                    </div>
+                </div>
+            );
+        }
+
+        function TweaksPanel({ tweaks, updateTweak, colors }) {
+            return (
+                <div style={{
+                    position: 'fixed',
+                    bottom: '20px',
+                    right: '20px',
+                    background: '#FFF',
+                    padding: '28px',
+                    borderRadius: '16px',
+                    border: `1px solid ${colors.primary}30`,
+                    boxShadow: '0 8px 32px rgba(0,0,0,0.12)',
+                    width: '320px',
+                    zIndex: 10000
+                }}>
+                    <h3 style={{ fontSize: '18px', fontWeight: 600, marginBottom: '24px', color: colors.text }}>
+                        Customize Colors
+                    </h3>
+                    {[
+                        { key: 'primaryColor', label: 'Primary' },
+                        { key: 'secondaryColor', label: 'Secondary' },
+                        { key: 'accentColor', label: 'Accent' }
+                    ].map(({ key, label }) => (
+                        <div key={key} style={{ marginBottom: '16px' }}>
+                            <label style={{
+                                fontSize: '11px',
+                                color: colors.textMuted,
+                                display: 'block',
+                                marginBottom: '8px',
+                                textTransform: 'uppercase',
+                                letterSpacing: '1px',
+                                fontWeight: 600
+                            }}>{label}</label>
+                            <input
+                                type="color"
+                                value={tweaks[key]}
+                                onChange={(e) => updateTweak(key, e.target.value)}
+                                style={{
+                                    width: '100%',
+                                    height: '44px',
+                                    border: `1px solid ${colors.text}20`,
+                                    borderRadius: '8px',
+                                    cursor: 'pointer'
+                                }}
+                            />
+                        </div>
+                    ))}
+                </div>
+            );
+        }
+        
+        const root = ReactDOM.createRoot(document.getElementById('root'));
+        root.render(<LangProvider><TruvidaWebsite /></LangProvider>);
+    </script>
+</body>
+</html>

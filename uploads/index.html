@@ -1,0 +1,1620 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Truvida Medical Group - Primary Care Physicians in Miami</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,200;0,300;0,400;0,500;0,600;0,700;1,300;1,400&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+    <script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+    <script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+    
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            overflow-x: hidden;
+            cursor: none;
+        }
+        
+        a, button, [role="button"] { cursor: none; }
+        
+        html { scroll-behavior: smooth; }
+        
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-30px) rotate(5deg); }
+        }
+        
+        @keyframes pulse {
+            0%, 100% { opacity: 0.4; transform: scale(1); }
+            50% { opacity: 0.8; transform: scale(1.05); }
+        }
+        
+        @keyframes scroll {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-50%); }
+        }
+        
+        @keyframes shimmer {
+            0% { background-position: -200% center; }
+            100% { background-position: 200% center; }
+        }
+        
+        .text-reveal-line {
+            display: block;
+            overflow: hidden;
+        }
+        
+        .text-reveal-inner {
+            display: inline-block;
+            transform: translateY(110%);
+            transition: transform 1.2s cubic-bezier(0.25, 1, 0.5, 1);
+        }
+        
+        .text-reveal.loaded .text-reveal-inner {
+            transform: translateY(0);
+        }
+        
+        .gradient-text {
+            background: linear-gradient(90deg, currentColor 0%, currentColor 40%, rgba(255,255,255,0.3) 50%, currentColor 60%, currentColor 100%);
+            background-size: 200% auto;
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: shimmer 4s linear infinite;
+        }
+        
+        @media (max-width: 768px) {
+            body { cursor: auto; }
+            a, button { cursor: pointer; }
+        }
+    </style>
+</head>
+<body>
+    <div id="root"></div>
+    
+    <script type="text/babel">
+        const { useState, useEffect, useRef, useMemo } = React;
+        
+        const TWEAK_DEFAULTS = /*EDITMODE-BEGIN*/{
+          "primaryColor": "#3057ab",
+          "secondaryColor": "#ededed",
+          "accentColor": "#2126b0"
+        }/*EDITMODE-END*/;
+        
+        // Custom cursor component
+        function CustomCursor({ colors }) {
+            const [position, setPosition] = useState({ x: 0, y: 0 });
+            const [hoverType, setHoverType] = useState('default');
+            const [visible, setVisible] = useState(false);
+            
+            useEffect(() => {
+                const move = (e) => {
+                    setPosition({ x: e.clientX, y: e.clientY });
+                    setVisible(true);
+                    
+                    const target = e.target;
+                    if (target.tagName === 'A' || target.tagName === 'BUTTON' || target.closest('a') || target.closest('button')) {
+                        setHoverType('link');
+                    } else if (target.closest('[data-cursor="view"]')) {
+                        setHoverType('view');
+                    } else {
+                        setHoverType('default');
+                    }
+                };
+                
+                const leave = () => setVisible(false);
+                
+                window.addEventListener('mousemove', move);
+                document.addEventListener('mouseleave', leave);
+                return () => {
+                    window.removeEventListener('mousemove', move);
+                    document.removeEventListener('mouseleave', leave);
+                };
+            }, []);
+            
+            const size = hoverType === 'link' ? 60 : hoverType === 'view' ? 100 : 16;
+            
+            return (
+                <>
+                    <div style={{
+                        position: 'fixed',
+                        left: position.x,
+                        top: position.y,
+                        width: size,
+                        height: size,
+                        borderRadius: '50%',
+                        background: hoverType === 'link' ? colors.primary : 'transparent',
+                        border: hoverType === 'default' ? `1.5px solid ${colors.primary}` : 'none',
+                        transform: 'translate(-50%, -50%)',
+                        pointerEvents: 'none',
+                        zIndex: 99999,
+                        mixBlendMode: hoverType === 'link' ? 'difference' : 'normal',
+                        transition: 'width 0.3s ease, height 0.3s ease, background 0.3s ease',
+                        opacity: visible ? 1 : 0,
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        color: '#FFF',
+                        fontSize: '11px',
+                        fontWeight: 600,
+                        letterSpacing: '1px',
+                        textTransform: 'uppercase'
+                    }}>
+                        {hoverType === 'view' && 'VIEW'}
+                    </div>
+                </>
+            );
+        }
+        
+        // Animated counter
+        function AnimatedCounter({ target, suffix = '', duration = 2000, isVisible }) {
+            const [count, setCount] = useState(0);
+            
+            useEffect(() => {
+                if (!isVisible) return;
+                
+                let start = 0;
+                const startTime = Date.now();
+                
+                const animate = () => {
+                    const elapsed = Date.now() - startTime;
+                    const progress = Math.min(elapsed / duration, 1);
+                    const eased = 1 - Math.pow(1 - progress, 3);
+                    setCount(Math.floor(eased * target));
+                    
+                    if (progress < 1) {
+                        requestAnimationFrame(animate);
+                    } else {
+                        setCount(target);
+                    }
+                };
+                
+                requestAnimationFrame(animate);
+            }, [isVisible, target, duration]);
+            
+            return <span>{count}{suffix}</span>;
+        }
+        
+        // Use intersection observer
+        function useInView(threshold = 0.2) {
+            const ref = useRef(null);
+            const [inView, setInView] = useState(false);
+            
+            useEffect(() => {
+                const observer = new IntersectionObserver(
+                    ([entry]) => {
+                        if (entry.isIntersecting) setInView(true);
+                    },
+                    { threshold }
+                );
+                if (ref.current) observer.observe(ref.current);
+                return () => observer.disconnect();
+            }, [threshold]);
+            
+            return [ref, inView];
+        }
+        
+        function TruvidaWebsite() {
+            const [tweaks, setTweaks] = useState(TWEAK_DEFAULTS);
+            const [editMode, setEditMode] = useState(false);
+            const [scrollY, setScrollY] = useState(0);
+            const [loaded, setLoaded] = useState(false);
+            
+            const colors = {
+                primary: tweaks.primaryColor,
+                secondary: tweaks.secondaryColor,
+                accent: tweaks.accentColor,
+                bg: '#FAFAF9',
+                dark: '#0A0A0C',
+                surface: '#FFFFFF',
+                text: '#0A0A0C',
+                textLight: '#4A4A52',
+                textMuted: '#9B9BA3'
+            };
+            
+            useEffect(() => {
+                setTimeout(() => setLoaded(true), 100);
+                
+                const handleScroll = () => setScrollY(window.scrollY);
+                window.addEventListener('scroll', handleScroll, { passive: true });
+                return () => window.removeEventListener('scroll', handleScroll);
+            }, []);
+            
+            useEffect(() => {
+                const handleMessage = (e) => {
+                    if (e.data?.type === '__activate_edit_mode') setEditMode(true);
+                    else if (e.data?.type === '__deactivate_edit_mode') setEditMode(false);
+                };
+                window.addEventListener('message', handleMessage);
+                window.parent.postMessage({ type: '__edit_mode_available' }, '*');
+                return () => window.removeEventListener('message', handleMessage);
+            }, []);
+            
+            const updateTweak = (key, value) => {
+                const newTweaks = { ...tweaks, [key]: value };
+                setTweaks(newTweaks);
+                window.parent.postMessage({
+                    type: '__edit_mode_set_keys',
+                    edits: { [key]: value }
+                }, '*');
+            };
+            
+            return (
+                <div style={{ background: colors.bg, color: colors.text }}>
+                    <CustomCursor colors={colors} />
+                    <ScrollProgress colors={colors} scrollY={scrollY} />
+                    <Navigation colors={colors} scrollY={scrollY} />
+                    <HeroSection colors={colors} scrollY={scrollY} loaded={loaded} />
+                    <MarqueeSection colors={colors} />
+                    <StatsSection colors={colors} scrollY={scrollY} />
+                    <StickyPhilosophy colors={colors} scrollY={scrollY} />
+                    <DoctorsShowcase colors={colors} scrollY={scrollY} />
+                    <ServicesShowcase colors={colors} scrollY={scrollY} />
+                    <InsuranceSection colors={colors} />
+                    <TestimonialsSection colors={colors} scrollY={scrollY} />
+                    <LocationSection colors={colors} scrollY={scrollY} />
+                    <CTASection colors={colors} scrollY={scrollY} />
+                    <Footer colors={colors} />
+                    
+                    {editMode && <TweaksPanel tweaks={tweaks} updateTweak={updateTweak} colors={colors} />}
+                </div>
+            );
+        }
+        
+        function ScrollProgress({ colors, scrollY }) {
+            const progress = Math.min(100, (scrollY / (document.documentElement.scrollHeight - window.innerHeight)) * 100);
+            return (
+                <div style={{
+                    position: 'fixed',
+                    top: 0,
+                    left: 0,
+                    height: '2px',
+                    width: `${progress}%`,
+                    background: `linear-gradient(90deg, ${colors.primary}, ${colors.accent})`,
+                    zIndex: 99998,
+                    transition: 'width 0.1s linear'
+                }} />
+            );
+        }
+        
+        function Navigation({ colors, scrollY }) {
+            const isScrolled = scrollY > 100;
+            const [menuOpen, setMenuOpen] = useState(false);
+            
+            return (
+                <nav style={{
+                    position: 'fixed',
+                    top: 0,
+                    left: 0,
+                    right: 0,
+                    zIndex: 1000,
+                    padding: isScrolled ? '16px 48px' : '32px 48px',
+                    background: isScrolled ? 'rgba(250, 250, 249, 0.85)' : 'transparent',
+                    backdropFilter: isScrolled ? 'blur(20px) saturate(180%)' : 'none',
+                    transition: 'all 0.6s cubic-bezier(0.4, 0, 0.2, 1)'
+                }}>
+                    <div style={{
+                        maxWidth: '1600px',
+                        margin: '0 auto',
+                        display: 'flex',
+                        justifyContent: 'space-between',
+                        alignItems: 'center'
+                    }}>
+                        <div style={{
+                            fontSize: '24px',
+                            fontFamily: "'Fraunces', serif",
+                            fontWeight: 400,
+                            fontStyle: 'italic',
+                            color: colors.text,
+                            letterSpacing: '0px'
+                        }}>
+                            Truvida<span style={{ color: colors.primary }}>.</span>
+                        </div>
+                        <div style={{ display: 'flex', gap: '40px', alignItems: 'center' }}>
+                            {[
+                                { label: 'Philosophy', href: '#philosophy' },
+                                { label: 'Physicians', href: '#doctors' },
+                                { label: 'Services', href: '#services' },
+                                { label: 'Location', href: '#location' }
+                            ].map(item => (
+                                <a key={item.label} href={item.href} style={{
+                                    color: colors.text,
+                                    textDecoration: 'none',
+                                    fontSize: '14px',
+                                    fontWeight: 500,
+                                    position: 'relative',
+                                    transition: 'color 0.3s ease'
+                                }}>{item.label}</a>
+                            ))}
+                            <a href="tel:7868830339" style={{
+                                padding: '14px 32px',
+                                background: colors.text,
+                                color: colors.bg,
+                                textDecoration: 'none',
+                                fontSize: '13px',
+                                fontWeight: 500,
+                                letterSpacing: '0.5px',
+                                borderRadius: '100px',
+                                transition: 'all 0.4s ease'
+                            }}>Book Now</a>
+                        </div>
+                    </div>
+                </nav>
+            );
+        }
+        
+        function HeroSection({ colors, scrollY, loaded }) {
+            const parallax = scrollY * 0.4;
+            const opacity = Math.max(0, 1 - scrollY / 700);
+            const scale = 1 + scrollY * 0.0003;
+            
+            return (
+                <section style={{
+                    minHeight: '100vh',
+                    position: 'relative',
+                    overflow: 'hidden',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    background: colors.bg
+                }}>
+                    {/* Animated background */}
+                    <div style={{
+                        position: 'absolute',
+                        inset: 0,
+                        transform: `scale(${scale})`,
+                        transition: 'transform 0.1s linear'
+                    }}>
+                        <div style={{
+                            position: 'absolute',
+                            top: '15%',
+                            right: '8%',
+                            width: '500px',
+                            height: '500px',
+                            borderRadius: '50%',
+                            background: `radial-gradient(circle, ${colors.primary}35, transparent 70%)`,
+                            filter: 'blur(40px)',
+                            animation: 'float 8s ease-in-out infinite'
+                        }} />
+                        <div style={{
+                            position: 'absolute',
+                            bottom: '10%',
+                            left: '5%',
+                            width: '600px',
+                            height: '600px',
+                            borderRadius: '50%',
+                            background: `radial-gradient(circle, ${colors.accent}20, transparent 70%)`,
+                            filter: 'blur(50px)',
+                            animation: 'float 12s ease-in-out infinite reverse'
+                        }} />
+                        <div style={{
+                            position: 'absolute',
+                            top: '40%',
+                            left: '40%',
+                            width: '300px',
+                            height: '300px',
+                            borderRadius: '50%',
+                            background: `radial-gradient(circle, ${colors.primary}20, transparent 70%)`,
+                            filter: 'blur(30px)',
+                            animation: 'pulse 6s ease-in-out infinite'
+                        }} />
+                    </div>
+                    
+                    {/* Grid lines */}
+                    <div style={{
+                        position: 'absolute',
+                        inset: 0,
+                        backgroundImage: `linear-gradient(${colors.text}08 1px, transparent 1px), linear-gradient(90deg, ${colors.text}08 1px, transparent 1px)`,
+                        backgroundSize: '80px 80px',
+                        maskImage: 'radial-gradient(ellipse at center, black 30%, transparent 70%)',
+                        WebkitMaskImage: 'radial-gradient(ellipse at center, black 30%, transparent 70%)'
+                    }} />
+                    
+                    <div style={{
+                        position: 'relative',
+                        zIndex: 2,
+                        textAlign: 'center',
+                        maxWidth: '1400px',
+                        padding: '120px 48px 60px',
+                        transform: `translateY(${parallax * 0.5}px)`,
+                        opacity: opacity
+                    }}>
+                        {/* Badge */}
+                        <div className={`text-reveal ${loaded ? 'loaded' : ''}`} style={{ marginBottom: '48px' }}>
+                            <div className="text-reveal-line">
+                                <div className="text-reveal-inner" style={{
+                                    display: 'inline-flex',
+                                    alignItems: 'center',
+                                    gap: '12px',
+                                    padding: '10px 24px',
+                                    background: `${colors.surface}`,
+                                    border: `1px solid ${colors.primary}30`,
+                                    borderRadius: '100px',
+                                    fontSize: '13px',
+                                    fontWeight: 500,
+                                    color: colors.text,
+                                    letterSpacing: '0.5px'
+                                }}>
+                                    <span style={{
+                                        width: '8px',
+                                        height: '8px',
+                                        borderRadius: '50%',
+                                        background: '#22C55E',
+                                        boxShadow: '0 0 12px #22C55E'
+                                    }} />
+                                    Accepting new patients
+                                </div>
+                            </div>
+                        </div>
+                        
+                        {/* Hero title */}
+                        <div className={`text-reveal ${loaded ? 'loaded' : ''}`}>
+                            <h1 style={{
+                                fontFamily: "'Fraunces', serif",
+                                fontSize: 'clamp(64px, 11vw, 180px)',
+                                fontWeight: 300,
+                                lineHeight: 0.95,
+                                letterSpacing: '-4px',
+                                color: colors.text
+                            }}>
+                                <span className="text-reveal-line">
+                                    <span className="text-reveal-inner" style={{ transitionDelay: '0.1s' }}>Primary care,</span>
+                                </span>
+                                <span className="text-reveal-line">
+                                    <span className="text-reveal-inner" style={{ 
+                                        transitionDelay: '0.3s',
+                                        fontStyle: 'italic',
+                                        color: colors.primary,
+                                        fontWeight: 400
+                                    }}>reimagined.</span>
+                                </span>
+                            </h1>
+                        </div>
+                        
+                        <div className={`text-reveal ${loaded ? 'loaded' : ''}`} style={{ marginTop: '48px' }}>
+                            <div className="text-reveal-line">
+                                <p className="text-reveal-inner" style={{
+                                    transitionDelay: '0.6s',
+                                    fontSize: '22px',
+                                    lineHeight: 1.5,
+                                    color: colors.textLight,
+                                    maxWidth: '680px',
+                                    margin: '0 auto',
+                                    fontWeight: 300
+                                }}>
+                                    Comprehensive healthcare in Miami, delivered with
+                                    dedication by board-certified practitioners.
+                                </p>
+                            </div>
+                        </div>
+                        
+                        <div className={`text-reveal ${loaded ? 'loaded' : ''}`} style={{ marginTop: '64px' }}>
+                            <div className="text-reveal-line">
+                                <div className="text-reveal-inner" style={{ transitionDelay: '0.9s', display: 'flex', gap: '16px', justifyContent: 'center', flexWrap: 'wrap' }}>
+                                    <a href="#doctors" style={{
+                                        padding: '20px 48px',
+                                        background: colors.text,
+                                        color: colors.bg,
+                                        textDecoration: 'none',
+                                        fontSize: '15px',
+                                        fontWeight: 500,
+                                        letterSpacing: '0.5px',
+                                        borderRadius: '100px',
+                                        transition: 'all 0.4s ease',
+                                        display: 'inline-flex',
+                                        alignItems: 'center',
+                                        gap: '12px'
+                                    }}>
+                                        Meet our physicians
+                                        <span style={{ fontSize: '18px' }}>↓</span>
+                                    </a>
+                                    <a href="tel:7868830339" style={{
+                                        padding: '20px 48px',
+                                        background: 'transparent',
+                                        color: colors.text,
+                                        textDecoration: 'none',
+                                        fontSize: '15px',
+                                        fontWeight: 500,
+                                        letterSpacing: '0.5px',
+                                        borderRadius: '100px',
+                                        border: `1.5px solid ${colors.text}30`,
+                                        transition: 'all 0.4s ease'
+                                    }}>
+                                        (786) 883-0339
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    {/* Scroll indicator */}
+                    <div style={{
+                        position: 'absolute',
+                        bottom: '32px',
+                        left: '50%',
+                        transform: 'translateX(-50%)',
+                        opacity: opacity,
+                        display: 'flex',
+                        flexDirection: 'column',
+                        alignItems: 'center',
+                        gap: '12px'
+                    }}>
+                        <span style={{
+                            fontSize: '11px',
+                            letterSpacing: '2px',
+                            textTransform: 'uppercase',
+                            color: colors.textMuted,
+                            fontWeight: 500
+                        }}>Scroll</span>
+                        <div style={{
+                            width: '1px',
+                            height: '60px',
+                            background: `linear-gradient(to bottom, ${colors.text}, transparent)`,
+                            animation: 'pulse 2s ease-in-out infinite'
+                        }} />
+                    </div>
+                </section>
+            );
+        }
+        
+        function MarqueeSection({ colors }) {
+            const words = ['Compassionate Care', 'Expert Physicians', 'Primary Care', 'Wellness', 'Diagnostics', 'Prevention', 'Comprehensive Care', 'Patient-First'];
+            return (
+                <section style={{
+                    padding: '60px 0',
+                    background: colors.dark,
+                    overflow: 'hidden',
+                    borderTop: `1px solid ${colors.text}20`,
+                    borderBottom: `1px solid ${colors.text}20`
+                }}>
+                    <div style={{
+                        display: 'flex',
+                        animation: 'scroll 40s linear infinite',
+                        width: 'max-content',
+                        gap: '80px'
+                    }}>
+                        {[...words, ...words, ...words].map((word, idx) => (
+                            <div key={idx} style={{
+                                display: 'flex',
+                                alignItems: 'center',
+                                gap: '80px',
+                                fontFamily: "'Fraunces', serif",
+                                fontSize: '56px',
+                                fontWeight: 300,
+                                color: '#FFF',
+                                whiteSpace: 'nowrap',
+                                fontStyle: idx % 2 === 0 ? 'italic' : 'normal'
+                            }}>
+                                {word}
+                                <span style={{ color: colors.primary, fontSize: '32px' }}>✦</span>
+                            </div>
+                        ))}
+                    </div>
+                </section>
+            );
+        }
+        
+        function StatsSection({ colors, scrollY }) {
+            const [ref, inView] = useInView(0.3);
+            
+            const stats = [
+                { num: 16, suffix: '+', label: 'Years of combined experience' },
+                { num: 7, suffix: '', label: 'Comprehensive service areas' },
+                { num: 8, suffix: '+', label: 'Insurance providers accepted' },
+                { num: 100, suffix: '%', label: 'Patient-first approach' }
+            ];
+            
+            return (
+                <section ref={ref} style={{
+                    padding: '160px 48px',
+                    background: colors.bg
+                }}>
+                    <div style={{
+                        maxWidth: '1400px',
+                        margin: '0 auto',
+                        display: 'grid',
+                        gridTemplateColumns: 'repeat(4, 1fr)',
+                        gap: '48px'
+                    }}>
+                        {stats.map((stat, idx) => (
+                            <div key={idx} style={{
+                                borderLeft: `1px solid ${colors.text}15`,
+                                paddingLeft: '32px',
+                                transform: inView ? 'translateY(0)' : 'translateY(40px)',
+                                opacity: inView ? 1 : 0,
+                                transition: `all 0.8s cubic-bezier(0.4, 0, 0.2, 1) ${idx * 0.1}s`
+                            }}>
+                                <div style={{
+                                    fontFamily: "'Fraunces', serif",
+                                    fontSize: 'clamp(56px, 7vw, 96px)',
+                                    fontWeight: 300,
+                                    lineHeight: 1,
+                                    color: colors.text,
+                                    marginBottom: '16px',
+                                    letterSpacing: '-3px'
+                                }}>
+                                    <AnimatedCounter target={stat.num} suffix={stat.suffix} isVisible={inView} />
+                                </div>
+                                <p style={{
+                                    fontSize: '14px',
+                                    color: colors.textLight,
+                                    lineHeight: 1.5,
+                                    fontWeight: 400
+                                }}>{stat.label}</p>
+                            </div>
+                        ))}
+                    </div>
+                </section>
+            );
+        }
+        
+        function StickyPhilosophy({ colors, scrollY }) {
+            const ref = useRef(null);
+            const [progress, setProgress] = useState(0);
+            
+            useEffect(() => {
+                const update = () => {
+                    if (!ref.current) return;
+                    const rect = ref.current.getBoundingClientRect();
+                    const total = ref.current.offsetHeight - window.innerHeight;
+                    const scrolled = -rect.top;
+                    setProgress(Math.max(0, Math.min(1, scrolled / total)));
+                };
+                update();
+                window.addEventListener('scroll', update, { passive: true });
+                return () => window.removeEventListener('scroll', update);
+            }, []);
+            
+            const statements = [
+                { word: 'Compassion', desc: 'Healthcare delivered with genuine empathy and understanding.' },
+                { word: 'Expertise', desc: 'Board-certified practitioners with decades of combined experience.' },
+                { word: 'Prevention', desc: 'Proactive care that empowers lifelong wellness and vitality.' },
+                { word: 'Community', desc: 'A diverse, inclusive practice where every patient feels at home.' }
+            ];
+            
+            const activeIdx = Math.min(statements.length - 1, Math.floor(progress * statements.length));
+            
+            return (
+                <section id="philosophy" ref={ref} style={{
+                    height: `${statements.length * 100}vh`,
+                    background: colors.dark,
+                    position: 'relative'
+                }}>
+                    <div style={{
+                        position: 'sticky',
+                        top: 0,
+                        height: '100vh',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        overflow: 'hidden'
+                    }}>
+                        <div style={{
+                            position: 'absolute',
+                            top: '48px',
+                            left: '48px',
+                            fontSize: '12px',
+                            letterSpacing: '3px',
+                            textTransform: 'uppercase',
+                            color: '#FFF',
+                            opacity: 0.5,
+                            fontWeight: 600
+                        }}>
+                            Our Philosophy — {String(activeIdx + 1).padStart(2, '0')} / {String(statements.length).padStart(2, '0')}
+                        </div>
+                        
+                        <div style={{
+                            position: 'absolute',
+                            top: '48px',
+                            right: '48px',
+                            display: 'flex',
+                            gap: '8px'
+                        }}>
+                            {statements.map((_, idx) => (
+                                <div key={idx} style={{
+                                    width: '32px',
+                                    height: '2px',
+                                    background: idx <= activeIdx ? colors.primary : 'rgba(255,255,255,0.2)',
+                                    transition: 'background 0.6s ease'
+                                }} />
+                            ))}
+                        </div>
+                        
+                        <div style={{ textAlign: 'center', maxWidth: '1200px', padding: '0 48px' }}>
+                            {statements.map((stmt, idx) => {
+                                const isActive = idx === activeIdx;
+                                return (
+                                    <div key={idx} style={{
+                                        position: 'absolute',
+                                        top: '50%',
+                                        left: '50%',
+                                        transform: `translate(-50%, -50%) ${isActive ? 'translateY(0) scale(1)' : 'translateY(40px) scale(0.95)'}`,
+                                        opacity: isActive ? 1 : 0,
+                                        transition: 'all 1s cubic-bezier(0.4, 0, 0.2, 1)',
+                                        width: '90%',
+                                        maxWidth: '1200px'
+                                    }}>
+                                        <h2 style={{
+                                            fontFamily: "'Fraunces', serif",
+                                            fontSize: 'clamp(80px, 14vw, 220px)',
+                                            fontWeight: 300,
+                                            lineHeight: 0.9,
+                                            color: '#FFF',
+                                            letterSpacing: '-5px',
+                                            marginBottom: '32px',
+                                            fontStyle: idx % 2 === 0 ? 'italic' : 'normal'
+                                        }}>
+                                            {stmt.word}<span style={{ color: colors.primary }}>.</span>
+                                        </h2>
+                                        <p style={{
+                                            fontSize: '22px',
+                                            lineHeight: 1.6,
+                                            color: 'rgba(255,255,255,0.7)',
+                                            maxWidth: '600px',
+                                            margin: '0 auto',
+                                            fontWeight: 300
+                                        }}>{stmt.desc}</p>
+                                    </div>
+                                );
+                            })}
+                        </div>
+                    </div>
+                </section>
+            );
+        }
+        
+        function DoctorsShowcase({ colors, scrollY }) {
+            const doctors = [
+                {
+                    name: 'Yahumara Gonzalez',
+                    surname: 'Funes Lopez',
+                    title: 'ARNP, FNP-C',
+                    years: '16+',
+                    image: 'uploads/pasted-1776715486799-0.png',
+                    bio: 'Starting her career as a family practice doctor, Yahumara has cultivated deep expertise in ICU and hospice care over more than 16 years of practice.',
+                    expertise: ['Critical Care', 'Palliative Care', 'Pre & Post-Surgical', 'Wound Care', 'Infection Control']
+                },
+                {
+                    name: 'Noel Medina',
+                    surname: 'Rojo',
+                    title: 'ARNP, FNP-C',
+                    years: '10+',
+                    image: 'uploads/pasted-1776715494565-0.png',
+                    bio: 'A distinguished healthcare professional with experience spanning intensive care, home health, and primary care, focusing on patient education and wellbeing.',
+                    expertise: ['Internal Medicine', 'Intensive Care', 'Trauma Care', 'Home Health', 'Hospice Care']
+                }
+            ];
+            
+            return (
+                <section id="doctors" style={{ background: colors.bg, padding: '120px 0' }}>
+                    <div style={{
+                        maxWidth: '1400px',
+                        margin: '0 auto',
+                        padding: '0 48px',
+                        marginBottom: '80px'
+                    }}>
+                        <div style={{
+                            display: 'flex',
+                            justifyContent: 'space-between',
+                            alignItems: 'flex-end',
+                            gap: '48px'
+                        }}>
+                            <div>
+                                <p style={{
+                                    fontSize: '12px',
+                                    letterSpacing: '3px',
+                                    textTransform: 'uppercase',
+                                    color: colors.textMuted,
+                                    fontWeight: 600,
+                                    marginBottom: '24px'
+                                }}>— The Physicians</p>
+                                <h2 style={{
+                                    fontFamily: "'Fraunces', serif",
+                                    fontSize: 'clamp(48px, 7vw, 112px)',
+                                    fontWeight: 300,
+                                    lineHeight: 1,
+                                    color: colors.text,
+                                    letterSpacing: '-3px'
+                                }}>
+                                    The faces behind
+                                    <br />
+                                    <span style={{ fontStyle: 'italic', color: colors.primary }}>your care.</span>
+                                </h2>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    {doctors.map((doctor, idx) => (
+                        <DoctorShowcase key={idx} doctor={doctor} colors={colors} scrollY={scrollY} index={idx} />
+                    ))}
+                </section>
+            );
+        }
+        
+        function DoctorShowcase({ doctor, colors, scrollY, index }) {
+            const ref = useRef(null);
+            const [progress, setProgress] = useState(0);
+            
+            useEffect(() => {
+                const update = () => {
+                    if (!ref.current) return;
+                    const rect = ref.current.getBoundingClientRect();
+                    const p = 1 - (rect.top / window.innerHeight);
+                    setProgress(Math.max(0, Math.min(1, p)));
+                };
+                update();
+                window.addEventListener('scroll', update, { passive: true });
+                return () => window.removeEventListener('scroll', update);
+            }, []);
+            
+            const isLeft = index % 2 === 0;
+            const imageScale = 1.2 - progress * 0.2;
+            const imageParallax = (1 - progress) * 80;
+            const contentTranslate = (1 - progress) * (isLeft ? 80 : -80);
+            
+            return (
+                <div ref={ref} style={{
+                    padding: '80px 48px',
+                    position: 'relative'
+                }}>
+                    <div style={{
+                        maxWidth: '1600px',
+                        margin: '0 auto',
+                        display: 'grid',
+                        gridTemplateColumns: '1fr 1fr',
+                        gap: '80px',
+                        alignItems: 'center'
+                    }}>
+                        {/* Image */}
+                        <div style={{
+                            order: isLeft ? 1 : 2,
+                            height: '780px',
+                            position: 'relative',
+                            borderRadius: '0',
+                            overflow: 'hidden'
+                        }} data-cursor="view">
+                            <div style={{
+                                position: 'absolute',
+                                inset: 0,
+                                transform: `scale(${imageScale}) translateY(${imageParallax * 0.2}px)`,
+                                transition: 'transform 0.1s linear'
+                            }}>
+                                <img 
+                                    src={doctor.image}
+                                    alt={doctor.name}
+                                    style={{
+                                        width: '100%',
+                                        height: '100%',
+                                        objectFit: 'cover',
+                                        filter: 'grayscale(20%)'
+                                    }}
+                                />
+                            </div>
+                            
+                            {/* Floating badge */}
+                            <div style={{
+                                position: 'absolute',
+                                bottom: '32px',
+                                left: '32px',
+                                padding: '20px 32px',
+                                background: 'rgba(10, 10, 12, 0.85)',
+                                backdropFilter: 'blur(20px)',
+                                color: '#FFF',
+                                borderRadius: '100px',
+                                fontSize: '14px',
+                                fontWeight: 500,
+                                letterSpacing: '0.5px',
+                                display: 'flex',
+                                alignItems: 'center',
+                                gap: '12px'
+                            }}>
+                                <span style={{
+                                    width: '8px',
+                                    height: '8px',
+                                    borderRadius: '50%',
+                                    background: '#22C55E'
+                                }} />
+                                {doctor.years} years in practice
+                            </div>
+                            
+                            {/* Big number */}
+                            <div style={{
+                                position: 'absolute',
+                                top: '32px',
+                                right: '32px',
+                                fontFamily: "'Fraunces', serif",
+                                fontSize: '120px',
+                                fontWeight: 300,
+                                color: '#FFF',
+                                opacity: 0.3,
+                                letterSpacing: '-5px',
+                                lineHeight: 1
+                            }}>0{index + 1}</div>
+                        </div>
+                        
+                        {/* Content */}
+                        <div style={{
+                            order: isLeft ? 2 : 1,
+                            transform: `translateX(${contentTranslate}px)`,
+                            opacity: progress,
+                            transition: 'all 0.8s cubic-bezier(0.4, 0, 0.2, 1)'
+                        }}>
+                            <p style={{
+                                fontSize: '12px',
+                                letterSpacing: '3px',
+                                textTransform: 'uppercase',
+                                color: colors.primary,
+                                fontWeight: 600,
+                                marginBottom: '24px'
+                            }}>— Dr. {doctor.name.split(' ')[0]}</p>
+                            
+                            <h3 style={{
+                                fontFamily: "'Fraunces', serif",
+                                fontSize: 'clamp(48px, 6vw, 96px)',
+                                fontWeight: 300,
+                                lineHeight: 0.95,
+                                color: colors.text,
+                                marginBottom: '16px',
+                                letterSpacing: '-3px'
+                            }}>
+                                {doctor.name}
+                                <br />
+                                <span style={{ fontStyle: 'italic' }}>{doctor.surname}</span>
+                            </h3>
+                            
+                            <p style={{
+                                fontSize: '16px',
+                                color: colors.textMuted,
+                                marginBottom: '40px',
+                                letterSpacing: '1px',
+                                fontWeight: 500
+                            }}>{doctor.title}</p>
+                            
+                            <p style={{
+                                fontSize: '19px',
+                                lineHeight: 1.7,
+                                color: colors.textLight,
+                                marginBottom: '48px',
+                                fontWeight: 300
+                            }}>{doctor.bio}</p>
+                            
+                            <div style={{ marginBottom: '48px' }}>
+                                <p style={{
+                                    fontSize: '12px',
+                                    textTransform: 'uppercase',
+                                    letterSpacing: '2px',
+                                    color: colors.textMuted,
+                                    fontWeight: 600,
+                                    marginBottom: '16px'
+                                }}>Areas of Expertise</p>
+                                <div style={{
+                                    display: 'flex',
+                                    flexWrap: 'wrap',
+                                    gap: '8px'
+                                }}>
+                                    {doctor.expertise.map((item, i) => (
+                                        <span key={i} style={{
+                                            padding: '10px 20px',
+                                            background: 'transparent',
+                                            border: `1px solid ${colors.text}20`,
+                                            borderRadius: '100px',
+                                            fontSize: '13px',
+                                            color: colors.text,
+                                            fontWeight: 500,
+                                            transition: 'all 0.3s ease'
+                                        }}>{item}</span>
+                                    ))}
+                                </div>
+                            </div>
+                            
+                            <a href="#contact" style={{
+                                display: 'inline-flex',
+                                alignItems: 'center',
+                                gap: '16px',
+                                fontSize: '15px',
+                                color: colors.text,
+                                textDecoration: 'none',
+                                fontWeight: 500,
+                                letterSpacing: '0.5px',
+                                paddingBottom: '4px',
+                                borderBottom: `1px solid ${colors.text}`
+                            }}>
+                                Schedule a consultation
+                                <span style={{ fontSize: '18px' }}>→</span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            );
+        }
+        
+        function ServicesShowcase({ colors, scrollY }) {
+            const services = [
+                { num: '01', title: 'Primary Care', desc: 'Continuous comprehensive healthcare as the cornerstone of your wellbeing.' },
+                { num: '02', title: 'Wellness Check-Ups', desc: 'Preventive health assessments and comprehensive screenings.' },
+                { num: '03', title: 'Advanced Laboratory', desc: 'Precision diagnostic testing with rapid, accurate results.' },
+                { num: '04', title: 'Electrocardiography', desc: 'Comprehensive cardiac health monitoring and heart rhythm analysis.' },
+                { num: '05', title: 'Pap Smear Screenings', desc: 'Essential women\'s health services in a comfortable environment.' },
+                { num: '06', title: 'Medical Consultations', desc: 'Personalized one-on-one guidance from experienced practitioners.' },
+                { num: '07', title: 'Follow-Up Care', desc: 'Continuous monitoring and support throughout your health journey.' }
+            ];
+            
+            const [hovered, setHovered] = useState(null);
+            
+            return (
+                <section id="services" style={{
+                    background: colors.surface,
+                    padding: '160px 48px',
+                    position: 'relative',
+                    overflow: 'hidden'
+                }}>
+                    <div style={{ maxWidth: '1400px', margin: '0 auto' }}>
+                        <div style={{ marginBottom: '80px' }}>
+                            <p style={{
+                                fontSize: '12px',
+                                letterSpacing: '3px',
+                                textTransform: 'uppercase',
+                                color: colors.textMuted,
+                                fontWeight: 600,
+                                marginBottom: '24px'
+                            }}>— Comprehensive Services</p>
+                            <h2 style={{
+                                fontFamily: "'Fraunces', serif",
+                                fontSize: 'clamp(48px, 7vw, 112px)',
+                                fontWeight: 300,
+                                lineHeight: 1,
+                                color: colors.text,
+                                letterSpacing: '-3px'
+                            }}>
+                                Everything you need,
+                                <br />
+                                <span style={{ fontStyle: 'italic', color: colors.primary }}>in one place.</span>
+                            </h2>
+                        </div>
+                        
+                        <div>
+                            {services.map((service, idx) => (
+                                <ServiceRow 
+                                    key={idx}
+                                    service={service}
+                                    colors={colors}
+                                    index={idx}
+                                    isHovered={hovered === idx}
+                                    onHover={() => setHovered(idx)}
+                                    onLeave={() => setHovered(null)}
+                                />
+                            ))}
+                        </div>
+                    </div>
+                </section>
+            );
+        }
+        
+        function ServiceRow({ service, colors, index, isHovered, onHover, onLeave }) {
+            const [ref, inView] = useInView(0.3);
+            
+            return (
+                <div
+                    ref={ref}
+                    onMouseEnter={onHover}
+                    onMouseLeave={onLeave}
+                    style={{
+                        display: 'grid',
+                        gridTemplateColumns: '100px 1fr 2fr 60px',
+                        gap: '40px',
+                        alignItems: 'center',
+                        padding: '48px 0',
+                        borderTop: `1px solid ${colors.text}15`,
+                        borderBottom: index === 6 ? `1px solid ${colors.text}15` : 'none',
+                        cursor: 'none',
+                        transition: 'all 0.5s ease',
+                        transform: inView ? 'translateY(0)' : 'translateY(40px)',
+                        opacity: inView ? 1 : 0,
+                        transitionDelay: `${index * 0.05}s`
+                    }}
+                >
+                    <div style={{
+                        fontSize: '14px',
+                        color: colors.textMuted,
+                        fontWeight: 500,
+                        letterSpacing: '1px',
+                        transform: isHovered ? 'translateX(16px)' : 'translateX(0)',
+                        transition: 'transform 0.4s ease'
+                    }}>{service.num}</div>
+                    
+                    <h3 style={{
+                        fontFamily: "'Fraunces', serif",
+                        fontSize: 'clamp(32px, 4vw, 48px)',
+                        fontWeight: 300,
+                        color: isHovered ? colors.primary : colors.text,
+                        letterSpacing: '-1px',
+                        fontStyle: isHovered ? 'italic' : 'normal',
+                        transition: 'all 0.4s ease'
+                    }}>{service.title}</h3>
+                    
+                    <p style={{
+                        fontSize: '16px',
+                        color: colors.textLight,
+                        lineHeight: 1.6,
+                        fontWeight: 300,
+                        maxWidth: '500px',
+                        opacity: isHovered ? 1 : 0.6,
+                        transition: 'opacity 0.4s ease'
+                    }}>{service.desc}</p>
+                    
+                    <div style={{
+                        fontSize: '24px',
+                        color: colors.text,
+                        textAlign: 'right',
+                        transform: isHovered ? 'translateX(8px) rotate(-45deg)' : 'translateX(0) rotate(0deg)',
+                        transition: 'transform 0.4s ease'
+                    }}>→</div>
+                </div>
+            );
+        }
+        
+        function InsuranceSection({ colors }) {
+            const insurances = [
+                'uploads/pasted-1776716186803-1.png',
+                'uploads/pasted-1776716196542-1.png',
+                'uploads/pasted-1776716207789-0.png',
+                'uploads/pasted-1776716226963-0.png',
+                'uploads/pasted-1776716244112-0.png',
+                'uploads/pasted-1776716257693-0.png',
+                'uploads/pasted-1776716272100-0.png',
+                'uploads/pasted-1776716288148-0.png'
+            ];
+            
+            return (
+                <section style={{
+                    padding: '120px 0',
+                    background: colors.bg,
+                    overflow: 'hidden'
+                }}>
+                    <div style={{ textAlign: 'center', marginBottom: '64px', padding: '0 48px' }}>
+                        <p style={{
+                            fontSize: '12px',
+                            letterSpacing: '3px',
+                            textTransform: 'uppercase',
+                            color: colors.textMuted,
+                            fontWeight: 600,
+                            marginBottom: '16px'
+                        }}>— Insurance Partners</p>
+                        <h2 style={{
+                            fontFamily: "'Fraunces', serif",
+                            fontSize: 'clamp(36px, 5vw, 64px)',
+                            fontWeight: 300,
+                            color: colors.text,
+                            letterSpacing: '-1.5px'
+                        }}>
+                            Accepting <span style={{ fontStyle: 'italic', color: colors.primary }}>most major</span> insurance plans
+                        </h2>
+                    </div>
+                    
+                    <div style={{ position: 'relative', overflow: 'hidden' }}>
+                        <div style={{
+                            display: 'flex',
+                            animation: 'scroll 40s linear infinite',
+                            width: 'max-content',
+                            gap: '24px'
+                        }}>
+                            {[...insurances, ...insurances].map((logo, idx) => (
+                                <div key={idx} style={{
+                                    minWidth: '240px',
+                                    height: '120px',
+                                    display: 'flex',
+                                    alignItems: 'center',
+                                    justifyContent: 'center',
+                                    background: '#FFF',
+                                    borderRadius: '16px',
+                                    padding: '24px',
+                                    border: `1px solid ${colors.text}10`,
+                                    transition: 'all 0.3s ease'
+                                }}>
+                                    <img 
+                                        src={logo}
+                                        alt=""
+                                        style={{ maxWidth: '100%', maxHeight: '100%', objectFit: 'contain', filter: 'grayscale(1)', opacity: 0.7 }}
+                                    />
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+                </section>
+            );
+        }
+        
+        function TestimonialsSection({ colors, scrollY }) {
+            const testimonials = [
+                { name: 'Kevin Cueva', text: 'Amazing staff and the Doctors are amazing. They were really professional and the patient care exceed any expectation. I finally found a medical office that I can go and feel like I\'m taken care.' },
+                { name: 'Karline Mompoint', text: 'Professionalism from the beginning of your visit to the end. The staff and Doctors are amazing! I would definitely recommend to see this medical team!' },
+                { name: 'Maggie Rodriguez', text: 'Loving caring staff with amazing skill doctors. I HIGHLY recommend this Medical Group for your medical needs.' }
+            ];
+            
+            const [active, setActive] = useState(0);
+            
+            useEffect(() => {
+                const interval = setInterval(() => {
+                    setActive((prev) => (prev + 1) % testimonials.length);
+                }, 6000);
+                return () => clearInterval(interval);
+            }, []);
+            
+            return (
+                <section style={{
+                    padding: '160px 48px',
+                    background: colors.dark,
+                    color: '#FFF',
+                    position: 'relative',
+                    overflow: 'hidden'
+                }}>
+                    <div style={{
+                        position: 'absolute',
+                        top: '-200px',
+                        right: '-200px',
+                        width: '600px',
+                        height: '600px',
+                        borderRadius: '50%',
+                        background: `radial-gradient(circle, ${colors.primary}30, transparent 70%)`,
+                        filter: 'blur(60px)'
+                    }} />
+                    
+                    <div style={{ maxWidth: '1200px', margin: '0 auto', position: 'relative' }}>
+                        <p style={{
+                            fontSize: '12px',
+                            letterSpacing: '3px',
+                            textTransform: 'uppercase',
+                            color: 'rgba(255,255,255,0.5)',
+                            fontWeight: 600,
+                            marginBottom: '48px',
+                            textAlign: 'center'
+                        }}>— Patient Voices</p>
+                        
+                        <div style={{ minHeight: '400px', position: 'relative' }}>
+                            {testimonials.map((t, idx) => (
+                                <div key={idx} style={{
+                                    position: 'absolute',
+                                    inset: 0,
+                                    opacity: active === idx ? 1 : 0,
+                                    transform: active === idx ? 'translateY(0)' : 'translateY(30px)',
+                                    transition: 'all 0.8s cubic-bezier(0.4, 0, 0.2, 1)',
+                                    pointerEvents: active === idx ? 'auto' : 'none',
+                                    textAlign: 'center'
+                                }}>
+                                    <p style={{
+                                        fontFamily: "'Fraunces', serif",
+                                        fontSize: 'clamp(28px, 4vw, 56px)',
+                                        fontWeight: 300,
+                                        lineHeight: 1.3,
+                                        marginBottom: '48px',
+                                        fontStyle: 'italic',
+                                        letterSpacing: '-1px'
+                                    }}>
+                                        "{t.text}"
+                                    </p>
+                                    <p style={{
+                                        fontSize: '14px',
+                                        letterSpacing: '2px',
+                                        textTransform: 'uppercase',
+                                        color: colors.primary,
+                                        fontWeight: 600
+                                    }}>— {t.name}</p>
+                                </div>
+                            ))}
+                        </div>
+                        
+                        <div style={{ display: 'flex', gap: '12px', justifyContent: 'center', marginTop: '64px' }}>
+                            {testimonials.map((_, idx) => (
+                                <button key={idx} onClick={() => setActive(idx)} style={{
+                                    width: active === idx ? '48px' : '8px',
+                                    height: '8px',
+                                    borderRadius: '100px',
+                                    background: active === idx ? colors.primary : 'rgba(255,255,255,0.3)',
+                                    border: 'none',
+                                    transition: 'all 0.4s ease'
+                                }} />
+                            ))}
+                        </div>
+                    </div>
+                </section>
+            );
+        }
+        
+        function LocationSection({ colors, scrollY }) {
+            const [ref, inView] = useInView(0.2);
+            
+            return (
+                <section id="location" ref={ref} style={{
+                    padding: '160px 48px',
+                    background: colors.bg
+                }}>
+                    <div style={{ maxWidth: '1600px', margin: '0 auto' }}>
+                        <div style={{
+                            display: 'grid',
+                            gridTemplateColumns: '1fr 1fr',
+                            gap: '80px',
+                            alignItems: 'center',
+                            marginBottom: '80px'
+                        }}>
+                            <div style={{
+                                opacity: inView ? 1 : 0,
+                                transform: inView ? 'translateX(0)' : 'translateX(-40px)',
+                                transition: 'all 0.8s ease'
+                            }}>
+                                <p style={{
+                                    fontSize: '12px',
+                                    letterSpacing: '3px',
+                                    textTransform: 'uppercase',
+                                    color: colors.textMuted,
+                                    fontWeight: 600,
+                                    marginBottom: '24px'
+                                }}>— Visit Us</p>
+                                <h2 style={{
+                                    fontFamily: "'Fraunces', serif",
+                                    fontSize: 'clamp(40px, 6vw, 96px)',
+                                    fontWeight: 300,
+                                    lineHeight: 1,
+                                    color: colors.text,
+                                    letterSpacing: '-3px',
+                                    marginBottom: '32px'
+                                }}>
+                                    In the heart of
+                                    <br />
+                                    <span style={{ fontStyle: 'italic', color: colors.primary }}>Miami.</span>
+                                </h2>
+                                <p style={{
+                                    fontSize: '20px',
+                                    color: colors.textLight,
+                                    lineHeight: 1.6,
+                                    fontWeight: 300
+                                }}>
+                                    Conveniently located to serve the greater Miami community 
+                                    with easy access and comfortable facilities.
+                                </p>
+                            </div>
+                            
+                            <div style={{
+                                opacity: inView ? 1 : 0,
+                                transform: inView ? 'translateX(0)' : 'translateX(40px)',
+                                transition: 'all 0.8s ease 0.2s'
+                            }}>
+                                <div style={{ marginBottom: '40px', paddingBottom: '32px', borderBottom: `1px solid ${colors.text}15` }}>
+                                    <p style={{ fontSize: '11px', letterSpacing: '2px', textTransform: 'uppercase', color: colors.textMuted, fontWeight: 600, marginBottom: '12px' }}>Address</p>
+                                    <p style={{ fontSize: '20px', color: colors.text, fontWeight: 400, lineHeight: 1.5 }}>
+                                        9299 SW 152nd St #206<br />
+                                        Miami, FL 33157
+                                    </p>
+                                </div>
+                                <div style={{ marginBottom: '40px', paddingBottom: '32px', borderBottom: `1px solid ${colors.text}15` }}>
+                                    <p style={{ fontSize: '11px', letterSpacing: '2px', textTransform: 'uppercase', color: colors.textMuted, fontWeight: 600, marginBottom: '12px' }}>Hours</p>
+                                    <p style={{ fontSize: '20px', color: colors.text, fontWeight: 400, lineHeight: 1.5 }}>
+                                        Monday – Friday, 9AM – 6PM<br />
+                                        <span style={{ color: colors.textMuted }}>Saturday & Sunday, Closed</span>
+                                    </p>
+                                </div>
+                                <div>
+                                    <p style={{ fontSize: '11px', letterSpacing: '2px', textTransform: 'uppercase', color: colors.textMuted, fontWeight: 600, marginBottom: '12px' }}>Contact</p>
+                                    <a href="tel:7868830339" style={{ fontSize: '28px', color: colors.primary, fontWeight: 400, textDecoration: 'none', display: 'block', marginBottom: '4px' }}>
+                                        (786) 883-0339
+                                    </a>
+                                    <a href="mailto:info@truvidamg.com" style={{ fontSize: '16px', color: colors.text, textDecoration: 'none', fontWeight: 400 }}>
+                                        info@truvidamg.com
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div style={{
+                            position: 'relative',
+                            borderRadius: '24px',
+                            overflow: 'hidden',
+                            height: '600px',
+                            opacity: inView ? 1 : 0,
+                            transform: inView ? 'translateY(0)' : 'translateY(60px)',
+                            transition: 'all 1s ease 0.4s',
+                            boxShadow: `0 40px 120px rgba(0, 0, 0, 0.2)`
+                        }}>
+                            <iframe 
+                                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3595.2892883446436!2d-80.35897!3d25.6398!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x88d9c0e0e0e0e0e1%3A0x0!2s9299%20SW%20152nd%20St%20%23206%2C%20Miami%2C%20FL%2033157!5e0!3m2!1sen!2sus!4v1234567890"
+                                width="100%"
+                                height="600"
+                                style={{ border: 0, filter: 'grayscale(20%)' }}
+                                loading="lazy"
+                            />
+                        </div>
+                    </div>
+                </section>
+            );
+        }
+        
+        function CTASection({ colors }) {
+            const [ref, inView] = useInView(0.3);
+            
+            return (
+                <section id="contact" ref={ref} style={{
+                    padding: '200px 48px',
+                    background: colors.dark,
+                    color: '#FFF',
+                    position: 'relative',
+                    overflow: 'hidden'
+                }}>
+                    <div style={{
+                        position: 'absolute',
+                        inset: 0,
+                        background: `radial-gradient(ellipse at center, ${colors.primary}15, transparent 60%)`
+                    }} />
+                    
+                    <div style={{
+                        maxWidth: '1000px',
+                        margin: '0 auto',
+                        textAlign: 'center',
+                        position: 'relative',
+                        opacity: inView ? 1 : 0,
+                        transform: inView ? 'translateY(0)' : 'translateY(60px)',
+                        transition: 'all 1s ease'
+                    }}>
+                        <p style={{
+                            fontSize: '12px',
+                            letterSpacing: '3px',
+                            textTransform: 'uppercase',
+                            color: 'rgba(255,255,255,0.5)',
+                            fontWeight: 600,
+                            marginBottom: '32px'
+                        }}>— Ready to begin?</p>
+                        <h2 style={{
+                            fontFamily: "'Fraunces', serif",
+                            fontSize: 'clamp(64px, 10vw, 160px)',
+                            fontWeight: 300,
+                            lineHeight: 0.95,
+                            letterSpacing: '-4px',
+                            marginBottom: '48px'
+                        }}>
+                            Your health
+                            <br />
+                            <span style={{ fontStyle: 'italic', color: colors.primary }}>deserves more.</span>
+                        </h2>
+                        <p style={{
+                            fontSize: '22px',
+                            color: 'rgba(255,255,255,0.7)',
+                            lineHeight: 1.6,
+                            marginBottom: '64px',
+                            fontWeight: 300
+                        }}>
+                            Schedule your appointment today and experience primary care 
+                            reimagined for you and your family.
+                        </p>
+                        <div style={{ display: 'flex', gap: '16px', justifyContent: 'center', flexWrap: 'wrap' }}>
+                            <a href="tel:7868830339" style={{
+                                padding: '24px 64px',
+                                background: '#FFF',
+                                color: colors.dark,
+                                textDecoration: 'none',
+                                fontSize: '16px',
+                                fontWeight: 500,
+                                borderRadius: '100px',
+                                letterSpacing: '0.5px',
+                                display: 'inline-flex',
+                                alignItems: 'center',
+                                gap: '12px'
+                            }}>
+                                Call (786) 883-0339
+                                <span>→</span>
+                            </a>
+                            <a href="mailto:info@truvidamg.com" style={{
+                                padding: '24px 64px',
+                                background: 'transparent',
+                                color: '#FFF',
+                                textDecoration: 'none',
+                                fontSize: '16px',
+                                fontWeight: 500,
+                                borderRadius: '100px',
+                                letterSpacing: '0.5px',
+                                border: '1.5px solid rgba(255,255,255,0.3)'
+                            }}>
+                                Send a message
+                            </a>
+                        </div>
+                    </div>
+                </section>
+            );
+        }
+        
+        function Footer({ colors }) {
+            return (
+                <footer style={{
+                    padding: '80px 48px 40px',
+                    background: colors.dark,
+                    color: 'rgba(255,255,255,0.6)',
+                    borderTop: '1px solid rgba(255,255,255,0.1)'
+                }}>
+                    <div style={{
+                        maxWidth: '1600px',
+                        margin: '0 auto',
+                        display: 'flex',
+                        justifyContent: 'space-between',
+                        alignItems: 'center',
+                        flexWrap: 'wrap',
+                        gap: '32px'
+                    }}>
+                        <div style={{
+                            fontFamily: "'Fraunces', serif",
+                            fontSize: '32px',
+                            fontWeight: 300,
+                            fontStyle: 'italic',
+                            color: '#FFF'
+                        }}>
+                            Truvida<span style={{ color: colors.primary }}>.</span>
+                        </div>
+                        <div style={{ display: 'flex', gap: '32px', fontSize: '13px' }}>
+                            <a href="https://www.facebook.com/truvidamedicalgroup" style={{ color: 'inherit', textDecoration: 'none' }}>Facebook</a>
+                            <a href="https://www.instagram.com/truvidamiami" style={{ color: 'inherit', textDecoration: 'none' }}>Instagram</a>
+                        </div>
+                        <p style={{ fontSize: '13px' }}>© 2026 Truvida Medical Group</p>
+                    </div>
+                </footer>
+            );
+        }
+        
+        function TweaksPanel({ tweaks, updateTweak, colors }) {
+            return (
+                <div style={{
+                    position: 'fixed',
+                    bottom: '20px',
+                    right: '20px',
+                    background: '#FFF',
+                    padding: '28px',
+                    borderRadius: '16px',
+                    border: `1px solid ${colors.primary}30`,
+                    boxShadow: '0 8px 32px rgba(0,0,0,0.12)',
+                    width: '320px',
+                    zIndex: 10000
+                }}>
+                    <h3 style={{ fontSize: '18px', fontWeight: 600, marginBottom: '24px', color: colors.text }}>
+                        Customize Colors
+                    </h3>
+                    {[
+                        { key: 'primaryColor', label: 'Primary' },
+                        { key: 'secondaryColor', label: 'Secondary' },
+                        { key: 'accentColor', label: 'Accent' }
+                    ].map(({ key, label }) => (
+                        <div key={key} style={{ marginBottom: '16px' }}>
+                            <label style={{
+                                fontSize: '11px',
+                                color: colors.textMuted,
+                                display: 'block',
+                                marginBottom: '8px',
+                                textTransform: 'uppercase',
+                                letterSpacing: '1px',
+                                fontWeight: 600
+                            }}>{label}</label>
+                            <input
+                                type="color"
+                                value={tweaks[key]}
+                                onChange={(e) => updateTweak(key, e.target.value)}
+                                style={{
+                                    width: '100%',
+                                    height: '44px',
+                                    border: `1px solid ${colors.text}20`,
+                                    borderRadius: '8px',
+                                    cursor: 'pointer'
+                                }}
+                            />
+                        </div>
+                    ))}
+                </div>
+            );
+        }
+        
+        const root = ReactDOM.createRoot(document.getElementById('root'));
+        root.render(<TruvidaWebsite />);
+    </script>
+</body>
+</html>

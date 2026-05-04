@@ -1,0 +1,713 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Guía de Servicios de Bienestar — Tru Vida Medical Group</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+<style>
+:root {
+  --deep:#0b1f2e;--mid:#122a3d;--teal:#0e8c7a;--teal-light:#14b09a;
+  --gold:#c8a45a;--gold-light:#e2c47a;--rose:#b05070;--purple:#6a4a8c;
+  --blue-iv:#2a6aad;--green-lipo:#2a8a4a;--cream:#f8f4ee;--off:#f0ebe2;
+  --white:#fff;--gray:#4e5d6c;--border:#e0d8cc;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'Jost',sans-serif;background:var(--cream);color:var(--deep);line-height:1.7;}
+.hero{background:linear-gradient(140deg,var(--deep) 0%,var(--mid) 55%,#1a3a50 100%);color:var(--white);padding:56px 40px 48px;position:relative;overflow:hidden;}
+.hero::before{content:'';position:absolute;top:-100px;right:-100px;width:420px;height:420px;border-radius:50%;background:radial-gradient(circle,rgba(200,164,90,.15) 0%,transparent 65%);}
+.hero::after{content:'';position:absolute;bottom:-80px;left:-80px;width:300px;height:300px;border-radius:50%;background:radial-gradient(circle,rgba(14,140,122,.18) 0%,transparent 65%);}
+.hero-inner{max-width:880px;margin:0 auto;position:relative;z-index:1;}
+.practice-tag{display:inline-block;background:rgba(200,164,90,.18);border:1px solid var(--gold);color:var(--gold-light);font-size:10.5px;font-weight:600;letter-spacing:3px;text-transform:uppercase;padding:5px 15px;border-radius:20px;margin-bottom:20px;}
+.hero h1{font-family:'Cormorant Garamond',serif;font-size:clamp(2.4rem,5vw,3.6rem);font-weight:700;line-height:1.12;margin-bottom:14px;}
+.hero h1 em{font-style:italic;color:var(--gold-light);}
+.hero-sub{font-size:1rem;font-weight:300;color:rgba(255,255,255,.72);max-width:600px;margin-bottom:26px;}
+.service-chips{display:flex;flex-wrap:wrap;gap:9px;}
+.chip{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.18);color:rgba(255,255,255,.88);font-size:12px;font-weight:500;padding:5px 13px;border-radius:16px;}
+.chip.teal{border-color:rgba(14,176,154,.5);color:#7ee8d8;}
+.chip.gold{border-color:rgba(200,164,90,.5);color:var(--gold-light);}
+.chip.rose{border-color:rgba(176,80,112,.5);color:#e8a0b8;}
+.chip.blue{border-color:rgba(42,106,173,.5);color:#90c0f0;}
+.chip.green{border-color:rgba(42,138,74,.5);color:#90d8a8;}
+.tab-nav{background:var(--deep);position:sticky;top:0;z-index:100;overflow-x:auto;white-space:nowrap;scrollbar-width:none;}
+.tab-nav::-webkit-scrollbar{display:none;}
+.tab-nav-inner{display:inline-flex;padding:0 20px;min-width:100%;}
+.tab-btn{background:none;border:none;color:rgba(255,255,255,.5);font-family:'Jost',sans-serif;font-size:12px;font-weight:600;letter-spacing:1px;text-transform:uppercase;padding:13px 17px;cursor:pointer;border-bottom:2px solid transparent;transition:color .2s,border-color .2s;white-space:nowrap;}
+.tab-btn:hover,.tab-btn.active{color:var(--gold-light);border-bottom-color:var(--gold);}
+.page-wrap{max-width:920px;margin:0 auto;padding:38px 20px 80px;}
+.section{display:none;animation:fadeUp .3s ease;}
+.section.active{display:block;}
+@keyframes fadeUp{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
+.sec-header{display:flex;align-items:flex-start;gap:16px;margin-bottom:28px;padding-bottom:18px;border-bottom:2px solid var(--border);}
+.sec-icon{width:52px;height:52px;min-width:52px;border-radius:13px;display:flex;align-items:center;justify-content:center;font-size:22px;}
+.sec-icon.teal{background:linear-gradient(135deg,var(--teal),var(--teal-light));}
+.sec-icon.gold{background:linear-gradient(135deg,#a08040,var(--gold));}
+.sec-icon.blue{background:linear-gradient(135deg,#1a5a9d,var(--blue-iv));}
+.sec-icon.green{background:linear-gradient(135deg,#1a7a3a,var(--green-lipo));}
+.sec-icon.purple{background:linear-gradient(135deg,#5a3a7c,var(--purple));}
+.sec-title h2{font-family:'Cormorant Garamond',serif;font-size:1.8rem;font-weight:700;color:var(--deep);margin-bottom:3px;}
+.sec-title p{font-size:.9rem;color:var(--gray);}
+.card{background:var(--white);border-radius:14px;padding:22px 26px;margin-bottom:18px;border:1px solid var(--border);box-shadow:0 2px 10px rgba(11,31,46,.05);}
+.card-title{font-family:'Cormorant Garamond',serif;font-size:1.15rem;font-weight:700;color:var(--deep);margin-bottom:11px;display:flex;align-items:center;gap:9px;}
+.badge{font-family:'Jost',sans-serif;font-size:10px;font-weight:600;letter-spacing:1px;text-transform:uppercase;padding:2px 9px;border-radius:12px;}
+.badge.teal{background:var(--teal);color:#fff;}.badge.gold{background:var(--gold);color:var(--deep);}.badge.red{background:var(--rose);color:#fff;}.badge.blue{background:var(--blue-iv);color:#fff;}.badge.green{background:var(--green-lipo);color:#fff;}.badge.purple{background:var(--purple);color:#fff;}
+.service-card{background:var(--white);border-radius:14px;border:1px solid var(--border);overflow:hidden;margin-bottom:16px;box-shadow:0 2px 10px rgba(11,31,46,.05);}
+.service-header{padding:14px 22px;display:flex;justify-content:space-between;align-items:center;}
+.service-header.teal{background:linear-gradient(90deg,var(--teal),var(--teal-light));}
+.service-header.blue{background:linear-gradient(90deg,#1a5a9d,var(--blue-iv));}
+.service-header.green{background:linear-gradient(90deg,#1a7a3a,var(--green-lipo));}
+.service-header.purple{background:linear-gradient(90deg,#5a3a7c,var(--purple));}
+.service-header.gold{background:linear-gradient(90deg,#8a6a30,var(--gold));}
+.service-header.rose{background:linear-gradient(90deg,#8a3050,var(--rose));}
+.service-name{font-family:'Cormorant Garamond',serif;font-size:1.1rem;font-weight:700;color:#fff;}
+.service-tag{font-size:10.5px;font-weight:600;letter-spacing:1px;text-transform:uppercase;background:rgba(255,255,255,.2);color:rgba(255,255,255,.9);padding:3px 10px;border-radius:10px;}
+.service-body{padding:16px 22px;}
+.service-desc{font-size:.9rem;color:var(--gray);margin-bottom:12px;}
+.ingredient-list{display:flex;flex-wrap:wrap;gap:7px;margin-bottom:12px;}
+.ing-tag{font-size:11px;font-weight:600;background:var(--off);border:1px solid var(--border);color:var(--deep);padding:3px 10px;border-radius:10px;}
+.benefit-row{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
+.benefit-item{display:flex;align-items:flex-start;gap:7px;font-size:.86rem;color:var(--gray);}
+.benefit-item .bi{color:var(--teal);font-size:14px;margin-top:2px;}
+.dose-table{width:100%;border-collapse:collapse;margin-top:10px;}
+.dose-table th{background:var(--deep);color:#fff;font-size:11.5px;font-weight:600;letter-spacing:.8px;text-transform:uppercase;padding:9px 13px;text-align:left;}
+.dose-table th:first-child{border-radius:7px 0 0 0;}.dose-table th:last-child{border-radius:0 7px 0 0;}
+.dose-table td{padding:10px 13px;font-size:.88rem;border-bottom:1px solid var(--border);}
+.dose-table tr:last-child td{border-bottom:none;}.dose-table tr:nth-child(even) td{background:var(--off);}
+.dose-hl{color:var(--teal);font-weight:600;}
+.alert{border-radius:11px;padding:16px 20px;margin-bottom:16px;display:flex;gap:13px;align-items:flex-start;}
+.alert.info{background:#edf8f6;border:1px solid var(--teal-light);}.alert.warn{background:#fdf6e8;border:1px solid var(--gold);}.alert.danger{background:#fdf0f3;border:1px solid #d07080;}
+.alert .icon{font-size:20px;min-width:24px;}.alert p{font-size:.9rem;color:var(--gray);}.alert strong{color:var(--deep);}
+ul.gl{list-style:none;padding:0;}
+ul.gl li{padding:7px 0 7px 20px;position:relative;font-size:.9rem;color:var(--gray);border-bottom:1px solid var(--off);}
+ul.gl li:last-child{border-bottom:none;}
+ul.gl li::before{content:'→';position:absolute;left:0;color:var(--teal);font-weight:700;}
+ul.gl li strong{color:var(--deep);}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+@media(max-width:600px){.g2{grid-template-columns:1fr;}}
+.comp-table{width:100%;border-collapse:collapse;margin-top:12px;}
+.comp-table th{background:var(--deep);color:#fff;font-size:11px;font-weight:600;letter-spacing:.7px;text-transform:uppercase;padding:9px 12px;text-align:left;}
+.comp-table th:first-child{border-radius:7px 0 0 0;}.comp-table th:last-child{border-radius:0 7px 0 0;}
+.comp-table td{padding:10px 12px;font-size:.86rem;border-bottom:1px solid var(--border);color:var(--gray);}
+.comp-table td:first-child{font-weight:600;color:var(--deep);}
+.comp-table tr:last-child td{border-bottom:none;}.comp-table tr:nth-child(even) td{background:var(--off);}
+.check{color:var(--teal);font-weight:700;}.cross{color:var(--rose);}
+.faq-item{border-bottom:1px solid var(--border);}
+.faq-q{width:100%;background:none;border:none;text-align:left;padding:15px 4px;font-family:'Jost',sans-serif;font-size:.95rem;font-weight:600;color:var(--deep);cursor:pointer;display:flex;justify-content:space-between;align-items:center;gap:10px;}
+.faq-q:hover{color:var(--teal);}
+.faq-q .chev{font-size:17px;transition:transform .25s;color:var(--teal);}
+.faq-q.open .chev{transform:rotate(180deg);}
+.faq-a{display:none;padding:0 4px 14px;font-size:.88rem;color:var(--gray);line-height:1.75;}
+.faq-a.open{display:block;}
+.step-row{display:flex;gap:14px;margin-bottom:16px;align-items:flex-start;}
+.step-num{width:34px;height:34px;min-width:34px;background:var(--teal);color:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:14px;}
+.step-c h4{font-weight:600;color:var(--deep);margin-bottom:2px;font-size:.93rem;}
+.step-c p{font-size:.87rem;color:var(--gray);}
+.pm-row{display:flex;gap:12px;align-items:center;padding:13px 0;border-bottom:1px solid var(--off);}
+.pm-row:last-child{border-bottom:none;}
+.pm-num{width:40px;height:40px;min-width:40px;background:var(--deep);color:var(--gold-light);border-radius:9px;display:flex;align-items:center;justify-content:center;font-family:'Cormorant Garamond',serif;font-weight:700;font-size:1.1rem;}
+.pm-c h4{font-weight:600;font-size:.9rem;color:var(--deep);margin-bottom:1px;}
+.pm-c p{font-size:.84rem;color:var(--gray);}
+.divider{height:1px;background:var(--border);margin:18px 0;}
+.text-sm{font-size:.86rem;color:var(--gray);}
+.mt10{margin-top:10px;}
+.print-btn{position:fixed;bottom:26px;right:26px;background:var(--deep);color:#fff;border:none;border-radius:50px;padding:11px 20px;font-family:'Jost',sans-serif;font-size:12.5px;font-weight:600;cursor:pointer;box-shadow:0 4px 18px rgba(11,31,46,.3);display:flex;align-items:center;gap:7px;transition:background .2s;z-index:200;}
+.print-btn:hover{background:var(--teal);}
+@media print{.tab-nav,.print-btn{display:none;}.section{display:block!important;page-break-inside:avoid;}body{background:#fff;}.hero{-webkit-print-color-adjust:exact;print-color-adjust:exact;}}
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <div class="hero-inner">
+    <div class="practice-tag">Tru Vida Medical Group</div>
+    <h1>Su Guía Completa de<br/><em>Servicios de Bienestar</em></h1>
+    <p class="hero-sub">Semaglutida, terapia vitamínica IV, inyecciones lipo, aminoácidos — todo lo que necesita saber sobre los servicios que ofrecemos y cómo aprovecharlos al máximo.</p>
+    <div class="service-chips">
+      <span class="chip teal">💉 Semaglutida</span>
+      <span class="chip blue">🧪 Cócteles IV</span>
+      <span class="chip green">🔥 Inyecciones Lipo</span>
+      <span class="chip rose">⚡ Aminoácidos</span>
+      <span class="chip gold">✨ Inyecciones Vitamínicas</span>
+    </div>
+  </div>
+</div>
+
+<nav class="tab-nav">
+  <div class="tab-nav-inner">
+    <button class="tab-btn active" onclick="showTab('resumen',this)">Resumen</button>
+    <button class="tab-btn" onclick="showTab('sema',this)">Semaglutida</button>
+    <button class="tab-btn" onclick="showTab('iv',this)">Cócteles IV</button>
+    <button class="tab-btn" onclick="showTab('lipo',this)">Inyecciones Lipo</button>
+    <button class="tab-btn" onclick="showTab('amino',this)">Aminoácidos</button>
+    <button class="tab-btn" onclick="showTab('vitaminas',this)">Vitaminas</button>
+    <button class="tab-btn" onclick="showTab('combos',this)">Combinaciones</button>
+    <button class="tab-btn" onclick="showTab('faq',this)">Preguntas</button>
+  </div>
+</nav>
+
+<div class="page-wrap">
+
+<!-- RESUMEN -->
+<div id="resumen" class="section active">
+  <div class="sec-header">
+    <div class="sec-icon teal">🌟</div>
+    <div class="sec-title"><h2>Nuestros Servicios de Bienestar</h2><p>Una visión general completa de lo que ofrecemos y cómo cada servicio apoya sus objetivos de salud</p></div>
+  </div>
+  <div class="alert info">
+    <div class="icon">ℹ️</div>
+    <p><strong>Atención Supervisada:</strong> Todos los servicios en Tru Vida Medical Group están supervisados por médicos. Su proveedor recomendará la combinación correcta de servicios según sus objetivos de salud individuales, análisis de laboratorio e historial médico.</p>
+  </div>
+  <div class="g2">
+    <div class="service-card">
+      <div class="service-header teal"><span class="service-name">💉 Semaglutida</span><span class="service-tag">Pérdida de Peso</span></div>
+      <div class="service-body"><p class="service-desc">Inyección semanal de GLP-1 que suprime el apetito, retrasa la digestión y promueve una pérdida de grasa significativa. Aprobada por la FDA para el control del peso.</p><ul class="gl"><li>Pérdida de peso promedio del 10–15% del peso corporal</li><li>Reduce el hambre y los antojos de comida</li><li>Mejora el azúcar en sangre y los marcadores cardiovasculares</li></ul></div>
+    </div>
+    <div class="service-card">
+      <div class="service-header blue"><span class="service-name">🧪 Cócteles Vitamínicos IV</span><span class="service-tag">Bienestar y Energía</span></div>
+      <div class="service-body"><p class="service-desc">Administración intravenosa de vitaminas, minerales y antioxidantes directamente al torrente sanguíneo para una absorción del 100% — muy superior a los suplementos orales.</p><ul class="gl"><li>Energía e hidratación instantáneas</li><li>Apoyo al sistema inmunológico</li><li>Protección antioxidante y recuperación</li></ul></div>
+    </div>
+    <div class="service-card">
+      <div class="service-header green"><span class="service-name">🔥 Inyecciones Lipo (MIC)</span><span class="service-tag">Quema de Grasa</span></div>
+      <div class="service-body"><p class="service-desc">Inyecciones intramusculares de agentes lipotrópicos (Metionina, Inositol, Colina) que apoyan la función hepática y aceleran el metabolismo de las grasas.</p><ul class="gl"><li>Acelera la descomposición de grasa en el hígado</li><li>Mejora los resultados de pérdida de peso</li><li>Frecuentemente combinada con B12 para mayor energía</li></ul></div>
+    </div>
+    <div class="service-card">
+      <div class="service-header purple"><span class="service-name">⚡ Inyecciones de Aminoácidos</span><span class="service-tag">Rendimiento y Recuperación</span></div>
+      <div class="service-body"><p class="service-desc">Inyecciones de aminoácidos dirigidas incluyendo L-Carnitina, Glutamina y mezclas personalizadas para apoyar la preservación muscular, el metabolismo y la recuperación.</p><ul class="gl"><li>Apoya la preservación muscular durante la pérdida de peso</li><li>Mejora el rendimiento en el ejercicio</li><li>Acelera la recuperación después del entrenamiento</li></ul></div>
+    </div>
+  </div>
+  <div class="card">
+    <div class="card-title">Comparación de Servicios de un Vistazo</div>
+    <table class="comp-table mt10">
+      <thead><tr><th>Servicio</th><th>Frecuencia</th><th>Entrega</th><th>Beneficio Principal</th></tr></thead>
+      <tbody>
+        <tr><td>Semaglutida</td><td>Una vez/semana</td><td>Subcutánea</td><td>Supresión del apetito + pérdida de grasa</td></tr>
+        <tr><td>Cóctel de Myers IV</td><td>Semanal–mensual</td><td>Goteo IV (30–45 min)</td><td>Energía, inmunidad, hidratación</td></tr>
+        <tr><td>NAD+ IV</td><td>Mensual</td><td>Goteo IV (2–4 hrs)</td><td>Energía celular, anti-envejecimiento</td></tr>
+        <tr><td>Glutatión IV</td><td>Semanal</td><td>Empuje IV (5–10 min)</td><td>Antioxidante, piel, desintoxicación</td></tr>
+        <tr><td>Inyección MIC Lipo</td><td>Semanal</td><td>Inyección IM</td><td>Metabolismo de grasa en el hígado</td></tr>
+        <tr><td>MIC + B12</td><td>Semanal</td><td>Inyección IM</td><td>Quema de grasa + energía</td></tr>
+        <tr><td>L-Carnitina IM</td><td>2–3x/semana</td><td>Inyección IM</td><td>Transporte de grasa a las células</td></tr>
+        <tr><td>Inyección B12</td><td>Semanal–quincenal</td><td>Inyección IM</td><td>Energía, metabolismo, estado de ánimo</td></tr>
+        <tr><td>Inyección Vitamina D</td><td>Mensual</td><td>Inyección IM</td><td>Huesos, inmunidad, estado de ánimo</td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- SEMAGLUTIDA -->
+<div id="sema" class="section">
+  <div class="sec-header">
+    <div class="sec-icon teal">💉</div>
+    <div class="sec-title"><h2>Semaglutida</h2><p>Agonista del receptor GLP-1 para pérdida de peso supervisada médicamente</p></div>
+  </div>
+  <div class="alert warn">
+    <div class="icon">⚠️</div>
+    <p><strong>Uso No Indicado en la Etiqueta:</strong> La semaglutida para pérdida de peso se receta de manera no indicada en la etiqueta en Tru Vida Medical Group. Su proveedor monitoreará su progreso, ajustará las dosis y ordenará análisis según sea necesario. Nunca ajuste su dosis de forma independiente.</p>
+  </div>
+  <div class="card">
+    <div class="card-title">Cómo Funciona la Semaglutida</div>
+    <p class="text-sm" style="margin-bottom:12px;">La semaglutida es un agonista del receptor GLP-1 (péptido similar al glucagón tipo 1). Imita una hormona intestinal natural liberada después de comer. Esto es lo que hace:</p>
+    <ul class="gl">
+      <li><strong>Señala al cerebro que está lleno</strong> — reduce las señales de apetito en el hipotálamo, disminuyendo drásticamente el hambre</li>
+      <li><strong>Retrasa el vaciado gástrico</strong> — la comida se mueve más lentamente por su estómago, prolongando la sensación de saciedad</li>
+      <li><strong>Reduce los antojos y el "ruido de comida"</strong> — muchos pacientes reportan pensar mucho menos en la comida</li>
+      <li><strong>Baja el azúcar en sangre</strong> — estimula la liberación de insulina cuando hay glucosa presente, suprime el glucagón</li>
+      <li><strong>Apoya la salud cardiovascular</strong> — demostrado que reduce eventos cardiovasculares en ensayos clínicos</li>
+    </ul>
+  </div>
+  <div class="card">
+    <div class="card-title">Semaglutida vs. Tirzepatida — Diferencias Clave</div>
+    <table class="comp-table mt10">
+      <thead><tr><th>Característica</th><th>Semaglutida</th><th>Tirzepatida</th></tr></thead>
+      <tbody>
+        <tr><td>Mecanismo</td><td>Solo GLP-1</td><td>GLP-1 + GIP (dual)</td></tr>
+        <tr><td>Pérdida de Peso Promedio</td><td>~10–15% del peso corporal</td><td>~15–22% del peso corporal</td></tr>
+        <tr><td>Dosis Inicial</td><td>0.25 mg/semana</td><td>2.5 mg/semana</td></tr>
+        <tr><td>Dosis Máxima</td><td>2.4 mg/semana</td><td>15 mg/semana</td></tr>
+        <tr><td>Perfil de Náuseas</td><td>Moderado</td><td>Moderado–mayor al escalar</td></tr>
+        <tr><td>Frecuencia</td><td>Una vez por semana</td><td>Una vez por semana</td></tr>
+        <tr><td>Aprobación FDA (peso)</td><td class="check">✓ Wegovy</td><td class="check">✓ Zepbound</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="card">
+    <div class="card-title">Programa de Dosificación de Semaglutida</div>
+    <table class="dose-table mt10">
+      <thead><tr><th>Fase</th><th>Semanas</th><th>Dosis</th><th>Objetivo</th></tr></thead>
+      <tbody>
+        <tr><td>Dosis Inicial</td><td>Semanas 1–4</td><td class="dose-hl">0.25 mg</td><td>Evaluar tolerancia, minimizar efectos secundarios</td></tr>
+        <tr><td>Primer Aumento</td><td>Semanas 5–8</td><td class="dose-hl">0.5 mg</td><td>Comienza la supresión más fuerte del apetito</td></tr>
+        <tr><td>Segundo Aumento</td><td>Semanas 9–12</td><td class="dose-hl">1.0 mg</td><td>Aceleración significativa de pérdida de peso</td></tr>
+        <tr><td>Tercer Aumento</td><td>Semanas 13–16</td><td class="dose-hl">1.7 mg</td><td>Pérdida continua, guiada por proveedor</td></tr>
+        <tr><td>Mantenimiento / Máximo</td><td>Semana 17+</td><td class="dose-hl">2.4 mg</td><td>Dosis máxima aprobada — solo a criterio del proveedor</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="g2">
+    <div class="card">
+      <div class="card-title">Efectos Secundarios Comunes</div>
+      <ul class="gl mt10">
+        <li><strong>Náuseas</strong> — más comunes, especialmente con aumentos de dosis. Generalmente mejoran en 2–4 semanas</li>
+        <li><strong>Estreñimiento o diarrea</strong> — los cambios en la motilidad gastrointestinal son esperados</li>
+        <li><strong>Fatiga</strong> — especialmente al inicio mientras su cuerpo se ajusta</li>
+        <li><strong>Apetito reducido</strong> — el efecto deseado. No permita que cause una ingesta peligrosamente baja</li>
+        <li><strong>Reacciones en el sitio de inyección</strong> — rote los sitios para minimizarlas</li>
+        <li><strong>Dolor de cabeza</strong> — frecuentemente relacionado con deshidratación. Beba más agua</li>
+      </ul>
+    </div>
+    <div class="card">
+      <div class="card-title">Llámenos Inmediatamente Si… <span class="badge red">Urgente</span></div>
+      <ul class="gl mt10">
+        <li><strong>Dolor abdominal severo</strong> que se irradia hacia la espalda — posible pancreatitis</li>
+        <li><strong>Cambios en la visión</strong> — visión borrosa o problemas visuales repentinos</li>
+        <li><strong>Dificultad para respirar</strong> o hinchazón de la garganta — reacción alérgica</li>
+        <li><strong>Vómitos persistentes</strong> — incapaz de retener líquidos por 24+ horas</li>
+        <li><strong>Frecuencia cardíaca rápida</strong> en reposo de forma inesperada</li>
+        <li><strong>Dolor en la vesícula biliar</strong> — dolor en el abdomen superior derecho después de comer</li>
+      </ul>
+    </div>
+  </div>
+  <div class="card">
+    <div class="card-title">Progreso Realista Mes a Mes</div>
+    <div class="pm-row"><div class="pm-num">1</div><div class="pm-c"><h4>Mes 1 — Comenzando (0.25mg)</h4><p>Fase de adaptación. Las náuseas son más comunes. Pérdida promedio: 1–2 kg. Enfóquese en hidratación, ingesta de proteínas y establecer hábitos.</p></div></div>
+    <div class="pm-row"><div class="pm-num">2</div><div class="pm-c"><h4>Mes 2 — Impulso (0.5–1mg)</h4><p>La supresión del apetito se fortalece notablemente. Energía mejorando. Promedio de 2–4 kg este mes. Inicie una rutina de ejercicio consistente.</p></div></div>
+    <div class="pm-row"><div class="pm-num">3</div><div class="pm-c"><h4>Mes 3 — Progreso (1–1.7mg)</h4><p>La ropa le queda más holgada. La mayoría de los pacientes han perdido 5–8 kg en total. Los antojos de comida se reducen significativamente.</p></div></div>
+    <div class="pm-row"><div class="pm-num">4–6</div><div class="pm-c"><h4>Meses 4–6 — Cambios Importantes</h4><p>La pérdida del 10–15% del peso corporal es común en esta etapa. La presión arterial, el colesterol y la A1C frecuentemente mejoran.</p></div></div>
+    <div class="pm-row"><div class="pm-num">6+</div><div class="pm-c"><h4>Largo Plazo — Mantenimiento</h4><p>El proveedor guiará la estrategia del medicamento a largo plazo. Los hábitos de vida son ahora la base. El enfoque cambia a la recomposición corporal.</p></div></div>
+  </div>
+  <div class="card">
+    <div class="card-title">Claves para Maximizar los Resultados de la Semaglutida</div>
+    <ul class="gl mt10">
+      <li><strong>Proteína en cada comida</strong> — mínimo 25–30g por comida para preservar el músculo</li>
+      <li><strong>Entrenamiento de resistencia 3x/semana</strong> — crítico para la composición corporal. Previene la pérdida muscular</li>
+      <li><strong>Caminar 8,000–10,000 pasos/día</strong> — el movimiento diario multiplica los resultados de pérdida de grasa</li>
+      <li><strong>Hidratación agresiva</strong> — mínimo 2.5–3 litros por día. La deshidratación empeora cada efecto secundario</li>
+      <li><strong>Coma según un horario</strong> — aunque no tenga hambre. Configure alarmas. Nunca baje de 1,200 cal (mujeres) o 1,500 cal (hombres)</li>
+      <li><strong>Evite alimentos grasosos</strong> — empeoran dramáticamente las náuseas con la semaglutida</li>
+      <li><strong>Combine con inyecciones Lipo/MIC</strong> — muchos pacientes combinan su inyección GLP-1 con inyecciones semanales de MIC + B12 para mayor quema de grasa y energía</li>
+      <li><strong>Duerma 7–9 horas</strong> — el mal sueño eleva las hormonas del hambre y contrarresta el medicamento</li>
+    </ul>
+  </div>
+</div>
+
+<!-- IV CÓCTELES -->
+<div id="iv" class="section">
+  <div class="sec-header">
+    <div class="sec-icon blue">🧪</div>
+    <div class="sec-title"><h2>Cócteles Vitamínicos IV</h2><p>Terapia intravenosa de nutrientes para energía, inmunidad, recuperación y bienestar</p></div>
+  </div>
+  <div class="alert info">
+    <div class="icon">💡</div>
+    <p><strong>¿Por qué IV vs. Oral?</strong> Los suplementos orales se absorben a solo un 20–50% de eficiencia a través del intestino. La administración IV omite la digestión por completo, logrando una <strong>biodisponibilidad del 100%</strong> — cada nutriente va directamente a su torrente sanguíneo y células.</p>
+  </div>
+  <div class="service-card">
+    <div class="service-header blue"><span class="service-name">Cóctel de Myers</span><span class="service-tag">El Clásico — Más Popular</span></div>
+    <div class="service-body">
+      <p class="service-desc">El estándar de oro de la terapia IV, desarrollado por el Dr. John Myers en la década de 1970. Una mezcla equilibrada de vitaminas y minerales esenciales que corrige deficiencias, aumenta la energía y apoya la función inmune.</p>
+      <div class="ingredient-list"><span class="ing-tag">Magnesio</span><span class="ing-tag">Calcio</span><span class="ing-tag">Complejo B (B1,B2,B3,B5,B6)</span><span class="ing-tag">Vitamina B12</span><span class="ing-tag">Vitamina C</span><span class="ing-tag">Solución Salina Normal</span></div>
+      <div class="benefit-row">
+        <div class="benefit-item"><span class="bi">✓</span>Aumenta la energía y reduce la fatiga</div>
+        <div class="benefit-item"><span class="bi">✓</span>Fortalece el sistema inmunológico</div>
+        <div class="benefit-item"><span class="bi">✓</span>Reduce el estrés y la ansiedad</div>
+        <div class="benefit-item"><span class="bi">✓</span>Mejora el estado de ánimo y la claridad mental</div>
+        <div class="benefit-item"><span class="bi">✓</span>Apoya la salud cardiovascular</div>
+        <div class="benefit-item"><span class="bi">✓</span>Ayuda con migrañas y espasmos musculares</div>
+      </div>
+      <div class="divider"></div>
+      <p class="text-sm"><strong>Duración:</strong> 30–45 minutos | <strong>Frecuencia:</strong> Semanal a mensual según los objetivos</p>
+    </div>
+  </div>
+  <div class="service-card">
+    <div class="service-header" style="background:linear-gradient(90deg,#1a3a6a,#2a5aad);"><span class="service-name">Infusión de NAD+</span><span class="service-tag">Anti-Envejecimiento y Energía Celular</span></div>
+    <div class="service-body">
+      <p class="service-desc">El NAD+ (Nicotinamida Adenina Dinucleótido) es una coenzima presente en cada célula, esencial para la producción de energía, la reparación del ADN y el envejecimiento celular. Los niveles disminuyen significativamente con la edad. La infusión IV de NAD+ repone lo que se ha perdido.</p>
+      <div class="ingredient-list"><span class="ing-tag">NAD+</span><span class="ing-tag">Solución Salina Normal</span></div>
+      <div class="benefit-row">
+        <div class="benefit-item"><span class="bi">✓</span>Aumenta la energía celular (producción de ATP)</div>
+        <div class="benefit-item"><span class="bi">✓</span>Apoya la reparación del ADN y el anti-envejecimiento</div>
+        <div class="benefit-item"><span class="bi">✓</span>Mejora la función cognitiva y la claridad</div>
+        <div class="benefit-item"><span class="bi">✓</span>Apoya protocolos de recuperación de adicciones</div>
+        <div class="benefit-item"><span class="bi">✓</span>Mejora el rendimiento y recuperación atlética</div>
+        <div class="benefit-item"><span class="bi">✓</span>Acelera el metabolismo y apoya la pérdida de peso</div>
+      </div>
+      <div class="divider"></div>
+      <p class="text-sm"><strong>Duración:</strong> 2–4 horas (debe administrarse lentamente) | <strong>Frecuencia:</strong> Mensual o según indicación | <strong>Nota:</strong> Puede causar sofocos o náuseas temporales durante la infusión — esto es normal y se maneja reduciendo la velocidad del goteo.</p>
+    </div>
+  </div>
+  <div class="service-card">
+    <div class="service-header" style="background:linear-gradient(90deg,#3a6a2a,#5aad3a);"><span class="service-name">Empuje IV de Glutatión</span><span class="service-tag">Antioxidante y Salud de la Piel</span></div>
+    <div class="service-body">
+      <p class="service-desc">El glutatión es el antioxidante maestro del cuerpo — producido en cada célula pero agotado por el estrés, la enfermedad, el envejecimiento y la mala dieta. El glutatión IV entrega esta poderosa molécula directamente al torrente sanguíneo para protección celular inmediata.</p>
+      <div class="ingredient-list"><span class="ing-tag">Glutatión Reducido (GSH)</span><span class="ing-tag">Solución Salina Normal</span></div>
+      <div class="benefit-row">
+        <div class="benefit-item"><span class="bi">✓</span>Poderosa protección antioxidante</div>
+        <div class="benefit-item"><span class="bi">✓</span>Apoya la desintoxicación hepática</div>
+        <div class="benefit-item"><span class="bi">✓</span>Ilumina y uniforma el tono de la piel</div>
+        <div class="benefit-item"><span class="bi">✓</span>Reduce la inflamación sistémica</div>
+        <div class="benefit-item"><span class="bi">✓</span>Apoya la función inmunológica</div>
+        <div class="benefit-item"><span class="bi">✓</span>Frecuentemente combinado con Vitamina C para mayor efecto</div>
+      </div>
+      <div class="divider"></div>
+      <p class="text-sm"><strong>Duración:</strong> 5–15 minutos (empuje IV) | <strong>Frecuencia:</strong> Semanal para objetivos de piel, quincenal para mantenimiento</p>
+    </div>
+  </div>
+  <div class="service-card">
+    <div class="service-header" style="background:linear-gradient(90deg,#7a2a2a,#b04040);"><span class="service-name">Vitamina C IV en Alta Dosis</span><span class="service-tag">Refuerzo Inmune y Recuperación</span></div>
+    <div class="service-body">
+      <p class="service-desc">La Vitamina C en altas dosis (10–25g) administrada IV alcanza niveles en sangre imposibles de lograr con suplementos orales. A estas dosis actúa como un poderoso antioxidante y tiene efectos inmunomoduladores muy superiores a cualquier suplemento.</p>
+      <div class="ingredient-list"><span class="ing-tag">Ácido Ascórbico (10–25g)</span><span class="ing-tag">Solución Salina Normal</span></div>
+      <div class="benefit-row">
+        <div class="benefit-item"><span class="bi">✓</span>Potente activación del sistema inmunológico</div>
+        <div class="benefit-item"><span class="bi">✓</span>Acelera la recuperación de enfermedades</div>
+        <div class="benefit-item"><span class="bi">✓</span>Apoya la síntesis de colágeno (piel, articulaciones)</div>
+        <div class="benefit-item"><span class="bi">✓</span>Poderoso antioxidante a nivel celular</div>
+        <div class="benefit-item"><span class="bi">✓</span>Reduce la inflamación</div>
+        <div class="benefit-item"><span class="bi">✓</span>Mejora la absorción de hierro</div>
+      </div>
+      <div class="divider"></div>
+      <p class="text-sm"><strong>Duración:</strong> 60–90 minutos | <strong>Nota:</strong> Se recomienda prueba de G6PD antes de la administración en alta dosis.</p>
+    </div>
+  </div>
+  <div class="card">
+    <div class="card-title">Qué Esperar Durante Su Sesión IV</div>
+    <div style="margin-top:14px;">
+      <div class="step-row"><div class="step-num">1</div><div class="step-c"><h4>Registro y Signos Vitales</h4><p>Su enfermero tomará su presión arterial, pulso y revisará cualquier cambio en su salud desde su última visita antes de comenzar.</p></div></div>
+      <div class="step-row"><div class="step-num">2</div><div class="step-c"><h4>Colocación del IV</h4><p>Se coloca un pequeño catéter en una vena, típicamente en el brazo o la mano. Esto puede causar una breve molestia — como un pinchazo rápido.</p></div></div>
+      <div class="step-row"><div class="step-num">3</div><div class="step-c"><h4>Infusión</h4><p>Se relaja cómodamente mientras corre el goteo. Puede sentir una sensación fresca en el brazo. Algunos pacientes sienten un calor con ciertas vitaminas — esto es normal.</p></div></div>
+      <div class="step-row"><div class="step-num">4</div><div class="step-c"><h4>Finalización y Monitoreo</h4><p>Se retira el IV. Será monitoreado brevemente antes de irse. La mayoría de los pacientes sienten resultados en horas — mayor energía, claridad mental y mejor estado de ánimo.</p></div></div>
+      <div class="step-row" style="margin-bottom:0;"><div class="step-num">5</div><div class="step-c"><h4>Después de Su Sesión</h4><p>Beba abundante agua. Evite el ejercicio intenso por 2–4 horas. Puede notar orina de color amarillo brillante por las vitaminas B — esto es normal e inofensivo.</p></div></div>
+    </div>
+  </div>
+</div>
+
+<!-- LIPO -->
+<div id="lipo" class="section">
+  <div class="sec-header">
+    <div class="sec-icon green">🔥</div>
+    <div class="sec-title"><h2>Inyecciones Lipo y MIC</h2><p>Inyecciones lipotrópicas para acelerar el metabolismo de grasas y apoyar su programa de pérdida de peso</p></div>
+  </div>
+  <div class="alert info">
+    <div class="icon">💡</div>
+    <p><strong>¿Qué Son los Lipotrópicos?</strong> Los compuestos lipotrópicos son agentes que ayudan al cuerpo a metabolizar y eliminar grasa, particularmente del hígado. Funcionan en sinergia con una dieta controlada en calorías y ejercicio — y se combinan especialmente bien con semaglutida o tirzepatida.</p>
+  </div>
+  <div class="service-card">
+    <div class="service-header green"><span class="service-name">Inyección MIC — Lipo Shot Clásica</span><span class="service-tag">Metabolismo de Grasa</span></div>
+    <div class="service-body">
+      <p class="service-desc">La inyección lipotrópica original. MIC significa Metionina, Inositol y Colina — tres compuestos que trabajan juntos para movilizar y eliminar depósitos de grasa, particularmente en el hígado.</p>
+      <div class="ingredient-list"><span class="ing-tag">Metionina</span><span class="ing-tag">Inositol</span><span class="ing-tag">Colina</span></div>
+      <p class="text-sm" style="margin-top:10px;margin-bottom:10px;"><strong>Cada ingrediente explicado:</strong></p>
+      <ul class="gl">
+        <li><strong>Metionina</strong> — aminoácido esencial que previene la acumulación de grasa en el hígado, apoya la desintoxicación y es bloque de construcción para otros compuestos quemagrasa</li>
+        <li><strong>Inositol</strong> — compuesto similar a una vitamina B que mejora la sensibilidad a la insulina, reduce la acumulación de grasa y apoya el estado de ánimo</li>
+        <li><strong>Colina</strong> — nutriente esencial que evita que la grasa quede "atrapada" en el hígado y apoya la exportación de grasa hepática</li>
+      </ul>
+      <div class="divider"></div>
+      <p class="text-sm"><strong>Frecuencia:</strong> Una o dos veces por semana | <strong>Ubicación:</strong> Inyección IM (brazo, muslo o glúteo) | <strong>Duración:</strong> Menos de 1 minuto</p>
+    </div>
+  </div>
+  <div class="service-card">
+    <div class="service-header" style="background:linear-gradient(90deg,#1a6a4a,#2ab08a);"><span class="service-name">MIC + B12 — La Inyección Skinny</span><span class="service-tag">Quema de Grasa + Energía</span></div>
+    <div class="service-body">
+      <p class="service-desc">La combinación más popular. La acción movilizadora de grasa del MIC combinada con la Vitamina B12 para un poderoso impulso de energía que contrarresta la fatiga comúnmente asociada con la restricción calórica.</p>
+      <div class="ingredient-list"><span class="ing-tag">Metionina</span><span class="ing-tag">Inositol</span><span class="ing-tag">Colina</span><span class="ing-tag">Vitamina B12 (Metilcobalamina)</span></div>
+      <div class="benefit-row">
+        <div class="benefit-item"><span class="bi">✓</span>Acelera el metabolismo de grasa</div>
+        <div class="benefit-item"><span class="bi">✓</span>Aumenta energía y reduce fatiga</div>
+        <div class="benefit-item"><span class="bi">✓</span>Apoya la salud hepática</div>
+        <div class="benefit-item"><span class="bi">✓</span>Mejora el estado de ánimo y claridad mental</div>
+        <div class="benefit-item"><span class="bi">✓</span>Mejora el rendimiento en el ejercicio</div>
+        <div class="benefit-item"><span class="bi">✓</span>Sinérgica con medicamentos GLP-1</div>
+      </div>
+      <div class="divider"></div>
+      <p class="text-sm"><strong>Más recomendada para:</strong> Pacientes con semaglutida o tirzepatida que quieren maximizar la pérdida de grasa y combatir la fatiga. Ideal el mismo día o el día después de su inyección semanal.</p>
+    </div>
+  </div>
+  <div class="service-card">
+    <div class="service-header" style="background:linear-gradient(90deg,#3a6a1a,#6aaa2a);"><span class="service-name">MIC + B12 + L-Carnitina — Lipo Premium</span><span class="service-tag">Máxima Quema de Grasa</span></div>
+    <div class="service-body">
+      <p class="service-desc">La versión mejorada. Se añade L-Carnitina para transportar los ácidos grasos movilizados por el MIC directamente a las mitocondrias donde se queman como energía — completando el ciclo de quema de grasa.</p>
+      <div class="ingredient-list"><span class="ing-tag">Metionina</span><span class="ing-tag">Inositol</span><span class="ing-tag">Colina</span><span class="ing-tag">B12</span><span class="ing-tag">L-Carnitina</span></div>
+      <div class="benefit-row">
+        <div class="benefit-item"><span class="bi">✓</span>Soporte completo del ciclo de quema de grasa</div>
+        <div class="benefit-item"><span class="bi">✓</span>Moviliza Y quema grasa como energía</div>
+        <div class="benefit-item"><span class="bi">✓</span>Excelente para pacientes activos que hacen ejercicio</div>
+        <div class="benefit-item"><span class="bi">✓</span>Apoya la salud cardiovascular</div>
+      </div>
+      <div class="divider"></div>
+      <p class="text-sm"><strong>Mejor para:</strong> Pacientes que hacen ejercicio regularmente. La L-Carnitina funciona mejor combinada con actividad física. Tómela los días de gimnasio para máximo beneficio.</p>
+    </div>
+  </div>
+</div>
+
+<!-- AMINOÁCIDOS -->
+<div id="amino" class="section">
+  <div class="sec-header">
+    <div class="sec-icon purple">⚡</div>
+    <div class="sec-title"><h2>Inyecciones de Aminoácidos</h2><p>Terapia de aminoácidos dirigida para rendimiento, recuperación y apoyo metabólico</p></div>
+  </div>
+  <div class="alert info">
+    <div class="icon">💡</div>
+    <p><strong>¿Por qué Inyectar Aminoácidos?</strong> Aunque existen suplementos de aminoácidos orales, las formas inyectables omiten la absorción intestinal para disponibilidad celular inmediata — especialmente importante durante la restricción calórica cuando el estado de aminoácidos del cuerpo está bajo mayor demanda.</p>
+  </div>
+  <div class="service-card">
+    <div class="service-header purple"><span class="service-name">Inyección de L-Carnitina</span><span class="service-tag">Transporte de Grasa y Energía</span></div>
+    <div class="service-body">
+      <p class="service-desc">La L-Carnitina actúa como un transportador — llevando ácidos grasos de cadena larga a través de la membrana mitocondrial interna donde pueden quemarse como energía. Sin suficiente carnitina, la grasa no puede usarse eficientemente como combustible.</p>
+      <div class="ingredient-list"><span class="ing-tag">L-Carnitina (500–1000mg)</span></div>
+      <div class="benefit-row">
+        <div class="benefit-item"><span class="bi">✓</span>Transporta grasa a las mitocondrias para quemarla</div>
+        <div class="benefit-item"><span class="bi">✓</span>Aumenta la resistencia y el rendimiento</div>
+        <div class="benefit-item"><span class="bi">✓</span>Reduce el dolor muscular y el tiempo de recuperación</div>
+        <div class="benefit-item"><span class="bi">✓</span>Apoya la función cardiovascular</div>
+        <div class="benefit-item"><span class="bi">✓</span>Protege el músculo durante la restricción calórica</div>
+        <div class="benefit-item"><span class="bi">✓</span>Mejora los efectos de las inyecciones lipo MIC</div>
+      </div>
+      <div class="divider"></div>
+      <p class="text-sm"><strong>Frecuencia:</strong> 2–3 veces por semana | <strong>Mejor momento:</strong> 30–60 minutos antes del ejercicio para el máximo efecto quemagrasa</p>
+    </div>
+  </div>
+  <div class="service-card">
+    <div class="service-header" style="background:linear-gradient(90deg,#4a2a7a,#7a4aaa);"><span class="service-name">Inyección de Glutamina</span><span class="service-tag">Músculo y Salud Intestinal</span></div>
+    <div class="service-body">
+      <p class="service-desc">La glutamina es el aminoácido más abundante en el cuerpo y es condicionalmente esencial durante períodos de estrés, enfermedad o ejercicio intenso. Es el combustible principal para las células del revestimiento intestinal y las células inmunes.</p>
+      <div class="ingredient-list"><span class="ing-tag">L-Glutamina</span></div>
+      <div class="benefit-row">
+        <div class="benefit-item"><span class="bi">✓</span>Protege y repara la integridad del revestimiento intestinal</div>
+        <div class="benefit-item"><span class="bi">✓</span>Reduce los efectos secundarios GI de los medicamentos GLP-1</div>
+        <div class="benefit-item"><span class="bi">✓</span>Apoya la función del sistema inmunológico</div>
+        <div class="benefit-item"><span class="bi">✓</span>Preserva el tejido muscular durante la pérdida de peso</div>
+        <div class="benefit-item"><span class="bi">✓</span>Reduce el catabolismo muscular inducido por ejercicio</div>
+        <div class="benefit-item"><span class="bi">✓</span>Apoya la recuperación después del entrenamiento intenso</div>
+      </div>
+      <div class="divider"></div>
+      <p class="text-sm"><strong>Especialmente útil para:</strong> Pacientes con semaglutida o tirzepatida que experimentan efectos secundarios gastrointestinales. La glutamina apoya la integridad intestinal y puede reducir las náuseas.</p>
+    </div>
+  </div>
+  <div class="service-card">
+    <div class="service-header" style="background:linear-gradient(90deg,#5a3a8a,#8a5aaa);"><span class="service-name">Inyección de Taurina</span><span class="service-tag">Cardiovascular y Metabólico</span></div>
+    <div class="service-body">
+      <p class="service-desc">La taurina es un aminoácido que contiene azufre con roles poderosos en la función cardiovascular, la sensibilidad a la insulina y la defensa antioxidante. Es uno de los aminoácidos más abundantes en el tejido cardíaco y muscular.</p>
+      <div class="ingredient-list"><span class="ing-tag">Taurina</span></div>
+      <div class="benefit-row">
+        <div class="benefit-item"><span class="bi">✓</span>Apoya la función cardíaca y la presión arterial</div>
+        <div class="benefit-item"><span class="bi">✓</span>Mejora la sensibilidad a la insulina</div>
+        <div class="benefit-item"><span class="bi">✓</span>Reduce los calambres musculares</div>
+        <div class="benefit-item"><span class="bi">✓</span>Protección antioxidante en el tejido muscular</div>
+        <div class="benefit-item"><span class="bi">✓</span>Apoya la producción de ácidos biliares (digestión de grasas)</div>
+        <div class="benefit-item"><span class="bi">✓</span>Puede reducir la ansiedad y apoyar la calidad del sueño</div>
+      </div>
+    </div>
+  </div>
+  <div class="service-card">
+    <div class="service-header" style="background:linear-gradient(90deg,#3a3a7a,#5a5aaa);"><span class="service-name">Inyección de Arginina</span><span class="service-tag">Circulación y Rendimiento</span></div>
+    <div class="service-body">
+      <p class="service-desc">La L-Arginina es un precursor del óxido nítrico (NO) — la molécula que dilata los vasos sanguíneos, mejora la circulación y mejora la entrega de nutrientes a los músculos durante el ejercicio.</p>
+      <div class="ingredient-list"><span class="ing-tag">L-Arginina</span></div>
+      <div class="benefit-row">
+        <div class="benefit-item"><span class="bi">✓</span>Aumenta el óxido nítrico — mejora el flujo sanguíneo</div>
+        <div class="benefit-item"><span class="bi">✓</span>Mejora el rendimiento y la resistencia en el ejercicio</div>
+        <div class="benefit-item"><span class="bi">✓</span>Apoya la salud cardiovascular</div>
+        <div class="benefit-item"><span class="bi">✓</span>Estimula la liberación de hormona de crecimiento</div>
+        <div class="benefit-item"><span class="bi">✓</span>Mejora la cicatrización de heridas</div>
+        <div class="benefit-item"><span class="bi">✓</span>Apoya la función eréctil saludable (hombres)</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- VITAMINAS -->
+<div id="vitaminas" class="section">
+  <div class="sec-header">
+    <div class="sec-icon gold">✨</div>
+    <div class="sec-title"><h2>Inyecciones Vitamínicas</h2><p>Inyecciones intramusculares de vitaminas para una entrega de nutrientes rápida y efectiva</p></div>
+  </div>
+  <div class="service-card">
+    <div class="service-header gold"><span class="service-name">Inyección de Vitamina B12</span><span class="service-tag">Energía y Metabolismo</span></div>
+    <div class="service-body">
+      <p class="service-desc">La metilcobalamina B12 es la forma más biodisponible de esta vitamina esencial. La deficiencia de B12 es extremadamente común — especialmente en quienes comen menos, adultos mayores, vegetarianos y pacientes que toman metformina. Las inyecciones omiten completamente los problemas de absorción intestinal.</p>
+      <div class="ingredient-list"><span class="ing-tag">Metilcobalamina B12 (1000mcg)</span></div>
+      <div class="benefit-row">
+        <div class="benefit-item"><span class="bi">✓</span>Aumenta los niveles de energía y reduce la fatiga</div>
+        <div class="benefit-item"><span class="bi">✓</span>Apoya la salud y función nerviosa</div>
+        <div class="benefit-item"><span class="bi">✓</span>Mejora el estado de ánimo y la claridad mental</div>
+        <div class="benefit-item"><span class="bi">✓</span>Esencial para la producción de glóbulos rojos</div>
+        <div class="benefit-item"><span class="bi">✓</span>Apoya la síntesis de ADN y la salud celular</div>
+        <div class="benefit-item"><span class="bi">✓</span>Reduce la homocisteína (beneficio cardiovascular)</div>
+      </div>
+      <div class="divider"></div>
+      <p class="text-sm"><strong>Frecuencia:</strong> Semanal a quincenal | <strong>Especialmente importante para:</strong> Pacientes con semaglutida/tirzepatida que comen menos, quienes toman metformina, vegetarianos/veganos, cualquier persona mayor de 50 años</p>
+    </div>
+  </div>
+  <div class="service-card">
+    <div class="service-header" style="background:linear-gradient(90deg,#7a6a10,#c8a840);"><span class="service-name">Inyección de Vitamina D3</span><span class="service-tag">Inmunidad, Huesos y Estado de Ánimo</span></div>
+    <div class="service-body">
+      <p class="service-desc">La deficiencia de vitamina D afecta a un estimado del 40–70% de los adultos. A pesar del sol de Florida, la mayoría de las personas aún no producen suficiente por el uso de protector solar y la pigmentación de la piel. La D3 inyectable proporciona una dosis terapéutica que los suplementos orales frecuentemente no pueden igualar.</p>
+      <div class="ingredient-list"><span class="ing-tag">Colecalciferol D3 (50,000 UI o según prescripción)</span></div>
+      <div class="benefit-row">
+        <div class="benefit-item"><span class="bi">✓</span>Regulación y defensa del sistema inmunológico</div>
+        <div class="benefit-item"><span class="bi">✓</span>Densidad ósea y absorción de calcio</div>
+        <div class="benefit-item"><span class="bi">✓</span>Regulación del estado de ánimo y prevención de depresión</div>
+        <div class="benefit-item"><span class="bi">✓</span>Apoyo metabólico y sensibilidad a la insulina</div>
+        <div class="benefit-item"><span class="bi">✓</span>Fuerza y función muscular</div>
+        <div class="benefit-item"><span class="bi">✓</span>Apoyo a la salud cardiovascular</div>
+      </div>
+      <div class="divider"></div>
+      <p class="text-sm"><strong>Frecuencia:</strong> Mensual o según indiquen los análisis | <strong>Nota:</strong> Su nivel de Vitamina D será verificado mediante análisis de sangre para determinar la dosis apropiada</p>
+    </div>
+  </div>
+  <div class="service-card">
+    <div class="service-header" style="background:linear-gradient(90deg,#5a4a10,#9a7a30);"><span class="service-name">Inyección de Complejo B</span><span class="service-tag">Energía y Salud Nerviosa</span></div>
+    <div class="service-body">
+      <p class="service-desc">Un espectro completo de vitaminas B en una sola inyección. Cada vitamina B tiene un papel único y esencial en el metabolismo energético, y trabajan sinérgicamente — la deficiencia en una afecta la función de las demás.</p>
+      <div class="ingredient-list"><span class="ing-tag">B1 (Tiamina)</span><span class="ing-tag">B2 (Riboflavina)</span><span class="ing-tag">B3 (Niacina)</span><span class="ing-tag">B5 (Ácido Pantoténico)</span><span class="ing-tag">B6 (Piridoxina)</span></div>
+      <div class="benefit-row">
+        <div class="benefit-item"><span class="bi">✓</span>Convierte alimentos en energía celular (ATP)</div>
+        <div class="benefit-item"><span class="bi">✓</span>Apoya la salud del sistema nervioso</div>
+        <div class="benefit-item"><span class="bi">✓</span>Reduce la fatiga y la niebla mental</div>
+        <div class="benefit-item"><span class="bi">✓</span>Apoya el equilibrio hormonal y de cortisol</div>
+        <div class="benefit-item"><span class="bi">✓</span>Esencial para la producción de glóbulos rojos</div>
+        <div class="benefit-item"><span class="bi">✓</span>Apoya piel, cabello y uñas saludables</div>
+      </div>
+    </div>
+  </div>
+  <div class="service-card">
+    <div class="service-header rose"><span class="service-name">Inyección de Biotina</span><span class="service-tag">Cabello, Piel y Uñas</span></div>
+    <div class="service-body">
+      <p class="service-desc">Biotina en alta dosis (Vitamina B7) administrada IM para pacientes que experimentan adelgazamiento del cabello o cambios en las uñas — una ocurrencia común durante la pérdida de peso rápida. La biotina inyectable logra niveles mucho más altos que los suplementos orales.</p>
+      <div class="ingredient-list"><span class="ing-tag">Biotina (5–10mg)</span></div>
+      <div class="benefit-row">
+        <div class="benefit-item"><span class="bi">✓</span>Apoya el crecimiento del cabello y reduce el adelgazamiento</div>
+        <div class="benefit-item"><span class="bi">✓</span>Fortalece las uñas quebradizas</div>
+        <div class="benefit-item"><span class="bi">✓</span>Apoya la barrera de la piel saludable</div>
+        <div class="benefit-item"><span class="bi">✓</span>Esencial para la síntesis de ácidos grasos</div>
+        <div class="benefit-item"><span class="bi">✓</span>Apoya el metabolismo de la glucosa</div>
+        <div class="benefit-item"><span class="bi">✓</span>Comúnmente usada junto con suplementos de colágeno</div>
+      </div>
+      <div class="divider"></div>
+      <p class="text-sm"><strong>Nota:</strong> La biotina en alta dosis puede interferir con ciertos análisis de laboratorio (tiroides, troponina). Informe a su proveedor si se realizarán análisis de sangre dentro de las 48 horas posteriores a su inyección de biotina.</p>
+    </div>
+  </div>
+</div>
+
+<!-- COMBINACIONES -->
+<div id="combos" class="section">
+  <div class="sec-header">
+    <div class="sec-icon teal">🔗</div>
+    <div class="sec-title"><h2>Cómo Combinar los Servicios</h2><p>Cómo combinar nuestros servicios para máximos resultados según sus objetivos específicos</p></div>
+  </div>
+  <div class="alert info">
+    <div class="icon">💡</div>
+    <p><strong>La Sinergia Importa:</strong> Nuestros servicios están diseñados para trabajar juntos. Combinarlos estratégicamente amplifica los resultados mucho más de lo que cualquier servicio individual puede lograr. Su proveedor construirá un protocolo personalizado para usted.</p>
+  </div>
+  <div class="card">
+    <div class="card-title">Protocolos Recomendados por Objetivo</div>
+    <div class="service-card" style="margin-top:14px;">
+      <div class="service-header teal"><span class="service-name">🎯 Protocolo de Máxima Pérdida de Peso</span><span class="service-tag">Más Popular</span></div>
+      <div class="service-body">
+        <ul class="gl">
+          <li><strong>Semanalmente:</strong> Inyección de semaglutida + MIC + B12 "Skinny Shot" (mismo día o al día siguiente)</li>
+          <li><strong>2–3x/semana:</strong> Inyección IM de L-Carnitina (los días de entrenamiento)</li>
+          <li><strong>Mensualmente:</strong> Cóctel de Myers IV para energía, inmunidad y reposición de nutrientes</li>
+          <li><strong>Según necesidad:</strong> Inyecciones de refuerzo B12 a mediados de semana si hay fatiga presente</li>
+          <li><strong>Si hay adelgazamiento del cabello:</strong> Añadir inyección de Biotina semanalmente</li>
+        </ul>
+        <div class="divider"></div>
+        <p class="text-sm"><strong>Sinergia esperada:</strong> GLP-1 suprime el apetito → MIC moviliza la grasa almacenada → L-Carnitina quema esa grasa como energía → Myers repone los nutrientes perdidos durante la restricción → Resultado: pérdida de grasa acelerada con músculo y energía preservados.</p>
+      </div>
+    </div>
+    <div class="service-card" style="margin-top:14px;">
+      <div class="service-header" style="background:linear-gradient(90deg,#1a5a9d,#2a6aad);"><span class="service-name">⚡ Protocolo de Energía y Rendimiento</span><span class="service-tag">Pacientes Activos</span></div>
+      <div class="service-body">
+        <ul class="gl">
+          <li><strong>Semanalmente:</strong> MIC + B12 + L-Carnitina (inyección lipo premium)</li>
+          <li><strong>Quincenal:</strong> Inyección IM de Complejo B</li>
+          <li><strong>Mensualmente:</strong> Infusión IV de NAD+ para optimización de energía celular</li>
+          <li><strong>Pre-entrenamiento:</strong> L-Carnitina IM (30–60 min antes del gimnasio)</li>
+          <li><strong>Mensualmente:</strong> Vitamina D3 IM (confirmar niveles con análisis)</li>
+        </ul>
+        <div class="divider"></div>
+        <p class="text-sm"><strong>Mejor para:</strong> Pacientes que hacen ejercicio regularmente y quieren maximizar el rendimiento, la recuperación y la quema de grasa mientras mantienen la energía en un programa de pérdida de peso.</p>
+      </div>
+    </div>
+    <div class="service-card" style="margin-top:14px;">
+      <div class="service-header" style="background:linear-gradient(90deg,#3a6a2a,#5aaa4a);"><span class="service-name">✨ Protocolo de Piel, Cabello y Brillo</span><span class="service-tag">Enfoque Estético</span></div>
+      <div class="service-body">
+        <ul class="gl">
+          <li><strong>Semanalmente:</strong> Empuje IV de Glutatión (iluminación de piel, antioxidante)</li>
+          <li><strong>Semanalmente:</strong> Vitamina C IV en alta dosis (apoyo al colágeno)</li>
+          <li><strong>Semanalmente:</strong> Inyección IM de Biotina (fortaleza del cabello y uñas)</li>
+          <li><strong>Mensualmente:</strong> Cóctel de Myers (reposición completa de nutrientes)</li>
+          <li><strong>Suplemento diario:</strong> Péptidos de colágeno (consulte con su proveedor)</li>
+        </ul>
+        <div class="divider"></div>
+        <p class="text-sm"><strong>Mejor para:</strong> Pacientes que experimentan adelgazamiento del cabello por pérdida de peso, quienes se enfocan en la salud de la piel, o cualquiera que quiera maximizar los beneficios estéticos de su programa.</p>
+      </div>
+    </div>
+    <div class="service-card" style="margin-top:14px;">
+      <div class="service-header" style="background:linear-gradient(90deg,#4a2a8a,#7a5aaa);"><span class="service-name">🧠 Protocolo de Longevidad y Anti-Envejecimiento</span><span class="service-tag">Bienestar Avanzado</span></div>
+      <div class="service-body">
+        <ul class="gl">
+          <li><strong>Mensualmente:</strong> Infusión IV de NAD+ (reparación celular y energía)</li>
+          <li><strong>Semanalmente:</strong> Empuje IV de Glutatión (antioxidante maestro)</li>
+          <li><strong>Mensualmente:</strong> Cóctel de Myers IV</li>
+          <li><strong>Mensualmente:</strong> Vitamina D3 IM (confirmado por análisis)</li>
+          <li><strong>Semanalmente:</strong> Inyección de B12 (salud nerviosa, función cognitiva)</li>
+        </ul>
+        <div class="divider"></div>
+        <p class="text-sm"><strong>Mejor para:</strong> Pacientes enfocados en el envejecimiento saludable, la salud cerebral, la optimización de energía y la prevención de enfermedades a largo plazo.</p>
+      </div>
+    </div>
+  </div>
+  <div class="card">
+    <div class="card-title">Notas Importantes de Programación</div>
+    <ul class="gl mt10">
+      <li><strong>Semaglutida + inyección MIC el mismo día:</strong> Completamente seguro. Inyecte en sitios diferentes. Muchos pacientes hacen ambas el día de su inyección semanal</li>
+      <li><strong>Momento de la L-Carnitina:</strong> Más efectiva 30–60 minutos antes del ejercicio. Tómela específicamente los días de entrenamiento</li>
+      <li><strong>Sesiones IV:</strong> Programe con su proveedor. La mayoría toma entre 30 minutos y 4 horas según el goteo</li>
+      <li><strong>Biotina y análisis de laboratorio:</strong> Evite las inyecciones de biotina dentro de las 48 horas de cualquier extracción de sangre — interfiere con ciertas pruebas</li>
+      <li><strong>Espaciado del NAD+:</strong> Permita al menos 2–4 semanas entre infusiones de NAD+</li>
+      <li><strong>Hidratación antes del IV:</strong> Beba 500–700 ml de agua antes de su sesión IV para facilitar el acceso a las venas</li>
+    </ul>
+  </div>
+</div>
+
+<!-- PREGUNTAS -->
+<div id="faq" class="section">
+  <div class="sec-header">
+    <div class="sec-icon teal">❓</div>
+    <div class="sec-title"><h2>Preguntas Frecuentes</h2><p>Preguntas comunes sobre todos nuestros servicios de bienestar</p></div>
+  </div>
+  <div class="card">
+    <div class="faq-item"><button class="faq-q" onclick="tf(this)">¿En qué se diferencia la semaglutida de la tirzepatida? <span class="chev">▾</span></button><div class="faq-a">La semaglutida activa solo el receptor GLP-1, mientras que la tirzepatida activa tanto GLP-1 como GIP (agonista dual). Esta acción dual hace que la tirzepatida sea generalmente más potente — los ensayos clínicos muestran una pérdida de peso promedio del 15–22% con tirzepatida versus el 10–15% con semaglutida. Sin embargo, la semaglutida tiene un historial más largo y es bien tolerada por la mayoría de los pacientes. Su proveedor recomendará cuál es mejor para su situación según sus objetivos, historial de salud y respuesta.</div></div>
+    <div class="faq-item"><button class="faq-q" onclick="tf(this)">¿Puedo combinar la semaglutida con inyecciones lipo? <span class="chev">▾</span></button><div class="faq-a">Sí — esta es una de nuestras combinaciones más populares. La semaglutida suprime el apetito y reduce la ingesta calórica. Las inyecciones lipo MIC ayudan a su hígado a movilizar y exportar la grasa que se está liberando. La B12 combate la fatiga que puede venir con la restricción calórica. Juntos crean un sistema poderoso y complementario. Simplemente inyecte en sitios diferentes y la combinación es segura y bien tolerada.</div></div>
+    <div class="faq-item"><button class="faq-q" onclick="tf(this)">¿Qué tan pronto sentiré la terapia vitamínica IV? <span class="chev">▾</span></button><div class="faq-a">Muchos pacientes notan beneficios dentro de horas de su sesión IV — particularmente mayor energía, mejor estado de ánimo y más claridad mental. Los beneficios de hidratación se sienten casi inmediatamente. Para los beneficios inmunes y antioxidantes, el uso consistente durante varias sesiones produce efectos acumulativos. Las respuestas individuales varían según sus niveles basales de nutrientes, estado de hidratación y la fórmula que recibe.</div></div>
+    <div class="faq-item"><button class="faq-q" onclick="tf(this)">¿Las inyecciones lipo hacen que pierda peso sin dieta? <span class="chev">▾</span></button><div class="faq-a">No. Las inyecciones lipotrópicas apoyan y mejoran el metabolismo de la grasa — no reemplazan la necesidad de un déficit calórico. Funcionan mejor como parte de un programa integral que incluye cambios dietéticos, ejercicio y (en muchos casos) un medicamento GLP-1. Piense en ellas como un multiplicador, no como una solución mágica. Los pacientes que combinan las inyecciones lipo con un programa estructurado de pérdida de peso ven consistentemente mejores resultados que cualquier enfoque por sí solo.</div></div>
+    <div class="faq-item"><button class="faq-q" onclick="tf(this)">¿Hay algún riesgo con la terapia IV? <span class="chev">▾</span></button><div class="faq-a">La terapia IV es generalmente muy segura cuando es realizada por personal médico capacitado en un entorno clínico. Los posibles efectos secundarios menores incluyen hematomas o molestias en el sitio del IV, sensación de frescura en el brazo, o breve enrojecimiento con ciertas vitaminas (especialmente niacina). Las complicaciones graves son raras. Evaluamos a todos los pacientes antes de administrar la terapia IV y monitoreamos durante toda la sesión. Siempre informe a su proveedor de todos los medicamentos, suplementos y condiciones de salud antes del tratamiento.</div></div>
+    <div class="faq-item"><button class="faq-q" onclick="tf(this)">¿Cuál es la diferencia entre la inyección de B12 y el B12 oral? <span class="chev">▾</span></button><div class="faq-a">La absorción oral de B12 depende de una proteína llamada factor intrínseco producida en el estómago. Muchas personas — especialmente quienes toman ciertos medicamentos (metformina, inhibidores de bomba de protones), adultos mayores y quienes comen menos — tienen el factor intrínseco deteriorado y absorben muy poco B12 por vía oral. La B12 inyectable omite esto por completo, yendo directamente al músculo y luego al torrente sanguíneo con cerca del 100% de absorción. La diferencia en la energía sentida es frecuentemente dramática para personas con problemas de absorción.</div></div>
+    <div class="faq-item"><button class="faq-q" onclick="tf(this)">¿Cómo sé qué servicios son los adecuados para mí? <span class="chev">▾</span></button><div class="faq-a">Su proveedor en Tru Vida Medical Group revisará su historial de salud, medicamentos actuales, análisis de laboratorio y objetivos para recomendar un protocolo personalizado. No adoptamos un enfoque único para todos. Los análisis de laboratorio son una parte clave para identificar lo que su cuerpo realmente necesita — revisamos B12, Vitamina D, hierro, A1C, lípidos y otros marcadores para guiar las recomendaciones. Reserve una consulta y construiremos su plan de bienestar personalizado.</div></div>
+    <div class="faq-item" style="border-bottom:none;"><button class="faq-q" onclick="tf(this)">¿Qué pasa si me olvido de una inyección semanal? <span class="chev">▾</span></button><div class="faq-a">Para la semaglutida: si han pasado 5 días o menos desde su dosis programada, tómela tan pronto como lo recuerde y reanude su horario semanal regular. Si han pasado más de 5 días, omita la dosis perdida y reanude en su siguiente día regular. Nunca duplique la dosis. Para las inyecciones lipo y vitamínicas: simplemente reanude en su próxima cita programada. La consistencia a lo largo del tiempo importa más que cualquier sesión perdida.</div></div>
+  </div>
+</div>
+
+</div>
+
+<button class="print-btn" onclick="window.print()">🖨️ Imprimir Guía</button>
+
+<script>
+function showTab(id,btn){
+  document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  btn.classList.add('active');
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+function tf(btn){
+  const a=btn.nextElementSibling;
+  const open=a.classList.contains('open');
+  document.querySelectorAll('.faq-a.open').forEach(x=>x.classList.remove('open'));
+  document.querySelectorAll('.faq-q.open').forEach(x=>x.classList.remove('open'));
+  if(!open){a.classList.add('open');btn.classList.add('open');}
+}
+</script>
+</body>
+</html>

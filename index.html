@@ -117,6 +117,30 @@
         }
         
         /* Persistent mobile bottom bar */
+        .floating-book-pill {
+            position: fixed;
+            bottom: 32px;
+            left: 50%;
+            transform: translate(-50%, 0);
+            z-index: 998;
+            padding: 18px 36px;
+            border: none;
+            border-radius: 100px;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            font-size: 14px;
+            font-weight: 500;
+            letter-spacing: 0.5px;
+            cursor: pointer;
+            box-shadow: 0 12px 40px rgba(10,10,12,0.25);
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            transition: opacity 0.4s cubic-bezier(0.4,0,0.2,1), transform 0.4s cubic-bezier(0.4,0,0.2,1);
+        }
+        @media (max-width: 820px) {
+            .floating-book-pill { display: none !important; }
+        }
+
         .mobile-bottom-bar { display: none; }
         @media (max-width: 820px) {
             .mobile-bottom-bar {
@@ -276,6 +300,10 @@
                 gap: 48px !important;
                 padding: 100px 24px 60px !important;
             }
+            .faq-grid {
+                grid-template-columns: 1fr !important;
+                gap: 48px !important;
+            }
         }
 
         /* Mobile menu overlay */
@@ -368,17 +396,55 @@
                         eyebrow: 'Need to be seen today?',
                         title: 'Same-day care.',
                         desc: 'Tell us what is going on and we will reach out as soon as possible.',
+                        cta: 'Request urgent care',
                         name: 'Full name',
                         phone: 'Phone number',
                         message: "What's going on?",
-                        send: 'Request a call back',
+                        messagePlaceholder: 'Briefly describe symptoms or what you need today…',
+                        send: 'Send request',
                         sending: 'Sending…',
                         success: 'Got it — we will reach out shortly.',
+                        successDesc: 'A care coordinator will call the number you provided as soon as possible. If this is a life-threatening emergency, call 911.',
+                        done: 'Close',
                         error: 'Could not send. Please call us at (786) 883-0339.',
-                        disclaimer: 'For life-threatening emergencies, call 911.'
+                        errName: 'Please enter your full name.',
+                        errPhone: 'Please enter a valid phone number.',
+                        errMessage: 'Please tell us briefly what is going on.',
+                        disclaimer: 'For life-threatening emergencies, call 911. This form is for same-day requests only — not for medical advice.'
                     }
                 },
                 marquee: ['Compassionate Care', 'Expert Physicians', 'Primary Care', 'Wellness', 'Diagnostics', 'Prevention', 'Comprehensive Care', 'Patient-First'],
+                faq: {
+                    eyebrow: '— FAQ',
+                    title: 'Common questions,',
+                    title2: 'clear answers.',
+                    items: [
+                        {
+                            q: 'Do you accept my insurance?',
+                            a: 'We accept Aetna, AvMed, Cigna, Florida Blue, Oscar, Preferred Care Network, Preferred Care Partners, and UnitedHealthcare. If you do not see your plan listed, give us a call — we will check eligibility for you.'
+                        },
+                        {
+                            q: 'Are you accepting new patients?',
+                            a: 'Yes — both of our providers are currently accepting new patients. You can book online or call us to schedule.'
+                        },
+                        {
+                            q: 'Do you offer same-day or telehealth visits?',
+                            a: 'We offer both. Same-day visits depend on availability — use the urgent-care request on the homepage and we will call you back as soon as possible. Telehealth visits are available anywhere in Florida and are ideal for follow-ups, wellness consultations, and most non-urgent concerns.'
+                        },
+                        {
+                            q: 'What should I bring to my first appointment?',
+                            a: 'A photo ID, your insurance card, a list of current medications, and any recent labs or records from previous providers. New-patient paperwork is sent ahead of your visit so you can fill it out in advance.'
+                        },
+                        {
+                            q: 'Do I need a referral for wellness services like Semaglutide or IV therapy?',
+                            a: 'No — wellness services are offered directly by our practice and do not require a referral. A brief consultation with one of our providers is required before starting any program.'
+                        },
+                        {
+                            q: 'Where are you located?',
+                            a: 'Our office is in Miami. Full address, hours, and directions are in the Location section of the homepage.'
+                        }
+                    ]
+                },
                 stats: [
                     { label: 'Years of combined experience' },
                     { label: 'Comprehensive service areas' },
@@ -519,7 +585,18 @@
                             }
                         },
                         {
-                            eyebrow: '02 / Your visit',
+                            eyebrow: '02 / How',
+                            title: 'How would you like to be seen?',
+                            subtitle: 'Choose how you would like to meet with our care team.',
+                            fields: {
+                                inpersonTitle: 'In-person visit',
+                                inpersonDesc: 'Meet with our team at our Miami office for a complete clinical evaluation.',
+                                telehealthTitle: 'Telehealth visit',
+                                telehealthDesc: 'Connect by secure video from anywhere in Florida — ideal for follow-ups and most wellness consultations.'
+                            }
+                        },
+                        {
+                            eyebrow: '03 / Your visit',
                             title: 'What brings you in?',
                             fields: {
                                 reason: 'Reason for visit',
@@ -538,7 +615,7 @@
                             }
                         },
                         {
-                            eyebrow: '03 / Your provider',
+                            eyebrow: '04 / Your provider',
                             title: 'Is there a provider you prefer?',
                             subtitle: 'Both of our providers are accepting new patients. You can also let us choose the best match for your schedule.',
                             anyProvider: 'No preference — first available',
@@ -547,11 +624,14 @@
                             notesPlaceholder: 'Symptoms, medications, questions, accommodations…'
                         },
                         {
-                            eyebrow: '04 / Review',
+                            eyebrow: '05 / Review',
                             title: 'Everything look right?',
                             subtitle: 'Confirm below and our care coordinator will reach out within one business day to finalize your appointment.',
                             summary: {
                                 contact: 'Contact',
+                                visitType: 'Visit type',
+                                inperson: 'In-person',
+                                telehealth: 'Telehealth',
                                 visit: 'Visit',
                                 provider: 'Provider',
                                 notes: 'Notes',
@@ -590,17 +670,55 @@
                         eyebrow: '¿Necesita atención hoy?',
                         title: 'Atención el mismo día.',
                         desc: 'Cuéntenos qué está pasando y le contactaremos lo antes posible.',
+                        cta: 'Solicitar atención urgente',
                         name: 'Nombre completo',
                         phone: 'Número de teléfono',
                         message: '¿Qué está pasando?',
-                        send: 'Solicitar llamada',
+                        messagePlaceholder: 'Describa brevemente sus síntomas o lo que necesita hoy…',
+                        send: 'Enviar solicitud',
                         sending: 'Enviando…',
                         success: 'Recibido — le contactaremos pronto.',
+                        successDesc: 'Un coordinador de atención llamará al número que proporcionó lo antes posible. Si es una emergencia que pone en peligro la vida, llame al 911.',
+                        done: 'Cerrar',
                         error: 'No se pudo enviar. Llámenos al (786) 883-0339.',
-                        disclaimer: 'Para emergencias que pongan en peligro la vida, llame al 911.'
+                        errName: 'Por favor ingrese su nombre completo.',
+                        errPhone: 'Por favor ingrese un número de teléfono válido.',
+                        errMessage: 'Por favor cuéntenos brevemente qué está pasando.',
+                        disclaimer: 'Para emergencias que pongan en peligro la vida, llame al 911. Este formulario es solo para solicitudes del mismo día — no para asesoramiento médico.'
                     }
                 },
                 marquee: ['Atención Compasiva', 'Médicos Expertos', 'Atención Primaria', 'Bienestar', 'Diagnóstico', 'Prevención', 'Atención Integral', 'El Paciente Primero'],
+                faq: {
+                    eyebrow: '— Preguntas frecuentes',
+                    title: 'Respuestas claras',
+                    title2: 'a sus preguntas.',
+                    items: [
+                        {
+                            q: '¿Aceptan mi seguro?',
+                            a: 'Aceptamos Aetna, AvMed, Cigna, Florida Blue, Oscar, Preferred Care Network, Preferred Care Partners y UnitedHealthcare. Si no ve su plan en la lista, llámenos — verificaremos su elegibilidad.'
+                        },
+                        {
+                            q: '¿Aceptan pacientes nuevos?',
+                            a: 'Sí — ambos médicos están aceptando pacientes nuevos. Puede reservar en línea o llamarnos para programar una cita.'
+                        },
+                        {
+                            q: '¿Ofrecen citas el mismo día o telemedicina?',
+                            a: 'Ofrecemos ambos. Las citas del mismo día dependen de la disponibilidad — use la solicitud de atención urgente en la página principal y le devolveremos la llamada lo antes posible. Las visitas por telemedicina están disponibles en cualquier parte de Florida y son ideales para seguimientos, consultas de bienestar y la mayoría de las inquietudes no urgentes.'
+                        },
+                        {
+                            q: '¿Qué debo traer a mi primera cita?',
+                            a: 'Una identificación con foto, su tarjeta de seguro, una lista de los medicamentos actuales y cualquier laboratorio o expediente reciente de proveedores anteriores. La documentación para pacientes nuevos se envía antes de su visita para que pueda completarla con anticipación.'
+                        },
+                        {
+                            q: '¿Necesito una referencia para servicios de bienestar como Semaglutida o terapia IV?',
+                            a: 'No — los servicios de bienestar se ofrecen directamente en nuestra práctica y no requieren referencia. Se requiere una breve consulta con uno de nuestros médicos antes de comenzar cualquier programa.'
+                        },
+                        {
+                            q: '¿Dónde están ubicados?',
+                            a: 'Nuestra oficina está en Miami. La dirección completa, el horario y las indicaciones están en la sección de Ubicación de la página principal.'
+                        }
+                    ]
+                },
                 stats: [
                     { label: 'Años de experiencia combinada' },
                     { label: 'Áreas de servicio integrales' },
@@ -741,7 +859,18 @@
                             }
                         },
                         {
-                            eyebrow: '02 / Su visita',
+                            eyebrow: '02 / Cómo',
+                            title: '¿Cómo prefiere ser atendido?',
+                            subtitle: 'Elija cómo le gustaría reunirse con nuestro equipo.',
+                            fields: {
+                                inpersonTitle: 'Visita en persona',
+                                inpersonDesc: 'Conozca a nuestro equipo en nuestra oficina de Miami para una evaluación clínica completa.',
+                                telehealthTitle: 'Telemedicina / Videollamada',
+                                telehealthDesc: 'Conéctese por video seguro desde cualquier parte de Florida — ideal para seguimientos y consultas de bienestar.'
+                            }
+                        },
+                        {
+                            eyebrow: '03 / Su visita',
                             title: '¿Qué le trae por aquí?',
                             fields: {
                                 reason: 'Motivo de la visita',
@@ -760,7 +889,7 @@
                             }
                         },
                         {
-                            eyebrow: '03 / Su médico',
+                            eyebrow: '04 / Su médico',
                             title: '¿Prefiere a un médico en particular?',
                             subtitle: 'Ambos médicos aceptan nuevos pacientes. También puede dejar que elijamos según su disponibilidad.',
                             anyProvider: 'Sin preferencia — el primero disponible',
@@ -769,11 +898,14 @@
                             notesPlaceholder: 'Síntomas, medicamentos, preguntas, adaptaciones…'
                         },
                         {
-                            eyebrow: '04 / Revisión',
+                            eyebrow: '05 / Revisión',
                             title: '¿Todo en orden?',
                             subtitle: 'Confirme abajo y un coordinador de atención le contactará en un día hábil para finalizar su cita.',
                             summary: {
                                 contact: 'Contacto',
+                                visitType: 'Tipo de visita',
+                                inperson: 'En persona',
+                                telehealth: 'Telemedicina',
                                 visit: 'Visita',
                                 provider: 'Médico',
                                 notes: 'Notas',
@@ -829,7 +961,7 @@
                     
                     const target = e.target;
                     // Hide custom cursor inside forms/modals so native cursor is visible
-                    if (target.closest && target.closest('.booking-modal')) {
+                    if (target.closest && (target.closest('.booking-modal') || target.closest('.urgent-modal'))) {
                         setVisible(false);
                         return;
                     }
@@ -944,6 +1076,9 @@
             const [bookingOpen, setBookingOpen] = useState(false);
             const openBooking = () => setBookingOpen(true);
             const closeBooking = () => setBookingOpen(false);
+            const [urgentOpen, setUrgentOpen] = useState(false);
+            const openUrgent = () => setUrgentOpen(true);
+            const closeUrgent = () => setUrgentOpen(false);
             
             const colors = {
                 primary: tweaks.primaryColor,
@@ -976,13 +1111,13 @@
             }, []);
             
             useEffect(() => {
-                if (bookingOpen) {
+                if (bookingOpen || urgentOpen) {
                     document.body.style.overflow = 'hidden';
                 } else {
                     document.body.style.overflow = '';
                 }
                 return () => { document.body.style.overflow = ''; };
-            }, [bookingOpen]);
+            }, [bookingOpen, urgentOpen]);
             
             const updateTweak = (key, value) => {
                 const newTweaks = { ...tweaks, [key]: value };
@@ -998,20 +1133,23 @@
                     <CustomCursor colors={colors} />
                     <ScrollProgress colors={colors} scrollY={scrollY} />
                     <Navigation colors={colors} scrollY={scrollY} onBook={openBooking} />
-                    <HeroSection colors={colors} scrollY={scrollY} loaded={loaded} onBook={openBooking} />
+                    <HeroSection colors={colors} scrollY={scrollY} loaded={loaded} onBook={openBooking} onUrgent={openUrgent} />
                     <MarqueeSection colors={colors} />
                     <StatsSection colors={colors} scrollY={scrollY} />
-                    <StickyPhilosophy colors={colors} scrollY={scrollY} />
                     <DoctorsShowcase colors={colors} scrollY={scrollY} />
                     <ServicesShowcase colors={colors} scrollY={scrollY} />
                     <WellnessSection colors={colors} onBook={openBooking} />
                     <InsuranceSection colors={colors} />
                     <TestimonialsSection colors={colors} scrollY={scrollY} />
                     <LocationSection colors={colors} scrollY={scrollY} />
+                    <FaqSection colors={colors} />
+                    <StickyPhilosophy colors={colors} scrollY={scrollY} />
                     <CTASection colors={colors} scrollY={scrollY} onBook={openBooking} />
                     <Footer colors={colors} />
                     
                     {bookingOpen && <BookingModal colors={colors} onClose={closeBooking} />}
+                    {urgentOpen && <UrgentModal colors={colors} onClose={closeUrgent} />}
+                    <FloatingBookPill onBook={openBooking} scrollY={scrollY} hide={bookingOpen || urgentOpen} colors={colors} />
                     <MobileBottomBar onBook={openBooking} />
                     {editMode && <TweaksPanel tweaks={tweaks} updateTweak={updateTweak} colors={colors} />}
                 </div>
@@ -1075,8 +1213,17 @@
                             color: colors.text,
                             letterSpacing: '0px'
                         }}>
-                            <img src="assets/logo-ink.png" alt="" style={{ width: '34px', height: '34px', display: 'block' }} />
-                            Truvida<span style={{ color: colors.primary }}>.</span>
+                            <img src="assets/logo-ink.png" alt="Tru Vida Medical Group" style={{ width: '34px', height: '34px', display: 'block' }} />
+                            <span style={{
+                                display: 'inline-flex',
+                                alignItems: 'baseline',
+                                opacity: isScrolled ? 1 : 0,
+                                transform: isScrolled ? 'translateX(0)' : 'translateX(-8px)',
+                                transition: 'opacity 0.4s ease, transform 0.4s ease',
+                                pointerEvents: isScrolled ? 'auto' : 'none'
+                            }}>
+                                Truvida<span style={{ color: colors.primary }}>.</span>
+                            </span>
                         </div>
                         <div className="nav-desktop-links" style={{ display: 'flex', gap: '40px', alignItems: 'center' }}>
                             {[
@@ -1218,6 +1365,26 @@
             );
         }
         
+        function FloatingBookPill({ onBook, scrollY, hide, colors }) {
+            const { t } = useLang();
+            const visible = !hide && scrollY > 400;
+            return (
+                <button
+                    onClick={onBook}
+                    className="floating-book-pill"
+                    style={{
+                        background: colors.text,
+                        color: colors.bg,
+                        opacity: visible ? 1 : 0,
+                        transform: visible ? 'translate(-50%, 0)' : 'translate(-50%, 80px)',
+                        pointerEvents: visible ? 'auto' : 'none'
+                    }}>
+                    {t.nav.book}
+                    <span style={{ fontSize: '14px' }}>→</span>
+                </button>
+            );
+        }
+
         function MobileBottomBar({ onBook }) {
             const { t } = useLang();
             return (
@@ -1268,7 +1435,7 @@
             );
         }
         
-        function HeroSection({ colors, scrollY, loaded, onBook }) {
+        function HeroSection({ colors, scrollY, loaded, onBook, onUrgent }) {
             const parallax = scrollY * 0.4;
             const opacity = Math.max(0, 1 - scrollY / 700);
             const scale = 1 + scrollY * 0.0003;
@@ -1351,6 +1518,41 @@
                     }}>
                         {/* LEFT: hero content */}
                         <div style={{ textAlign: 'left' }}>
+                            {/* Big hero logo + wordmark (fades out as user scrolls — nav has its own small logo) */}
+                            <div className={`text-reveal ${loaded ? 'loaded' : ''}`} style={{ marginBottom: '32px' }}>
+                                <div className="text-reveal-line">
+                                    <div className="text-reveal-inner" style={{
+                                        display: 'flex',
+                                        alignItems: 'center',
+                                        gap: 'clamp(16px, 2vw, 28px)',
+                                        opacity: Math.max(0, 1 - scrollY / 400),
+                                        transform: `translateY(${-scrollY * 0.3}px) scale(${Math.max(0.6, 1 - scrollY / 800)})`,
+                                        transformOrigin: 'left center',
+                                        transition: 'opacity 0.1s linear, transform 0.1s linear'
+                                    }}>
+                                        <img
+                                            src="assets/logo-ink.png"
+                                            alt="Tru Vida Medical Group"
+                                            style={{
+                                                display: 'block',
+                                                height: 'clamp(80px, 11vw, 160px)',
+                                                width: 'auto'
+                                            }}
+                                        />
+                                        <span style={{
+                                            fontFamily: "'Fraunces', serif",
+                                            fontSize: 'clamp(28px, 3.4vw, 56px)',
+                                            fontWeight: 300,
+                                            lineHeight: 1.05,
+                                            letterSpacing: '-1.5px',
+                                            color: colors.text
+                                        }}>
+                                            Tru Vida<br />
+                                            <span style={{ fontStyle: 'italic', color: colors.primary, fontSize: '0.55em', letterSpacing: '4px', textTransform: 'uppercase', fontWeight: 500 }}>Medical Group</span>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
                             {/* Badge */}
                             <div className={`text-reveal ${loaded ? 'loaded' : ''}`} style={{ marginBottom: '40px' }}>
                                 <div className="text-reveal-line">
@@ -1459,11 +1661,11 @@
                             </div>
                         </div>
 
-                        {/* RIGHT: urgent card */}
+                        {/* RIGHT: urgent CTA */}
                         <div className={`text-reveal ${loaded ? 'loaded' : ''}`}>
                             <div className="text-reveal-line">
                                 <div className="text-reveal-inner" style={{ transitionDelay: '0.5s' }}>
-                                    <UrgentCard colors={colors} t={t.hero.urgent} />
+                                    <UrgentCta colors={colors} t={t.hero.urgent} onClick={onUrgent} />
                                 </div>
                             </div>
                         </div>
@@ -1499,54 +1701,7 @@
             );
         }
 
-        function UrgentCard({ colors, t }) {
-            const [form, setForm] = useState({ name: '', phone: '', message: '' });
-            const [status, setStatus] = useState('idle'); // idle | sending | success | error
-            const update = (k, v) => setForm(f => ({ ...f, [k]: v }));
-
-            const submit = async (e) => {
-                e.preventDefault();
-                if (status === 'sending') return;
-                if (!form.name.trim() || form.phone.replace(/\D/g, '').length < 10) {
-                    setStatus('error');
-                    return;
-                }
-                setStatus('sending');
-                try {
-                    const res = await fetch(BOOKING_ENDPOINT, {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({
-                            urgent: true,
-                            name: form.name,
-                            phone: form.phone,
-                            notes: form.message,
-                            submittedAt: new Date().toISOString()
-                        })
-                    });
-                    if (!res.ok) throw new Error();
-                    const data = await res.json().catch(() => ({}));
-                    if (data && data.ok === false) throw new Error();
-                    setStatus('success');
-                    setForm({ name: '', phone: '', message: '' });
-                } catch {
-                    setStatus('error');
-                }
-            };
-
-            const inputStyle = {
-                width: '100%',
-                background: 'transparent',
-                border: 'none',
-                borderBottom: `1px solid ${colors.text}25`,
-                padding: '12px 0',
-                fontSize: '15px',
-                fontFamily: 'inherit',
-                color: colors.text,
-                outline: 'none',
-                marginBottom: '20px'
-            };
-
+        function UrgentCta({ colors, t, onClick }) {
             return (
                 <div style={{
                     background: colors.surface,
@@ -1594,68 +1749,27 @@
                         color: colors.textLight,
                         marginBottom: '24px'
                     }}>{t.desc}</p>
-
-                    {status === 'success' ? (
-                        <div style={{
-                            padding: '24px 0',
-                            color: colors.text,
-                            fontSize: '15px',
-                            fontWeight: 500
-                        }}>{t.success}</div>
-                    ) : (
-                        <form onSubmit={submit}>
-                            <input
-                                type="text"
-                                value={form.name}
-                                onChange={e => update('name', e.target.value)}
-                                placeholder={t.name}
-                                style={inputStyle}
-                                required
-                            />
-                            <input
-                                type="tel"
-                                value={form.phone}
-                                onChange={e => update('phone', e.target.value)}
-                                placeholder={t.phone}
-                                style={inputStyle}
-                                required
-                            />
-                            <textarea
-                                value={form.message}
-                                onChange={e => update('message', e.target.value)}
-                                placeholder={t.message}
-                                rows={3}
-                                style={{ ...inputStyle, resize: 'vertical', minHeight: '60px' }}
-                            />
-                            <button type="submit" disabled={status === 'sending'} style={{
-                                width: '100%',
-                                padding: '16px 24px',
-                                background: '#DC2626',
-                                color: '#FFF',
-                                border: 'none',
-                                borderRadius: '100px',
-                                fontFamily: 'inherit',
-                                fontSize: '14px',
-                                fontWeight: 600,
-                                letterSpacing: '0.5px',
-                                cursor: status === 'sending' ? 'wait' : 'none',
-                                opacity: status === 'sending' ? 0.7 : 1,
-                                marginTop: '8px',
-                                transition: 'all 0.3s ease'
-                            }}>
-                                {status === 'sending' ? t.sending : t.send}
-                            </button>
-                            {status === 'error' && (
-                                <div style={{
-                                    color: '#B91C1C',
-                                    fontSize: '12px',
-                                    marginTop: '12px',
-                                    textAlign: 'center'
-                                }}>{t.error}</div>
-                            )}
-                        </form>
-                    )}
-
+                    <button onClick={onClick} style={{
+                        width: '100%',
+                        padding: '18px 24px',
+                        background: '#DC2626',
+                        color: '#FFF',
+                        border: 'none',
+                        borderRadius: '100px',
+                        fontFamily: 'inherit',
+                        fontSize: '14px',
+                        fontWeight: 600,
+                        letterSpacing: '0.5px',
+                        cursor: 'none',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        gap: '10px',
+                        transition: 'all 0.3s ease'
+                    }}>
+                        {t.cta}
+                        <span style={{ fontSize: '16px' }}>→</span>
+                    </button>
                     <p style={{
                         fontSize: '11px',
                         color: colors.textMuted,
@@ -1663,6 +1777,225 @@
                         lineHeight: 1.4,
                         textAlign: 'center'
                     }}>{t.disclaimer}</p>
+                </div>
+            );
+        }
+
+        function UrgentModal({ colors, onClose }) {
+            const { t } = useLang();
+            const u = t.hero.urgent;
+            const [form, setForm] = useState({ name: '', phone: '', message: '' });
+            const [status, setStatus] = useState('idle');
+            const [errors, setErrors] = useState({});
+            const [entered, setEntered] = useState(false);
+            useEffect(() => { requestAnimationFrame(() => setEntered(true)); }, []);
+            useEffect(() => {
+                const onKey = (e) => { if (e.key === 'Escape') handleClose(); };
+                window.addEventListener('keydown', onKey);
+                return () => window.removeEventListener('keydown', onKey);
+            }, []);
+
+            const update = (k, v) => {
+                setForm(f => ({ ...f, [k]: v }));
+                if (errors[k]) setErrors(e => ({ ...e, [k]: null }));
+            };
+
+            const handleClose = () => {
+                setEntered(false);
+                setTimeout(onClose, 350);
+            };
+
+            const validate = () => {
+                const e = {};
+                if (!form.name.trim() || form.name.trim().length < 2) e.name = u.errName;
+                if (form.phone.replace(/\D/g, '').length < 10) e.phone = u.errPhone;
+                if (!form.message.trim()) e.message = u.errMessage;
+                setErrors(e);
+                return Object.keys(e).length === 0;
+            };
+
+            const submit = async (e) => {
+                e.preventDefault();
+                if (status === 'sending') return;
+                if (!validate()) return;
+                setStatus('sending');
+                try {
+                    const res = await fetch(BOOKING_ENDPOINT, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({
+                            urgent: true,
+                            name: form.name,
+                            phone: form.phone,
+                            notes: form.message,
+                            submittedAt: new Date().toISOString()
+                        })
+                    });
+                    if (!res.ok) throw new Error();
+                    const data = await res.json().catch(() => ({}));
+                    if (data && data.ok === false) throw new Error();
+                    setStatus('success');
+                } catch {
+                    setStatus('error');
+                }
+            };
+
+            const inputStyle = (err) => ({
+                width: '100%',
+                background: 'transparent',
+                border: 'none',
+                borderBottom: `1px solid ${err ? '#DC2626' : colors.text + '25'}`,
+                padding: '14px 0',
+                fontSize: '18px',
+                fontFamily: 'inherit',
+                color: colors.text,
+                outline: 'none',
+                transition: 'border-color 0.3s ease'
+            });
+            const labelStyle = {
+                display: 'block',
+                fontSize: '11px',
+                letterSpacing: '2px',
+                textTransform: 'uppercase',
+                color: colors.textMuted,
+                fontWeight: 600,
+                marginBottom: '8px'
+            };
+
+            return (
+                <div className="urgent-modal" style={{
+                    position: 'fixed', inset: 0, zIndex: 100000,
+                    background: colors.bg,
+                    overflow: 'auto',
+                    opacity: entered ? 1 : 0,
+                    transition: 'opacity 0.35s ease',
+                    fontFamily: "'Plus Jakarta Sans', sans-serif"
+                }}>
+                    {/* Top bar */}
+                    <div style={{
+                        position: 'sticky', top: 0, zIndex: 10,
+                        background: colors.bg,
+                        borderBottom: `1px solid ${colors.text}08`,
+                        padding: '24px clamp(24px, 5vw, 80px)',
+                        display: 'flex', alignItems: 'center', justifyContent: 'space-between'
+                    }}>
+                        <div style={{ display: 'flex', alignItems: 'baseline', gap: '20px' }}>
+                            <span style={{ display: 'inline-flex', alignItems: 'center', gap: '10px', fontFamily: "'Fraunces', serif", fontSize: '22px', fontWeight: 400, letterSpacing: '-0.5px', color: colors.text }}>
+                                <img src="assets/logo-ink.png" alt="" style={{ width: '28px', height: '28px', display: 'block' }} />
+                                Truvida<span style={{ color: colors.primary, fontStyle: 'italic' }}>.</span>
+                            </span>
+                            <span style={{
+                                display: 'inline-flex', alignItems: 'center', gap: '8px',
+                                padding: '5px 12px',
+                                background: '#FEE2E2',
+                                border: '1px solid #FCA5A5',
+                                borderRadius: '100px',
+                                fontSize: '11px', fontWeight: 600,
+                                letterSpacing: '1px', textTransform: 'uppercase',
+                                color: '#B91C1C'
+                            }}>
+                                <span style={{
+                                    width: '6px', height: '6px',
+                                    borderRadius: '50%', background: '#DC2626',
+                                    animation: 'pulse 1.5s ease-in-out infinite'
+                                }} />
+                                {u.eyebrow}
+                            </span>
+                        </div>
+                        <button onClick={handleClose} aria-label="Close" style={{
+                            background: 'transparent', border: 'none',
+                            fontFamily: 'inherit', cursor: 'none',
+                            fontSize: '12px', letterSpacing: '2px', textTransform: 'uppercase',
+                            color: colors.text, fontWeight: 500,
+                            display: 'flex', alignItems: 'center', gap: '10px', padding: '8px 4px'
+                        }}>
+                            <span style={{ fontSize: '22px', lineHeight: 1, fontWeight: 300 }}>×</span>
+                            {t.booking.close}
+                        </button>
+                    </div>
+
+                    {/* Body */}
+                    <div style={{ padding: 'clamp(40px, 7vw, 96px) clamp(24px, 5vw, 80px) 140px', maxWidth: '760px', margin: '0 auto' }}>
+                        {status === 'success' ? (
+                            <div style={{ animation: 'bookingFade 0.5s ease both' }}>
+                                <h2 style={{
+                                    fontFamily: "'Fraunces', serif",
+                                    fontSize: 'clamp(40px, 6vw, 72px)',
+                                    fontWeight: 300, lineHeight: 1.05, letterSpacing: '-2px',
+                                    color: colors.text, marginBottom: '24px'
+                                }}>{u.success}</h2>
+                                <p style={{ fontSize: '18px', lineHeight: 1.6, color: colors.textLight, marginBottom: '40px', fontWeight: 300 }}>
+                                    {u.successDesc}
+                                </p>
+                                <button onClick={handleClose} style={{
+                                    background: colors.text, color: colors.bg,
+                                    border: 'none', fontFamily: 'inherit', cursor: 'none',
+                                    fontSize: '14px', letterSpacing: '0.5px',
+                                    fontWeight: 500, padding: '20px 44px',
+                                    borderRadius: '100px'
+                                }}>{u.done}</button>
+                            </div>
+                        ) : (
+                            <form onSubmit={submit} style={{ animation: 'bookingFade 0.5s ease both' }}>
+                                <p style={{
+                                    fontSize: '12px', letterSpacing: '3px', textTransform: 'uppercase',
+                                    color: '#DC2626', fontWeight: 600, marginBottom: '28px'
+                                }}>{u.eyebrow}</p>
+                                <h2 style={{
+                                    fontFamily: "'Fraunces', serif",
+                                    fontSize: 'clamp(40px, 6vw, 72px)',
+                                    fontWeight: 300, lineHeight: 1.05, letterSpacing: '-2px',
+                                    color: colors.text, marginBottom: '20px'
+                                }}>
+                                    {u.title.split(' ').slice(0, -1).join(' ')}{' '}
+                                    <span style={{ fontStyle: 'italic', color: colors.primary }}>
+                                        {u.title.split(' ').slice(-1)[0]}
+                                    </span>
+                                </h2>
+                                <p style={{ fontSize: '18px', lineHeight: 1.6, color: colors.textLight, maxWidth: '560px', marginBottom: '56px', fontWeight: 300 }}>
+                                    {u.desc}
+                                </p>
+
+                                <div style={{ marginBottom: '36px' }}>
+                                    <label style={labelStyle}>{u.name} <span style={{ color: '#DC2626', marginLeft: '4px' }}>*</span></label>
+                                    <input type="text" value={form.name} onChange={e => update('name', e.target.value)} style={inputStyle(errors.name)} placeholder="Jane Doe" />
+                                    {errors.name && <div style={{ color: '#DC2626', fontSize: '12px', marginTop: '6px' }}>{errors.name}</div>}
+                                </div>
+                                <div style={{ marginBottom: '36px' }}>
+                                    <label style={labelStyle}>{u.phone} <span style={{ color: '#DC2626', marginLeft: '4px' }}>*</span></label>
+                                    <input type="tel" value={form.phone} onChange={e => update('phone', e.target.value)} style={inputStyle(errors.phone)} placeholder="(305) 555-0100" />
+                                    {errors.phone && <div style={{ color: '#DC2626', fontSize: '12px', marginTop: '6px' }}>{errors.phone}</div>}
+                                </div>
+                                <div style={{ marginBottom: '40px' }}>
+                                    <label style={labelStyle}>{u.message} <span style={{ color: '#DC2626', marginLeft: '4px' }}>*</span></label>
+                                    <textarea value={form.message} onChange={e => update('message', e.target.value)} rows={4}
+                                        style={{ ...inputStyle(errors.message), resize: 'vertical', minHeight: '80px' }}
+                                        placeholder={u.messagePlaceholder} />
+                                    {errors.message && <div style={{ color: '#DC2626', fontSize: '12px', marginTop: '6px' }}>{errors.message}</div>}
+                                </div>
+
+                                <button type="submit" disabled={status === 'sending'} style={{
+                                    background: '#DC2626', color: '#FFF',
+                                    border: 'none', fontFamily: 'inherit',
+                                    cursor: status === 'sending' ? 'wait' : 'none',
+                                    fontSize: '14px', letterSpacing: '0.5px',
+                                    fontWeight: 600, padding: '20px 44px',
+                                    borderRadius: '100px',
+                                    opacity: status === 'sending' ? 0.7 : 1,
+                                    display: 'inline-flex', alignItems: 'center', gap: '12px'
+                                }}>
+                                    {status === 'sending' ? u.sending : u.send}
+                                    <span style={{ fontSize: '16px' }}>→</span>
+                                </button>
+                                {status === 'error' && (
+                                    <div style={{ color: '#DC2626', fontSize: '13px', marginTop: '20px' }}>{u.error}</div>
+                                )}
+                                <p style={{ fontSize: '12px', color: colors.textMuted, marginTop: '40px', lineHeight: 1.5, maxWidth: '500px' }}>
+                                    {u.disclaimer}
+                                </p>
+                            </form>
+                        )}
+                    </div>
                 </div>
             );
         }
@@ -2618,6 +2951,129 @@
             );
         }
         
+        function FaqSection({ colors }) {
+            const { t } = useLang();
+            const faq = t.faq;
+            const [open, setOpen] = useState(0);
+            const [ref, inView] = useInView(0.1);
+            return (
+                <section id="faq" ref={ref} style={{
+                    padding: '160px 48px',
+                    background: colors.bg,
+                    position: 'relative'
+                }}>
+                    <div style={{
+                        maxWidth: '1100px',
+                        margin: '0 auto',
+                        display: 'grid',
+                        gridTemplateColumns: 'minmax(0, 1fr) minmax(0, 1.6fr)',
+                        gap: '80px',
+                        alignItems: 'start'
+                    }} className="faq-grid">
+                        <div style={{
+                            opacity: inView ? 1 : 0,
+                            transform: inView ? 'translateY(0)' : 'translateY(40px)',
+                            transition: 'all 0.8s ease',
+                            position: 'sticky',
+                            top: '120px'
+                        }}>
+                            <p style={{
+                                fontSize: '12px',
+                                letterSpacing: '3px',
+                                textTransform: 'uppercase',
+                                color: colors.primary,
+                                fontWeight: 600,
+                                marginBottom: '24px'
+                            }}>{faq.eyebrow}</p>
+                            <h2 style={{
+                                fontFamily: "'Fraunces', serif",
+                                fontSize: 'clamp(48px, 6vw, 88px)',
+                                fontWeight: 300,
+                                lineHeight: 1,
+                                letterSpacing: '-2px',
+                                color: colors.text
+                            }}>
+                                {faq.title}
+                                <br />
+                                <span style={{ fontStyle: 'italic', color: colors.primary }}>{faq.title2}</span>
+                            </h2>
+                        </div>
+
+                        <div style={{
+                            opacity: inView ? 1 : 0,
+                            transform: inView ? 'translateY(0)' : 'translateY(40px)',
+                            transition: 'all 0.9s ease 0.15s'
+                        }}>
+                            {faq.items.map((item, i) => {
+                                const isOpen = open === i;
+                                return (
+                                    <div key={i} style={{
+                                        borderTop: i === 0 ? `1px solid ${colors.text}15` : 'none',
+                                        borderBottom: `1px solid ${colors.text}15`
+                                    }}>
+                                        <button
+                                            onClick={() => setOpen(isOpen ? -1 : i)}
+                                            style={{
+                                                width: '100%',
+                                                background: 'transparent',
+                                                border: 'none',
+                                                padding: '28px 0',
+                                                fontFamily: 'inherit',
+                                                cursor: 'none',
+                                                display: 'flex',
+                                                alignItems: 'center',
+                                                justifyContent: 'space-between',
+                                                gap: '24px',
+                                                textAlign: 'left',
+                                                color: colors.text
+                                            }}>
+                                            <span style={{
+                                                fontFamily: "'Fraunces', serif",
+                                                fontSize: 'clamp(20px, 2vw, 26px)',
+                                                fontWeight: 400,
+                                                letterSpacing: '-0.5px',
+                                                lineHeight: 1.3
+                                            }}>{item.q}</span>
+                                            <span style={{
+                                                flexShrink: 0,
+                                                width: '32px',
+                                                height: '32px',
+                                                borderRadius: '50%',
+                                                border: `1px solid ${colors.text}30`,
+                                                display: 'flex',
+                                                alignItems: 'center',
+                                                justifyContent: 'center',
+                                                fontSize: '18px',
+                                                fontWeight: 300,
+                                                transform: isOpen ? 'rotate(45deg)' : 'rotate(0deg)',
+                                                transition: 'transform 0.4s ease',
+                                                color: colors.text
+                                            }}>+</span>
+                                        </button>
+                                        <div style={{
+                                            maxHeight: isOpen ? '500px' : '0',
+                                            overflow: 'hidden',
+                                            transition: 'max-height 0.5s ease, opacity 0.3s ease',
+                                            opacity: isOpen ? 1 : 0
+                                        }}>
+                                            <p style={{
+                                                fontSize: '17px',
+                                                lineHeight: 1.7,
+                                                color: colors.textLight,
+                                                paddingBottom: '32px',
+                                                fontWeight: 300,
+                                                maxWidth: '640px'
+                                            }}>{item.a}</p>
+                                        </div>
+                                    </div>
+                                );
+                            })}
+                        </div>
+                    </div>
+                </section>
+            );
+        }
+
         function LocationSection({ colors, scrollY }) {
             const [ref, inView] = useInView(0.2);
             const { t } = useLang();
@@ -2872,6 +3328,7 @@
                 name: '', phone: '', email: '', dob: '',
                 patientType: 'new',
                 formLang: lang === 'es' ? 'es' : 'en',
+                visitType: 'inperson',
                 reason: '', service: '', date: '', window: '',
                 doctor: 'any',
                 notes: ''
@@ -2898,7 +3355,7 @@
                     if (phoneDigits.length < 10) e.phone = b.errors.phone;
                     if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email)) e.email = b.errors.email;
                 }
-                if (s === 1) {
+                if (s === 2) {
                     if (!form.reason) e.reason = b.errors.reason;
                 }
                 setErrors(e);
@@ -2937,7 +3394,7 @@
 
             const handleNext = () => {
                 if (validateStep(step)) {
-                    if (step < 3) setStep(step + 1);
+                    if (step < 4) setStep(step + 1);
                     else submitBooking();
                 }
             };
@@ -3106,9 +3563,10 @@
                     )}
 
                     {step === 0 && <StepAbout f={stepData.fields} form={form} update={update} errors={errors} colors={colors} b={b} />}
-                    {step === 1 && <StepVisit f={stepData.fields} form={form} update={update} errors={errors} colors={colors} b={b} services={services} />}
-                    {step === 2 && <StepProvider stepData={stepData} form={form} update={update} colors={colors} doctors={doctors} />}
-                    {step === 3 && <StepReview stepData={stepData} form={form} colors={colors} b={b} doctors={doctors} services={services} />}
+                    {step === 1 && <StepVisitType f={stepData.fields} form={form} update={update} colors={colors} />}
+                    {step === 2 && <StepVisit f={stepData.fields} form={form} update={update} errors={errors} colors={colors} b={b} services={services} />}
+                    {step === 3 && <StepProvider stepData={stepData} form={form} update={update} colors={colors} doctors={doctors} />}
+                    {step === 4 && <StepReview stepData={stepData} form={form} colors={colors} b={b} doctors={doctors} services={services} />}
                 </div>
             );
         }
@@ -3145,6 +3603,83 @@
                     </label>
                     {children}
                     {error && <div style={bookErrorStyle}>{error}</div>}
+                </div>
+            );
+        }
+
+        function StepVisitType({ f, form, update, colors }) {
+            const InPersonIcon = ({ stroke }) => (
+                <svg width="56" height="56" viewBox="0 0 24 24" fill="none" stroke={stroke} strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round">
+                    <path d="M3 21V8l9-5 9 5v13" />
+                    <path d="M9 21v-6h6v6" />
+                    <path d="M12 9v4" />
+                    <path d="M10 11h4" />
+                </svg>
+            );
+            const TelehealthIcon = ({ stroke }) => (
+                <svg width="56" height="56" viewBox="0 0 24 24" fill="none" stroke={stroke} strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round">
+                    <rect x="2" y="6" width="14" height="12" rx="2" />
+                    <path d="M22 8l-6 4 6 4V8z" />
+                    <circle cx="9" cy="12" r="2" />
+                </svg>
+            );
+            const options = [
+                { v: 'inperson', title: f.inpersonTitle, desc: f.inpersonDesc, Icon: InPersonIcon },
+                { v: 'telehealth', title: f.telehealthTitle, desc: f.telehealthDesc, Icon: TelehealthIcon }
+            ];
+            return (
+                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '24px' }}>
+                    {options.map(opt => {
+                        const selected = form.visitType === opt.v;
+                        const Icon = opt.Icon;
+                        const iconStroke = selected ? colors.bg : colors.text;
+                        return (
+                            <button
+                                key={opt.v}
+                                type="button"
+                                onClick={() => update('visitType', opt.v)}
+                                style={{
+                                    textAlign: 'left',
+                                    background: selected ? colors.text : colors.surface,
+                                    color: selected ? colors.bg : colors.text,
+                                    border: `1.5px solid ${selected ? colors.text : colors.text + '15'}`,
+                                    borderRadius: '20px',
+                                    padding: '48px 36px',
+                                    cursor: 'none',
+                                    fontFamily: 'inherit',
+                                    transition: 'all 0.3s ease',
+                                    display: 'flex',
+                                    flexDirection: 'column',
+                                    gap: '20px',
+                                    minHeight: '380px'
+                                }}>
+                                <div style={{ marginBottom: '8px' }}><Icon stroke={iconStroke} /></div>
+                                <div style={{
+                                    fontFamily: "'Fraunces', serif",
+                                    fontSize: '32px',
+                                    fontWeight: 400,
+                                    lineHeight: 1.05,
+                                    letterSpacing: '-1px'
+                                }}>{opt.title}</div>
+                                <div style={{
+                                    fontSize: '15px',
+                                    lineHeight: 1.5,
+                                    opacity: selected ? 0.8 : 0.65,
+                                    fontWeight: 300
+                                }}>{opt.desc}</div>
+                                <div style={{
+                                    marginTop: 'auto',
+                                    fontSize: '11px',
+                                    letterSpacing: '2px',
+                                    textTransform: 'uppercase',
+                                    fontWeight: 600,
+                                    opacity: selected ? 1 : 0.4
+                                }}>
+                                    {selected ? 'Selected' : 'Choose'}
+                                </div>
+                            </button>
+                        );
+                    })}
                 </div>
             );
         }
@@ -3305,9 +3840,10 @@
 
         function StepReview({ stepData, form, colors, b, doctors, services }) {
             const f0 = b.steps[0].fields;
-            const f1 = b.steps[1].fields;
-            const reasonLabels = { new: f1.reasonNew, follow: f1.reasonFollow, wellness: f1.reasonWellness, other: f1.reasonOther };
-            const windowLabels = { morning: f1.morning, afternoon: f1.afternoon, evening: f1.evening, flexible: f1.flexible };
+            const fVisit = b.steps[2].fields;
+            const reasonLabels = { new: fVisit.reasonNew, follow: fVisit.reasonFollow, wellness: fVisit.reasonWellness, other: fVisit.reasonOther };
+            const windowLabels = { morning: fVisit.morning, afternoon: fVisit.afternoon, evening: fVisit.evening, flexible: fVisit.flexible };
+            const visitTypeLabel = form.visitType === 'telehealth' ? stepData.summary.telehealth : stepData.summary.inperson;
             const docName = form.doctor === 'any'
                 ? stepData.summary.anyProvider
                 : (doctors.find(d => d.id === form.doctor)?.name || stepData.summary.anyProvider);
@@ -3329,6 +3865,7 @@
                                 {form.dob && <><br />{f0.dob}: {form.dob}</>}
                             </span>
                         } />
+                        <Row label={stepData.summary.visitType} value={visitTypeLabel} />
                         <Row label={stepData.summary.visit} value={
                             <span>
                                 {reasonLabels[form.reason] || ''}

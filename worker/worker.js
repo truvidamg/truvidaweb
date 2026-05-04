@@ -95,6 +95,9 @@ function formatSms(d) {
   const patient = s(d.patientType).toLowerCase() === 'returning' ? 'RETURNING' : 'NEW';
   const lang = s(d.formLang).toLowerCase() === 'es' ? 'ES' : 'EN';
 
+  const visitTypeRaw = s(d.visitType).toLowerCase();
+  const visitTypeLabel = visitTypeRaw === 'telehealth' ? 'Telehealth' : visitTypeRaw === 'inperson' ? 'In-person' : '';
+
   const lines = [
     'TRUVIDA — New booking request',
     '',
@@ -104,6 +107,7 @@ function formatSms(d) {
   ];
   if (s(d.dob)) lines.push(`DOB: ${s(d.dob)}`);
   lines.push('');
+  if (visitTypeLabel) lines.push(`Visit type: ${visitTypeLabel}`);
   if (s(d.service)) lines.push(`Service: ${s(d.service)}`);
   if (s(d.reason)) lines.push(`Reason: ${s(d.reason)}`);
   const when = [s(d.date), s(d.window)].filter(Boolean).join(', ');

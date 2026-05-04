@@ -336,7 +336,9 @@
     
     <script type="text/babel">
         const { useState, useEffect, useRef, useMemo, useContext, createContext } = React;
-        
+
+        const BOOKING_ENDPOINT = 'https://truvidaweb.odd-art-3189.workers.dev';
+
         const TWEAK_DEFAULTS = /*EDITMODE-BEGIN*/{
           "primaryColor": "#3057ab",
           "secondaryColor": "#ededed",
@@ -468,13 +470,15 @@
                     back: 'Back',
                     next: 'Continue',
                     submit: 'Confirm request',
+                    sending: 'Sending…',
                     required: 'Required',
                     optional: 'Optional',
                     errors: {
                         name: 'Please enter your full name.',
                         phone: 'Please enter a valid phone number.',
                         email: 'Please enter a valid email address.',
-                        reason: 'Please select a reason for your visit.'
+                        reason: 'Please select a reason for your visit.',
+                        submit: 'Could not send your request. Please try again or call us.'
                     },
                     steps: [
                         {
@@ -675,13 +679,15 @@
                     back: 'Atrás',
                     next: 'Continuar',
                     submit: 'Enviar solicitud',
+                    sending: 'Enviando…',
                     required: 'Obligatorio',
                     optional: 'Opcional',
                     errors: {
                         name: 'Por favor ingrese su nombre completo.',
                         phone: 'Por favor ingrese un número de teléfono válido.',
                         email: 'Por favor ingrese un correo electrónico válido.',
-                        reason: 'Por favor seleccione un motivo de visita.'
+                        reason: 'Por favor seleccione un motivo de visita.',
+                        submit: 'No pudimos enviar su solicitud. Inténtelo de nuevo o llámenos.'
                     },
                     steps: [
                         {
@@ -2642,6 +2648,8 @@
             const b = t.booking;
             const [step, setStep] = useState(0);
             const [submitted, setSubmitted] = useState(false);
+            const [submitting, setSubmitting] = useState(false);
+            const [submitError, setSubmitError] = useState(null);
             const [errors, setErrors] = useState({});
             const [form, setForm] = useState({
                 name: '', phone: '', email: '', dob: '',
@@ -2680,10 +2688,40 @@
                 return Object.keys(e).length === 0;
             };
 
+            const submitBooking = async () => {
+                if (submitting) return;
+                setSubmitting(true);
+                setSubmitError(null);
+                try {
+                    const doctorObj = doctors.find(d => d.id === form.doctor);
+                    const serviceObj = services.find(s => s.id === form.service);
+                    const payload = {
+                        ...form,
+                        doctor: doctorObj ? doctorObj.name : (form.doctor === 'any' ? 'No preference' : form.doctor),
+                        service: serviceObj ? serviceObj.label : form.service,
+                        website: '', // honeypot
+                        submittedAt: new Date().toISOString(),
+                    };
+                    const res = await fetch(BOOKING_ENDPOINT, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(payload),
+                    });
+                    if (!res.ok) throw new Error('Request failed');
+                    const data = await res.json().catch(() => ({}));
+                    if (data && data.ok === false) throw new Error(data.error || 'Request failed');
+                    setSubmitted(true);
+                } catch (err) {
+                    setSubmitError(b.errors && b.errors.submit ? b.errors.submit : 'Could not send your request. Please try again or call us.');
+                } finally {
+                    setSubmitting(false);
+                }
+            };
+
             const handleNext = () => {
                 if (validateStep(step)) {
                     if (step < 3) setStep(step + 1);
-                    else setSubmitted(true);
+                    else submitBooking();
                 }
             };
             const handleBack = () => {
@@ -2799,17 +2837,23 @@
                             }}>
                                 <span style={{ fontSize: '18px' }}>←</span> {b.back}
                             </button>
-                            <button onClick={handleNext} style={{
-                                background: colors.text, color: colors.bg,
-                                border: 'none', fontFamily: 'inherit', cursor: 'none',
-                                fontSize: '14px', letterSpacing: '0.5px',
-                                fontWeight: 500, padding: '20px 44px',
-                                borderRadius: '100px',
-                                display: 'flex', alignItems: 'center', gap: '12px'
-                            }}>
-                                {step === totalSteps - 1 ? b.submit : b.next}
-                                <span style={{ fontSize: '16px' }}>→</span>
-                            </button>
+                            <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: '8px' }}>
+                                {submitError && (
+                                    <div style={{ color: '#C44', fontSize: '12px', letterSpacing: '0.3px' }}>{submitError}</div>
+                                )}
+                                <button onClick={handleNext} disabled={submitting} style={{
+                                    background: colors.text, color: colors.bg,
+                                    border: 'none', fontFamily: 'inherit', cursor: submitting ? 'wait' : 'none',
+                                    fontSize: '14px', letterSpacing: '0.5px',
+                                    fontWeight: 500, padding: '20px 44px',
+                                    borderRadius: '100px',
+                                    opacity: submitting ? 0.6 : 1,
+                                    display: 'flex', alignItems: 'center', gap: '12px'
+                                }}>
+                                    {submitting ? (b.sending || 'Sending…') : (step === totalSteps - 1 ? b.submit : b.next)}
+                                    <span style={{ fontSize: '16px' }}>→</span>
+                                </button>
+                            </div>
                         </div>
                     )}
                 </div>

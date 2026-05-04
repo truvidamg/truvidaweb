@@ -80,6 +80,18 @@ function json(payload, status, origin) {
 
 function formatSms(d) {
   const s = (v) => (v == null ? '' : String(v).trim());
+
+  if (d.urgent) {
+    const lines = [
+      '🚨 TRUVIDA — URGENT / Same-day request',
+      '',
+      s(d.name),
+      `Phone: ${s(d.phone)}`,
+    ];
+    if (s(d.notes)) lines.push('', s(d.notes));
+    return lines.join('\n');
+  }
+
   const patient = s(d.patientType).toLowerCase() === 'returning' ? 'RETURNING' : 'NEW';
   const lang = s(d.formLang).toLowerCase() === 'es' ? 'ES' : 'EN';
 

@@ -4,8 +4,12 @@ const FROM_NUMBER = 'whatsapp:+14155238886';
 const ALLOWED_ORIGINS = [
   'https://truvidamg.com',
   'https://www.truvidamg.com',
+  'https://truvidaweb.odd-art-3189.workers.dev',
+  'https://truvidaweb.pages.dev',
   'http://localhost:8000',
   'http://127.0.0.1:8000',
+  'http://localhost:5500',
+  'http://127.0.0.1:5500',
 ];
 
 const corsHeaders = (origin) => ({

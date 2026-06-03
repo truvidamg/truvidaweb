@@ -6,7 +6,7 @@
     <title>Truvida Medical Group - Primary Care Physicians in Miami</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,200;0,300;0,400;0,500;0,600;0,700;1,300;1,400&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,200;0,300;0,400;0,500;0,600;0,700;1,300;1,400&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=Caveat:wght@500;600;700&display=swap" rel="stylesheet">
     
     <script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
     <script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
@@ -20,10 +20,12 @@
             -webkit-font-smoothing: antialiased;
             -moz-osx-font-smoothing: grayscale;
             overflow-x: hidden;
-            cursor: none;
         }
-        
-        a, button, [role="button"] { cursor: none; }
+
+        a, button, [role="button"] { cursor: pointer; }
+        /* Custom cursor disabled — force normal cursors even on inline cursor:none */
+        [style*="cursor: none"], [style*="cursor:none"] { cursor: pointer !important; }
+        input[style*="cursor: none"], textarea[style*="cursor: none"] { cursor: text !important; }
         
         html { scroll-behavior: smooth; }
         
@@ -1130,7 +1132,6 @@
             
             return (
                 <div style={{ background: colors.bg, color: colors.text }}>
-                    <CustomCursor colors={colors} />
                     <ScrollProgress colors={colors} scrollY={scrollY} />
                     <Navigation colors={colors} scrollY={scrollY} onBook={openBooking} />
                     <HeroSection colors={colors} scrollY={scrollY} loaded={loaded} onBook={openBooking} onUrgent={openUrgent} />
@@ -1206,23 +1207,26 @@
                             display: 'flex',
                             alignItems: 'center',
                             gap: '12px',
-                            fontSize: '24px',
-                            fontFamily: "'Fraunces', serif",
-                            fontWeight: 400,
-                            fontStyle: 'italic',
                             color: colors.text,
-                            letterSpacing: '0px'
+                            flexShrink: 0
                         }}>
-                            <img src="assets/logo-ink.png" alt="Tru Vida Medical Group" style={{ width: '34px', height: '34px', display: 'block' }} />
-                            <span style={{
-                                display: 'inline-flex',
-                                alignItems: 'baseline',
-                                opacity: isScrolled ? 1 : 0,
-                                transform: isScrolled ? 'translateX(0)' : 'translateX(-8px)',
-                                transition: 'opacity 0.4s ease, transform 0.4s ease',
-                                pointerEvents: isScrolled ? 'auto' : 'none'
-                            }}>
-                                Truvida<span style={{ color: colors.primary }}>.</span>
+                            <img src="assets/logo-ink.png" alt="Tru Vida Medical Group" style={{ width: '38px', height: '38px', display: 'block' }} />
+                            <span style={{ display: 'flex', flexDirection: 'column', lineHeight: 1, whiteSpace: 'nowrap' }}>
+                                <span style={{
+                                    fontFamily: "'Fraunces', serif",
+                                    fontSize: '21px',
+                                    fontWeight: 400,
+                                    letterSpacing: '-0.3px',
+                                    whiteSpace: 'nowrap'
+                                }}>Tru Vida</span>
+                                <span style={{
+                                    fontSize: '9px',
+                                    fontWeight: 600,
+                                    letterSpacing: '3px',
+                                    textTransform: 'uppercase',
+                                    color: colors.primary,
+                                    marginTop: '3px'
+                                }}>Medical Group</span>
                             </span>
                         </div>
                         <div className="nav-desktop-links" style={{ display: 'flex', gap: '40px', alignItems: 'center' }}>
@@ -1418,7 +1422,8 @@
                     gap: '6px',
                     padding: '6px 14px',
                     border: `1px solid ${colors.text}20`,
-                    borderRadius: '100px'
+                    borderRadius: '100px',
+                    position: 'relative'
                 }}>
                     <button onClick={() => setLang('en')} style={{
                         ...base,
@@ -1431,6 +1436,28 @@
                         color: lang === 'es' ? colors.primary : colors.textMuted,
                         opacity: lang === 'es' ? 1 : 0.7
                     }}>ES</button>
+
+                    {/* Hand-drawn bilingual hint pointing up to the toggle */}
+                    <div style={{
+                        position: 'absolute', top: 'calc(100% + 2px)', right: '8px',
+                        display: 'flex', alignItems: 'flex-start', gap: '2px',
+                        pointerEvents: 'none', userSelect: 'none'
+                    }}>
+                        <span style={{
+                            fontFamily: "'Caveat', cursive",
+                            fontSize: '27px', fontWeight: 600, lineHeight: 1.0,
+                            color: colors.primary,
+                            width: '120px', textAlign: 'right',
+                            transform: 'rotate(-4deg)', transformOrigin: 'top right',
+                            marginTop: '6px'
+                        }}>
+                            {lang === 'en' ? 'Haz clic aquí para Español' : 'Click here for English'}
+                        </span>
+                        <svg width="32" height="38" viewBox="0 0 32 38" fill="none" style={{ flexShrink: 0, marginTop: '-2px' }}>
+                            <path d="M5 35 C 7 19, 15 9, 27 5" stroke={colors.primary} strokeWidth="2" strokeLinecap="round" />
+                            <path d="M27 5 L 19 4 M27 5 L 26 13" stroke={colors.primary} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                        </svg>
+                    </div>
                 </div>
             );
         }
@@ -1506,166 +1533,177 @@
                     <div className="hero-grid" style={{
                         position: 'relative',
                         zIndex: 2,
-                        maxWidth: '1400px',
+                        maxWidth: '1180px',
                         margin: '0 auto',
                         padding: '120px 48px 60px',
                         transform: `translateY(${parallax * 0.5}px)`,
-                        opacity: opacity,
-                        display: 'grid',
-                        gridTemplateColumns: 'minmax(0, 1.4fr) minmax(0, 1fr)',
-                        gap: '64px',
-                        alignItems: 'center'
+                        opacity: 1,
+                        display: 'flex',
+                        flexDirection: 'column',
+                        alignItems: 'center',
+                        textAlign: 'center'
                     }}>
-                        {/* LEFT: hero content */}
-                        <div style={{ textAlign: 'left' }}>
-                            {/* Big hero logo + wordmark (fades out as user scrolls — nav has its own small logo) */}
-                            <div className={`text-reveal ${loaded ? 'loaded' : ''}`} style={{ marginBottom: '32px' }}>
-                                <div className="text-reveal-line">
-                                    <div className="text-reveal-inner" style={{
-                                        display: 'flex',
-                                        alignItems: 'center',
-                                        gap: 'clamp(16px, 2vw, 28px)',
-                                        opacity: Math.max(0, 1 - scrollY / 400),
-                                        transform: `translateY(${-scrollY * 0.3}px) scale(${Math.max(0.6, 1 - scrollY / 800)})`,
-                                        transformOrigin: 'left center',
-                                        transition: 'opacity 0.1s linear, transform 0.1s linear'
-                                    }}>
-                                        <img
-                                            src="assets/logo-ink.png"
-                                            alt="Tru Vida Medical Group"
-                                            style={{
-                                                display: 'block',
-                                                height: 'clamp(80px, 11vw, 160px)',
-                                                width: 'auto'
-                                            }}
-                                        />
-                                        <span style={{
-                                            fontFamily: "'Fraunces', serif",
-                                            fontSize: 'clamp(28px, 3.4vw, 56px)',
-                                            fontWeight: 300,
-                                            lineHeight: 1.05,
-                                            letterSpacing: '-1.5px',
-                                            color: colors.text
-                                        }}>
-                                            Tru Vida<br />
-                                            <span style={{ fontStyle: 'italic', color: colors.primary, fontSize: '0.55em', letterSpacing: '4px', textTransform: 'uppercase', fontWeight: 500 }}>Medical Group</span>
-                                        </span>
-                                    </div>
-                                </div>
-                            </div>
-                            {/* Badge */}
-                            <div className={`text-reveal ${loaded ? 'loaded' : ''}`} style={{ marginBottom: '40px' }}>
-                                <div className="text-reveal-line">
-                                    <div className="text-reveal-inner" style={{
-                                        display: 'inline-flex',
-                                        alignItems: 'center',
-                                        gap: '12px',
-                                        padding: '10px 24px',
-                                        background: `${colors.surface}`,
-                                        border: `1px solid ${colors.primary}30`,
-                                        borderRadius: '100px',
-                                        fontSize: '13px',
-                                        fontWeight: 500,
-                                        color: colors.text,
-                                        letterSpacing: '0.5px'
-                                    }}>
-                                        <span style={{
-                                            width: '8px',
-                                            height: '8px',
-                                            borderRadius: '50%',
-                                            background: '#22C55E',
-                                            boxShadow: '0 0 12px #22C55E'
-                                        }} />
-                                        {t.hero.badge}
-                                    </div>
-                                </div>
-                            </div>
-
-                            {/* Hero title */}
-                            <div className={`text-reveal ${loaded ? 'loaded' : ''}`}>
-                                <h1 style={{
-                                    fontFamily: "'Fraunces', serif",
-                                    fontSize: 'clamp(56px, 8vw, 132px)',
-                                    fontWeight: 300,
-                                    lineHeight: 0.95,
-                                    letterSpacing: '-3px',
-                                    color: colors.text
+                        {/* Badge */}
+                        <div className={`text-reveal ${loaded ? 'loaded' : ''}`} style={{ marginBottom: '20px' }}>
+                            <div className="text-reveal-line">
+                                <div className="text-reveal-inner" style={{
+                                    display: 'inline-flex',
+                                    alignItems: 'center',
+                                    gap: '12px',
+                                    padding: '10px 24px',
+                                    background: '#16A34A',
+                                    border: 'none',
+                                    borderRadius: '100px',
+                                    fontSize: '13px',
+                                    fontWeight: 600,
+                                    color: '#FFFFFF',
+                                    letterSpacing: '0.5px'
                                 }}>
-                                    <span className="text-reveal-line">
-                                        <span className="text-reveal-inner" style={{ transitionDelay: '0.1s' }}>{t.hero.title1}</span>
-                                    </span>
-                                    <span className="text-reveal-line">
-                                        <span className="text-reveal-inner" style={{
-                                            transitionDelay: '0.3s',
-                                            fontStyle: 'italic',
-                                            color: colors.primary,
-                                            fontWeight: 400
-                                        }}>{t.hero.title2}</span>
-                                    </span>
-                                </h1>
-                            </div>
-
-                            <div className={`text-reveal ${loaded ? 'loaded' : ''}`} style={{ marginTop: '40px' }}>
-                                <div className="text-reveal-line">
-                                    <p className="text-reveal-inner" style={{
-                                        transitionDelay: '0.6s',
-                                        fontSize: '20px',
-                                        lineHeight: 1.5,
-                                        color: colors.textLight,
-                                        maxWidth: '560px',
-                                        fontWeight: 300
-                                    }}>
-                                        {t.hero.subtitle}
-                                    </p>
+                                    {t.hero.badge}
                                 </div>
                             </div>
+                        </div>
 
-                            <div className={`text-reveal ${loaded ? 'loaded' : ''}`} style={{ marginTop: '48px' }}>
-                                <div className="text-reveal-line">
-                                    <div className="text-reveal-inner hero-buttons" style={{ transitionDelay: '0.9s', display: 'flex', gap: '16px', flexWrap: 'wrap' }}>
-                                        <button onClick={onBook} style={{
-                                            padding: '20px 44px',
-                                            background: colors.text,
-                                            color: colors.bg,
-                                            border: 'none',
-                                            fontFamily: 'inherit',
-                                            cursor: 'none',
-                                            fontSize: '15px',
-                                            fontWeight: 500,
-                                            letterSpacing: '0.5px',
-                                            borderRadius: '100px',
-                                            transition: 'all 0.4s ease',
-                                            display: 'inline-flex',
-                                            alignItems: 'center',
-                                            gap: '12px'
-                                        }}>
-                                            {t.hero.meet}
-                                            <span style={{ fontSize: '18px' }}>↓</span>
-                                        </button>
-                                        <a href="tel:7868830339" style={{
-                                            padding: '20px 44px',
-                                            background: 'transparent',
-                                            color: colors.text,
-                                            textDecoration: 'none',
-                                            fontSize: '15px',
-                                            fontWeight: 500,
-                                            letterSpacing: '0.5px',
-                                            borderRadius: '100px',
-                                            border: `1.5px solid ${colors.text}30`,
-                                            transition: 'all 0.4s ease'
-                                        }}>
-                                            (786) 883-0339
-                                        </a>
+                        {/* Physicians — large, centered */}
+                        <div className={`text-reveal ${loaded ? 'loaded' : ''}`} style={{ width: '100%' }}>
+                            <div className="text-reveal-line">
+                                <div className="text-reveal-inner doctors-stage" style={{
+                                    transitionDelay: '0.4s',
+                                    position: 'relative',
+                                    display: 'flex',
+                                    justifyContent: 'center',
+                                    alignItems: 'flex-end',
+                                    width: '100%',
+                                    height: 'clamp(340px, 44vw, 540px)',
+                                    overflow: 'visible'
+                                }}>
+                                    <img src="assets/dr-noel-cut.png" alt="Noel Medina Rojo, ARNP" style={{
+                                        height: '100%', width: 'auto', marginRight: '-7%', zIndex: 2,
+                                        filter: 'drop-shadow(0 24px 38px rgba(10,10,12,0.17))'
+                                    }} />
+                                    <img src="assets/dr-yahumara-cut.png" alt="Yahumara González Funes López, ARNP" style={{
+                                        height: '100%', width: 'auto', marginLeft: '-7%', zIndex: 3,
+                                        filter: 'drop-shadow(0 24px 38px rgba(10,10,12,0.19))'
+                                    }} />
+                                </div>
+                            </div>
+                        </div>
+
+                        {/* Both physicians' names, side by side */}
+                        <div className={`text-reveal ${loaded ? 'loaded' : ''}`} style={{ marginTop: '24px' }}>
+                            <div className="text-reveal-line">
+                                <div className="text-reveal-inner" style={{
+                                    display: 'inline-flex', alignItems: 'center', justifyContent: 'center',
+                                    gap: 'clamp(20px, 4vw, 48px)', transitionDelay: '0.5s', flexWrap: 'wrap'
+                                }}>
+                                    <div style={{ textAlign: 'center' }}>
+                                        <div style={{ fontFamily: "'Fraunces', serif", fontSize: 'clamp(18px, 2vw, 24px)', fontWeight: 500, color: colors.text, letterSpacing: '-0.4px', lineHeight: 1.1 }}>Noel Medina Rojo</div>
+                                        <div style={{ fontSize: '11px', color: colors.textMuted, fontWeight: 600, letterSpacing: '1.5px', textTransform: 'uppercase', marginTop: '5px' }}>ARNP, FNP-C</div>
+                                    </div>
+                                    <div style={{ width: '1px', height: '34px', background: `${colors.text}22` }} />
+                                    <div style={{ textAlign: 'center' }}>
+                                        <div style={{ fontFamily: "'Fraunces', serif", fontSize: 'clamp(18px, 2vw, 24px)', fontWeight: 500, color: colors.text, letterSpacing: '-0.4px', lineHeight: 1.1 }}>Yahumara González</div>
+                                        <div style={{ fontSize: '11px', color: colors.textMuted, fontWeight: 600, letterSpacing: '1.5px', textTransform: 'uppercase', marginTop: '5px' }}>ARNP, FNP-C</div>
                                     </div>
                                 </div>
                             </div>
                         </div>
 
-                        {/* RIGHT: urgent CTA */}
-                        <div className={`text-reveal ${loaded ? 'loaded' : ''}`}>
+                        {/* Hero title — one line under the physicians */}
+                        <div className={`text-reveal ${loaded ? 'loaded' : ''}`} style={{ marginTop: '28px' }}>
+                            <h1 className="hero-headline" style={{
+                                fontFamily: "'Fraunces', serif",
+                                fontSize: 'clamp(34px, 6vw, 96px)',
+                                fontWeight: 300,
+                                lineHeight: 1,
+                                letterSpacing: '-2.5px',
+                                color: colors.text
+                            }}>
+                                <span className="text-reveal-line">
+                                    <span className="text-reveal-inner" style={{ transitionDelay: '0.55s' }}>
+                                        {t.hero.title1}{' '}
+                                        <span style={{ fontStyle: 'italic', color: colors.primary, fontWeight: 400 }}>{t.hero.title2}</span>
+                                    </span>
+                                </span>
+                            </h1>
+                        </div>
+
+                        <div className={`text-reveal ${loaded ? 'loaded' : ''}`} style={{ marginTop: '28px' }}>
                             <div className="text-reveal-line">
-                                <div className="text-reveal-inner" style={{ transitionDelay: '0.5s' }}>
-                                    <UrgentCta colors={colors} t={t.hero.urgent} onClick={onUrgent} />
+                                <p className="text-reveal-inner" style={{
+                                    transitionDelay: '0.7s',
+                                    fontSize: '19px',
+                                    lineHeight: 1.5,
+                                    color: colors.textLight,
+                                    maxWidth: '560px',
+                                    fontWeight: 300,
+                                    margin: '0 auto'
+                                }}>
+                                    {t.hero.subtitle}
+                                </p>
+                            </div>
+                        </div>
+
+                        <div className={`text-reveal ${loaded ? 'loaded' : ''}`} style={{ marginTop: '36px' }}>
+                            <div className="text-reveal-line">
+                                <div className="text-reveal-inner hero-buttons" style={{ transitionDelay: '0.85s', display: 'flex', gap: '16px', flexWrap: 'wrap', justifyContent: 'center' }}>
+                                    <button onClick={onBook} style={{
+                                        padding: '20px 44px',
+                                        background: colors.text,
+                                        color: colors.bg,
+                                        border: 'none',
+                                        fontFamily: 'inherit',
+                                        cursor: 'pointer',
+                                        fontSize: '15px',
+                                        fontWeight: 500,
+                                        letterSpacing: '0.5px',
+                                        borderRadius: '100px',
+                                        transition: 'all 0.4s ease',
+                                        display: 'inline-flex',
+                                        alignItems: 'center',
+                                        gap: '12px'
+                                    }}>
+                                        {t.nav.book}
+                                    </button>
+                                    <button onClick={onUrgent} style={{
+                                        display: 'inline-flex',
+                                        alignItems: 'center',
+                                        gap: '12px',
+                                        background: '#DC2626',
+                                        color: '#FFFFFF',
+                                        border: 'none',
+                                        fontFamily: 'inherit',
+                                        cursor: 'pointer',
+                                        padding: '20px 40px',
+                                        fontSize: '15px',
+                                        fontWeight: 600,
+                                        letterSpacing: '0.3px',
+                                        borderRadius: '100px',
+                                        boxShadow: '0 12px 30px rgba(220,38,38,0.28)',
+                                        transition: 'all 0.4s ease'
+                                    }}>
+                                        <span style={{
+                                            width: '8px', height: '8px', borderRadius: '50%',
+                                            background: '#FFFFFF', flexShrink: 0,
+                                            boxShadow: '0 0 0 4px rgba(255,255,255,0.3)',
+                                            animation: 'pulse 1.5s ease-in-out infinite'
+                                        }} />
+                                        {t.hero.urgent.eyebrow}
+                                    </button>
+                                    <a href="tel:7868830339" style={{
+                                        padding: '20px 44px',
+                                        background: 'transparent',
+                                        color: colors.text,
+                                        textDecoration: 'none',
+                                        fontSize: '15px',
+                                        fontWeight: 500,
+                                        letterSpacing: '0.5px',
+                                        borderRadius: '100px',
+                                        border: `1.5px solid ${colors.text}30`,
+                                        transition: 'all 0.4s ease'
+                                    }}>
+                                        (786) 883-0339
+                                    </a>
                                 </div>
                             </div>
                         </div>
@@ -2213,7 +2251,7 @@
                     surname: 'Funes Lopez',
                     title: 'ARNP, FNP-C',
                     years: '16+',
-                    image: 'assets/dr-yahumara.png',
+                    image: 'assets/dr-yahumara-cut.png',
                     bio: t.doctors.list[0].bio,
                     expertise: t.doctors.list[0].expertise
                 },
@@ -2222,7 +2260,7 @@
                     surname: 'Rojo',
                     title: 'ARNP, FNP-C',
                     years: '10+',
-                    image: 'assets/dr-noel.png',
+                    image: 'assets/dr-noel-cut.png',
                     bio: t.doctors.list[1].bio,
                     expertise: t.doctors.list[1].expertise
                 }
@@ -2329,8 +2367,8 @@
                                     style={{
                                         width: '100%',
                                         height: '100%',
-                                        objectFit: 'cover',
-                                        filter: 'grayscale(20%)'
+                                        objectFit: 'contain',
+                                        objectPosition: 'center bottom'
                                     }}
                                 />
                             </div>
